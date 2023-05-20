@@ -14,8 +14,9 @@ namespace GarageVParrot.Models
         public string Description { get; set; }
         [Required]
         public string Image { get; set; }
+        [ForeignKey("User")]
         public string UserId { get; set; }
-        [ForeignKey("UserId")]
+        
         public User user { get; set; }
     }
 }

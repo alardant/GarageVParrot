@@ -7,16 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GarageVParrot.Data;
 using GarageVParrot.Models;
+using Microsoft.Extensions.Configuration.UserSecrets;
+using Microsoft.AspNetCore.Identity;
+using GarageVParrot.ViewModels;
+using Microsoft.Extensions.Hosting.Internal;
+using System.IO;
 
 namespace GarageVParrot.Controllers
 {
     public class ServicesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private IWebHostEnvironment _hostingEnvironment;
 
-        public ServicesController(ApplicationDbContext context)
+        public ServicesController(ApplicationDbContext context, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: Services
@@ -45,28 +52,43 @@ namespace GarageVParrot.Controllers
             return View(service);
         }
 
-        // GET: Services/Create
+        [HttpGet]
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            var curUserId = HttpContext.User.GetUserId();
+            var createClubViewModel = new Service { UserId = curUserId };
             return View();
         }
 
-        // POST: Services/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Image,UserId")] Service service)
+        public async Task<IActionResult> Create(ServiceViewModel serviceVM, IFormFile file)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(service);
+                string fileName = null;
+                if (file != null)
+                {
+                    string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "UploadedImage");
+                    fileName = Guid.NewGuid().ToString() + "-" + file.FileName;
+                    string filePath = Path.Combine(uploadDir, fileName);
+                    var fileStream = new FileStream(filePath, FileMode.Create);
+                    file.CopyTo(fileStream);
+                    serviceVM.Image = @"\ProductImage\" + fileName;
+                }
+                var service = new Service()
+                {
+                    Title = serviceVM.Title,
+                    Description = serviceVM.Description,
+                    Image = serviceVM.Image
+                };
+               
+                _context.AddAsync(service);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", service.UserId);
-            return View(service);
+
+            return RedirectToAction("Index");
         }
 
         // GET: Services/Edit/5

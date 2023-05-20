@@ -39,8 +39,8 @@ namespace GarageVParrot.Models
         public Energy Energy { get; set; }
         public Category Category { get; set; }
         public GearType GearType { get; set; }
+        [ForeignKey("User")]
         public string UserId { get; set; }
-        [ForeignKey("UserId")]
         public User user { get; set; }
     }
 }

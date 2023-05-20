@@ -18,8 +18,8 @@ namespace GarageVParrot.Models
         [Display(Name = "Valider")]
         public bool Accepted { get; set; } = false;
         public DateTime datePublished { get; set; } = DateTime.Now;
-        public string UserId { get; set; }
-        [ForeignKey("UserId")]
+        [ForeignKey("User")]
+        public string? UserId { get; set; }
         public User user { get; set; }
     }
 }

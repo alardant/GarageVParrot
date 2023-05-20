@@ -1,4 +1,4 @@
-﻿@model GarageVParrot.Models.Service
+﻿@model GarageVParrot.ViewModels.ServiceViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -22,7 +22,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" type="file" class="form-control" placeholder="Image" />
+                <input asp-for="Image" type="file" class="form-control" name="file" placeholder="Image" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
             <div class="form-group">

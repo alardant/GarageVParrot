@@ -8,8 +8,8 @@ namespace GarageVParrot.Models
 
         public string ImagePath { get; set; }
         public bool IsFrontImage { get; set; }
+        [ForeignKey("Car")]
         public int CarId { get; set; }
-        [ForeignKey("CarId")]
         public Car car { get; set; }
     }
 }
