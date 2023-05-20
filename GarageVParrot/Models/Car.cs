@@ -7,12 +7,22 @@ namespace GarageVParrot.Models
     public class Car
     {
         public int Id { get; set; }
+        [Required]
+        [Display(Name = "Prix")]
         public double Price { get; set; }
-        public ICollection<Images> Images { get; set; }
+        public ICollection<ImageCarUpload> Images { get; set; }
+        [Required]
+        [Display(Name = "Année")]
         public int Year { get; set; }
+        [Required]
+        [Display(Name = "Kilomètres")]
         public int Kilometers { get; set; }
+        [Required]
+        [Display(Name = "Marque")]
         public string Brand { get; set; }
-        public string Modele { get; set; }
+        [Required]
+        [Display(Name = "Modèle")]
+        public string Model { get; set; }
         public int NumberOfDoors { get; set; }
         public int NumberOfSeats { get; set; }
         public bool AirConditionner { get; set; }

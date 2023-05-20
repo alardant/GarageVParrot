@@ -2,10 +2,10 @@
 
 namespace GarageVParrot.Models
 {
-    public class 
-        Images
+    public class ImageCarUpload
     {
         public int Id { get; set; }
+
         public string ImagePath { get; set; }
         public bool IsFrontImage { get; set; }
         public int CarId { get; set; }

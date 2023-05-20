@@ -1,12 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Xml.Linq;
 
 namespace GarageVParrot.Models
 {
     public class Service
     {
         public int Id { get; set; }
+        [Required]
+        [Display(Name = "Time")]
         public string Title { get; set; }
+        [Required]
         public string Description { get; set; }
+        [Required]
         public string Image { get; set; }
         public string UserId { get; set; }
         [ForeignKey("UserId")]
