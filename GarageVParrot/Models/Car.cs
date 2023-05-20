@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Linq;
 
 namespace GarageVParrot.Models
@@ -7,7 +8,7 @@ namespace GarageVParrot.Models
     {
         public int Id { get; set; }
         public double Price { get; set; }
-        public string Image { get; set; }
+        public ICollection<Images> Images { get; set; }
         public int Year { get; set; }
         public int Kilometers { get; set; }
         public string Brand { get; set; }
@@ -28,5 +29,8 @@ namespace GarageVParrot.Models
         public Energy Energy { get; set; }
         public Category Category { get; set; }
         public GearType GearType { get; set; }
+        public string UserId { get; set; }
+        [ForeignKey("UserId")]
+        public User user { get; set; }
     }
 }

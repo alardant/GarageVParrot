@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using GarageVParrot.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GarageVParrot.Models
+namespace GarageVParrot.ViewModels
 {
-    public class Service
+    public class ServiceViewModel : EditImageViewModel
     {
         public int Id { get; set; }
         public string Title { get; set; }
