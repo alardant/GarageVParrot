@@ -31,8 +31,8 @@ namespace GarageVParrot.Controllers
         // GET: Services
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Services.Include(s => s.user);
-            return View(await applicationDbContext.ToListAsync());
+            var listService = await _context.Services.ToListAsync();
+            return View(listService);
         }
 
         // GET: Services/Details/5
@@ -68,18 +68,17 @@ namespace GarageVParrot.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (serviceVM.Image != null)
-                {
                     string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "ServicesImage");
-                    string uniqueFileName = serviceVM.Image.FileName + " - " + Guid.NewGuid().ToString();
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    string fileName = Guid.NewGuid().ToString() + " - " + serviceVM.Image.FileName;
+                    string filePath = Path.Combine(uploadsFolder, fileName);
                     serviceVM.Image.CopyTo(new FileStream(filePath, FileMode.Create));
-                }
+
                 var service = new Service
                 {
                     UserId = serviceVM.UserId,
                     Title = serviceVM.Title,
                     Description = serviceVM.Description, 
+                    Image = fileName
                 };
 
                 await _context.AddAsync(service);
@@ -90,7 +89,7 @@ namespace GarageVParrot.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Services/Edit/5
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Services == null)
@@ -98,37 +97,60 @@ namespace GarageVParrot.Controllers
                 return NotFound();
             }
 
-            var service = await _context.Services.FindAsync(id);
+            var service = await _context.Services.FirstOrDefaultAsync(i => i.Id == id);
             if (service == null)
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", service.UserId);
-            return View(service);
+            var serviceVM = new EditServiceViewModel
+            {
+                UserId = service.UserId,
+                Title = service.Title,
+                Description = service.Description,
+                URL = service.Image,
+            };
+            return View(serviceVM);
         }
 
-        // POST: Services/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Image,UserId")] Service service)
+        public async Task<IActionResult> Edit(int id, EditServiceViewModel serviceVM)
         {
-            if (id != service.Id)
+            if (id != serviceVM.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
+                var serviceImage = await _context.Services.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+                if (serviceImage.Image != null)
                 {
+                    string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "ServicesImage");
+                    string oldFilePath = Path.Combine(uploadDir, serviceImage.Image);
+                    if (System.IO.File.Exists(oldFilePath))
+                    {
+                        System.IO.File.Delete(oldFilePath);
+                    }
+                }
+                try { 
+                string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "ServicesImage");
+                string fileName = Guid.NewGuid().ToString() + "-" + serviceVM.Image.FileName;
+                string filePath = Path.Combine(uploadDir, fileName);
+                    serviceVM.Image.CopyTo(new FileStream(filePath, FileMode.Create));
+                    var service = new Service
+                    {
+                    Id = id,
+                    UserId = serviceVM.UserId,
+                    Title = serviceVM.Title,
+                    Description = serviceVM.Description,
+                    Image = fileName
+                };
                     _context.Update(service);
-                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ServiceExists(service.Id))
+                    if (!(_context.Services?.Any(e => e.Id == id)).GetValueOrDefault())
                     {
                         return NotFound();
                     }
@@ -137,10 +159,10 @@ namespace GarageVParrot.Controllers
                         throw;
                     }
                 }
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", service.UserId);
-            return View(service);
+            return View(serviceVM);
         }
 
         // GET: Services/Delete/5

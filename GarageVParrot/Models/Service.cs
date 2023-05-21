@@ -13,7 +13,7 @@ namespace GarageVParrot.Models
         [Required]
         public string Description { get; set; }
         [Required]
-        public IFormFile Image { get; set; }
+        public string Image { get; set; }
         [ForeignKey("User")]
         public string UserId { get; set; }
         
