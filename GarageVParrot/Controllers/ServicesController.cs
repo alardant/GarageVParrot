@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Identity;
 using GarageVParrot.ViewModels;
 using Microsoft.Extensions.Hosting.Internal;
 using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using System.Net;
 
 namespace GarageVParrot.Controllers
 {
@@ -56,34 +58,31 @@ namespace GarageVParrot.Controllers
         public IActionResult Create()
         {
             var curUserId = HttpContext.User.GetUserId();
-            var createClubViewModel = new Service { UserId = curUserId };
-            return View();
+            var ServiceViewModel = new ServiceViewModel { UserId = curUserId };
+            return View(ServiceViewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ServiceViewModel serviceVM, IFormFile file)
+        public async Task<IActionResult> Create(ServiceViewModel serviceVM)
         {
             if (ModelState.IsValid)
             {
-                string fileName = null;
-                if (file != null)
+                if (serviceVM.Image != null)
                 {
-                    string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "UploadedImage");
-                    fileName = Guid.NewGuid().ToString() + "-" + file.FileName;
-                    string filePath = Path.Combine(uploadDir, fileName);
-                    var fileStream = new FileStream(filePath, FileMode.Create);
-                    file.CopyTo(fileStream);
-                    serviceVM.Image = @"\ProductImage\" + fileName;
+                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "ServicesImage");
+                    string uniqueFileName = serviceVM.Image.FileName + " - " + Guid.NewGuid().ToString();
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    serviceVM.Image.CopyTo(new FileStream(filePath, FileMode.Create));
                 }
-                var service = new Service()
+                var service = new Service
                 {
+                    UserId = serviceVM.UserId,
                     Title = serviceVM.Title,
-                    Description = serviceVM.Description,
-                    Image = serviceVM.Image
+                    Description = serviceVM.Description, 
                 };
-               
-                _context.AddAsync(service);
+
+                await _context.AddAsync(service);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }

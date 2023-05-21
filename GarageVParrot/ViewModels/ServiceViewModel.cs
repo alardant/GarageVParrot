@@ -5,13 +5,13 @@ using System.Xml.Linq;
 
 namespace GarageVParrot.ViewModels
 {
-    public class ServiceViewModel : EditImageViewModel
+    public class ServiceViewModel
     {
         public int Id { get; set; }
         [Display(Name = "Titre")]
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Image { get; set; }
+        public IFormFile Image { get; set; }
         [ForeignKey("UserId")]
         public string? UserId { get; set; }
     }
