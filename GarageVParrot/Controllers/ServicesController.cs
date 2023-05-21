@@ -28,7 +28,7 @@ namespace GarageVParrot.Controllers
             _hostingEnvironment = hostingEnvironment;
         }
 
-        // GET: Services
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var listService = await _context.Services.ToListAsync();
@@ -68,16 +68,16 @@ namespace GarageVParrot.Controllers
         {
             if (ModelState.IsValid)
             {
-                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "ServicesImage");
-                    string fileName = Guid.NewGuid().ToString() + " - " + serviceVM.Image.FileName;
-                    string filePath = Path.Combine(uploadsFolder, fileName);
-                    serviceVM.Image.CopyTo(new FileStream(filePath, FileMode.Create));
+                string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "ServicesImage");
+                string fileName = Guid.NewGuid().ToString() + " - " + serviceVM.Image.FileName;
+                string filePath = Path.Combine(uploadsFolder, fileName);
+                serviceVM.Image.CopyTo(new FileStream(filePath, FileMode.Create));
 
                 var service = new Service
                 {
                     UserId = serviceVM.UserId,
                     Title = serviceVM.Title,
-                    Description = serviceVM.Description, 
+                    Description = serviceVM.Description,
                     Image = fileName
                 };
 
@@ -123,30 +123,31 @@ namespace GarageVParrot.Controllers
 
             if (ModelState.IsValid)
             {
-                var serviceImage = await _context.Services.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
-                if (serviceImage.Image != null)
+                var service = await _context.Services.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+                if (service.Image != null)
                 {
                     string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "ServicesImage");
-                    string oldFilePath = Path.Combine(uploadDir, serviceImage.Image);
+                    string oldFilePath = Path.Combine(uploadDir, service.Image);
                     if (System.IO.File.Exists(oldFilePath))
                     {
                         System.IO.File.Delete(oldFilePath);
                     }
                 }
-                try { 
-                string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "ServicesImage");
-                string fileName = Guid.NewGuid().ToString() + "-" + serviceVM.Image.FileName;
-                string filePath = Path.Combine(uploadDir, fileName);
+                try
+                {
+                    string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "ServicesImage");
+                    string fileName = Guid.NewGuid().ToString() + "-" + serviceVM.Image.FileName;
+                    string filePath = Path.Combine(uploadDir, fileName);
                     serviceVM.Image.CopyTo(new FileStream(filePath, FileMode.Create));
-                    var service = new Service
+                    var serviceToUpdate = new Service
                     {
-                    Id = id,
-                    UserId = serviceVM.UserId,
-                    Title = serviceVM.Title,
-                    Description = serviceVM.Description,
-                    Image = fileName
-                };
-                    _context.Update(service);
+                        Id = id,
+                        UserId = serviceVM.UserId,
+                        Title = serviceVM.Title,
+                        Description = serviceVM.Description,
+                        Image = fileName
+                    };
+                    _context.Update(serviceToUpdate);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -165,47 +166,36 @@ namespace GarageVParrot.Controllers
             return View(serviceVM);
         }
 
-        // GET: Services/Delete/5
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Services == null)
-            {
-                return NotFound();
-            }
-
-            var service = await _context.Services
-                .Include(s => s.user)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var service = await _context.Services.FirstOrDefaultAsync(i => i.Id == id);
             if (service == null)
             {
                 return NotFound();
             }
-
             return View(service);
         }
 
         // POST: Services/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (_context.Services == null)
+            var service = await _context.Services.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+
+            if (service.Image != null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Services'  is null.");
+                string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "ServicesImage");
+                string oldFilePath = Path.Combine(uploadDir, service.Image);
+                if (System.IO.File.Exists(oldFilePath))
+                {
+                    System.IO.File.Delete(oldFilePath);
+                }
             }
-            var service = await _context.Services.FindAsync(id);
-            if (service != null)
-            {
-                _context.Services.Remove(service);
-            }
-            
+            _context.Remove(service);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool ServiceExists(int id)
-        {
-          return (_context.Services?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
