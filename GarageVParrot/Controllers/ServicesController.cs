@@ -58,8 +58,8 @@ namespace GarageVParrot.Controllers
         public IActionResult Create()
         {
             var curUserId = HttpContext.User.GetUserId();
-            var ServiceViewModel = new ServiceViewModel { UserId = curUserId };
-            return View(ServiceViewModel);
+            var serviceViewModel = new ServiceViewModel { UserId = curUserId };
+            return View(serviceViewModel);
         }
 
         [HttpPost]
@@ -68,7 +68,7 @@ namespace GarageVParrot.Controllers
         {
             if (ModelState.IsValid)
             {
-                string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "ServicesImage");
+                string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
                 string fileName = Guid.NewGuid().ToString() + " - " + serviceVM.Image.FileName;
                 string filePath = Path.Combine(uploadsFolder, fileName);
                 serviceVM.Image.CopyTo(new FileStream(filePath, FileMode.Create));
@@ -126,7 +126,7 @@ namespace GarageVParrot.Controllers
                 var service = await _context.Services.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
                 if (service.Image != null)
                 {
-                    string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "ServicesImage");
+                    string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
                     string oldFilePath = Path.Combine(uploadDir, service.Image);
                     if (System.IO.File.Exists(oldFilePath))
                     {
@@ -135,7 +135,7 @@ namespace GarageVParrot.Controllers
                 }
                 try
                 {
-                    string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "ServicesImage");
+                    string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
                     string fileName = Guid.NewGuid().ToString() + "-" + serviceVM.Image.FileName;
                     string filePath = Path.Combine(uploadDir, fileName);
                     serviceVM.Image.CopyTo(new FileStream(filePath, FileMode.Create));
@@ -186,7 +186,7 @@ namespace GarageVParrot.Controllers
 
             if (service.Image != null)
             {
-                string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "ServicesImage");
+                string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
                 string oldFilePath = Path.Combine(uploadDir, service.Image);
                 if (System.IO.File.Exists(oldFilePath))
                 {

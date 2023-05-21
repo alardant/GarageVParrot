@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 
-namespace GarageVParrot.Models
+namespace GarageVParrot.ViewModels
 {
-    public class Review
+    public class ReviewViewModel
     {
         public int Id { get; set; }
         [Required]
@@ -14,13 +14,11 @@ namespace GarageVParrot.Models
         public string Description { get; set; }
         [Required]
         [Display(Name = "Note")]
-        [Range(1,5)]
         public int Rating { get; set; }
         [Display(Name = "Valider")]
         public bool Accepted { get; set; } = false;
-        public DateTime datePublished { get; set; } = DateTime.Now;
+        public DateTime datePublished { get; set; }
         [ForeignKey("User")]
         public string? UserId { get; set; }
-        public User user { get; set; }
     }
 }

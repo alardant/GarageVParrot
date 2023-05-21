@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\ServicesImage\" />
+    <Folder Include="wwwroot\Uploads\ServicesImage\" />
   </ItemGroup>
 
 </Project>

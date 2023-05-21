@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GarageVParrot.Data;
 using GarageVParrot.Models;
+using GarageVParrot.ViewModels;
 
 namespace GarageVParrot.Controllers
 {
@@ -22,8 +23,8 @@ namespace GarageVParrot.Controllers
         // GET: Reviews
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Reviews.Include(r => r.user);
-            return View(await applicationDbContext.ToListAsync());
+            var reviewList = await _context.Reviews.ToListAsync();
+            return View(reviewList);
         }
 
         // GET: Reviews/Details/5
@@ -45,30 +46,40 @@ namespace GarageVParrot.Controllers
             return View(review);
         }
 
-        // GET: Reviews/Create
+        [HttpGet]
         public IActionResult Create()
+        
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
+            var reviewViewModel = new ReviewViewModel();
+            reviewViewModel.UserId = User.Identity.IsAuthenticated ? HttpContext.User.GetUserId() : null;
+            reviewViewModel.datePublished = DateTime.Now;
+            return View(reviewViewModel);
+
         }
 
-        // POST: Reviews/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Grade,Accepted,datePublished,UserId")] Review review)
+        public async Task<IActionResult> Create(ReviewViewModel reviewVM)
         {
+
             if (ModelState.IsValid)
             {
-                _context.Add(review);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", review.UserId);
-            return View(review);
-        }
+                var review = new Review
+                {
+                    UserId = reviewVM.UserId == null ? reviewVM.UserId : null,
+                    Name = reviewVM.Name,
+                    Description = reviewVM.Description,
+                    Rating = reviewVM.Rating,
+                    Accepted = reviewVM.Accepted,
+                };
 
+                await _context.AddAsync(review);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index");
+        }
         // GET: Reviews/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
