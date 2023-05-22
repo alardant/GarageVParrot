@@ -4,6 +4,7 @@ using GarageVParrot.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GarageVParrot.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230522113013_fixEnumInCar")]
+    partial class fixEnumInCar
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,10 +50,6 @@ namespace GarageVParrot.Data.Migrations
 
                     b.Property<int>("Category")
                         .HasColumnType("int");
-
-                    b.Property<string>("CoverImage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CritAir")
                         .HasColumnType("int");
@@ -112,7 +110,7 @@ namespace GarageVParrot.Data.Migrations
                     b.ToTable("Cars");
                 });
 
-            modelBuilder.Entity("GarageVParrot.Models.ImageListCar", b =>
+            modelBuilder.Entity("GarageVParrot.Models.ImageCarUpload", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -123,18 +121,18 @@ namespace GarageVParrot.Data.Migrations
                     b.Property<int>("CarId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ImageName")
+                    b.Property<string>("ImagePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("ImagePath")
+                    b.Property<bool>("IsFrontImage")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CarId");
 
-                    b.ToTable("ImageListCar");
+                    b.ToTable("ImageCarUpload");
                 });
 
             modelBuilder.Entity("GarageVParrot.Models.Review", b =>
@@ -423,19 +421,19 @@ namespace GarageVParrot.Data.Migrations
 
             modelBuilder.Entity("GarageVParrot.Models.Car", b =>
                 {
-                    b.HasOne("GarageVParrot.Models.User", "User")
+                    b.HasOne("GarageVParrot.Models.User", "user")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("user");
                 });
 
-            modelBuilder.Entity("GarageVParrot.Models.ImageListCar", b =>
+            modelBuilder.Entity("GarageVParrot.Models.ImageCarUpload", b =>
                 {
                     b.HasOne("GarageVParrot.Models.Car", "car")
-                        .WithMany("ImageListCar")
+                        .WithMany("Images")
                         .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -516,7 +514,7 @@ namespace GarageVParrot.Data.Migrations
 
             modelBuilder.Entity("GarageVParrot.Models.Car", b =>
                 {
-                    b.Navigation("ImageListCar");
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

@@ -14,11 +14,11 @@ namespace GarageVParrot.ViewModels
         public string Description { get; set; }
         [Required]
         [Display(Name = "Note")]
+        [Range(1,5)]
         public int Rating { get; set; }
         [Display(Name = "Valider")]
         public bool Accepted { get; set; } = false;
         public DateTime datePublished { get; set; }
-        [ForeignKey("User")]
         public string? UserId { get; set; }
     }
 }

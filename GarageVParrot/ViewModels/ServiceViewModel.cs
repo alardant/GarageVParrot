@@ -12,7 +12,6 @@ namespace GarageVParrot.ViewModels
         public string Title { get; set; }
         public string Description { get; set; }
         public IFormFile Image { get; set; }
-        [ForeignKey("UserId")]
         public string? UserId { get; set; }
     }
 }

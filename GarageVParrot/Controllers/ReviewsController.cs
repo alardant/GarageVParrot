@@ -80,7 +80,8 @@ namespace GarageVParrot.Controllers
 
             return RedirectToAction("Index");
         }
-        // GET: Reviews/Edit/5
+
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Reviews == null)
@@ -88,13 +89,20 @@ namespace GarageVParrot.Controllers
                 return NotFound();
             }
 
-            var review = await _context.Reviews.FindAsync(id);
+            var review = await _context.Reviews.FirstOrDefaultAsync(i => i.Id == id);
             if (review == null)
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", review.UserId);
-            return View(review);
+            var reviewVM = new ReviewViewModel
+            {
+                UserId = review.UserId,
+                Name = review.Name,
+                Description = review.Description,
+                Rating = review.Rating,
+                Accepted = review.Accepted,
+            };
+            return View(reviewVM);
         }
 
         // POST: Reviews/Edit/5
@@ -102,9 +110,9 @@ namespace GarageVParrot.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Grade,Accepted,datePublished,UserId")] Review review)
+        public async Task<IActionResult> Edit(int id, ReviewViewModel reviewViewModel)
         {
-            if (id != review.Id)
+            if (id != reviewViewModel.Id)
             {
                 return NotFound();
             }
@@ -113,12 +121,20 @@ namespace GarageVParrot.Controllers
             {
                 try
                 {
-                    _context.Update(review);
-                    await _context.SaveChangesAsync();
+                    var reviewToUpdate = new Review
+                    {
+                        Id = id,
+                        UserId = reviewViewModel.UserId,
+                        Name = reviewViewModel.Name,
+                        Description = reviewViewModel.Description,
+                        Rating = reviewViewModel.Rating,
+                        Accepted = reviewViewModel.Accepted,
+                    };
+                    _context.Update(reviewToUpdate);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ReviewExists(review.Id))
+                    if (!(_context.Reviews?.Any(e => e.Id == id)).GetValueOrDefault())
                     {
                         return NotFound();
                     }
@@ -127,13 +143,13 @@ namespace GarageVParrot.Controllers
                         throw;
                     }
                 }
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", review.UserId);
-            return View(review);
+            return View(reviewViewModel);
         }
 
-        // GET: Reviews/Delete/5
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Reviews == null)
@@ -141,9 +157,7 @@ namespace GarageVParrot.Controllers
                 return NotFound();
             }
 
-            var review = await _context.Reviews
-                .Include(r => r.user)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var review = await _context.Reviews.FirstOrDefaultAsync(i => i.Id == id);
             if (review == null)
             {
                 return NotFound();
@@ -155,13 +169,13 @@ namespace GarageVParrot.Controllers
         // POST: Reviews/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (_context.Reviews == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Reviews'  is null.");
             }
-            var review = await _context.Reviews.FindAsync(id);
+            var review = await _context.Reviews.FirstOrDefaultAsync(i => i.Id == id);
             if (review != null)
             {
                 _context.Reviews.Remove(review);

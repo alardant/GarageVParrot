@@ -182,6 +182,10 @@ namespace GarageVParrot.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
+            if (_context.Reviews == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Reviews'  is null.");
+            }
             var service = await _context.Services.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
 
             if (service.Image != null)
@@ -193,7 +197,11 @@ namespace GarageVParrot.Controllers
                     System.IO.File.Delete(oldFilePath);
                 }
             }
-            _context.Remove(service);
+            if (service != null)
+            {
+                _context.Services.Remove(service);
+            }
+            
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
