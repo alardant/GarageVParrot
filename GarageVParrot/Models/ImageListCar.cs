@@ -6,7 +6,7 @@ namespace GarageVParrot.Models
     {
         public int Id { get; set; }
         public string ImageName { get; set; }
-        public bool ImagePath { get; set; }
+        public string ImagePath { get; set; }
         [ForeignKey("Car")]
         public int CarId { get; set; }
         public Car car { get; set; }

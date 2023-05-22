@@ -1,0 +1,155 @@
+﻿@model GarageVParrot.ViewModels.CarViewModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Car</h4>
+<hr />
+<div class="row">
+    <div class="col-12">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <input type="hidden" id="UserId" name="UserId" asp-for="UserId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Brand" class="control-label"></label>
+                <input asp-for="Brand" class="form-control" />
+                <span asp-validation-for="Brand" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Model" class="control-label"></label>
+                <input asp-for="Model" class="form-control" />
+                <span asp-validation-for="Model" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Category" class="control-label"></label>
+                <select asp-for="Category" class="form-control" asp-items="Html.GetEnumSelectList<Category>()">
+                    <option selected="selected" value="">-- Sélectioner une option --</option>
+                </select>
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Year" class="control-label"></label>
+                <input asp-for="Year" class="form-control" />
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Kilometers" class="control-label"></label>
+                <input asp-for="Kilometers" class="form-control" />
+                <span asp-validation-for="Kilometers" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Motor" class="control-label"></label>
+                <input asp-for="Motor" class="form-control" />
+                <span asp-validation-for="Motor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Power" class="control-label"></label>
+                <input asp-for="Power" class="form-control" />
+                <span asp-validation-for="Power" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Energy" class="control-label"></label>
+                <select asp-for="Energy" class="form-control" asp-items="Html.GetEnumSelectList<Energy>()">
+                    <option selected="selected" value="">-- Sélectioner une option --</option>
+                </select>
+                <span asp-validation-for="Energy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GearType" class="control-label"></label>
+                    <option selected="selected" value="">-- Sélectioner une option --</option>
+                <select asp-for="GearType" class="form-control" asp-items="Html.GetEnumSelectList<GearType>()">
+                    <option selected="selected" value="">-- Sélectioner une option --</option>
+                </select>
+                <span asp-validation-for="GearType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumberOfDoors" class="control-label"></label>
+                <input asp-for="NumberOfDoors" class="form-control" />
+                <span asp-validation-for="NumberOfDoors" class="text-danger"></span>
+                <span asp-validation-for="NumberOfDoors" class="text-danger"></span>
+            </div>
+            </div>
+            <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="NumberOfSeats" class="control-label"></label>
+                <input asp-for="NumberOfSeats" class="form-control" />
+                <span asp-validation-for="NumberOfSeats" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CritAir" class="control-label"></label>
+                <input asp-for="CritAir" class="form-control" />
+                <span asp-validation-for="CritAir" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Warranty" class="control-label"></label>
+                <input asp-for="Warranty" class="form-control" />
+                <span asp-validation-for="Warranty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CoverImage" class="control-label"></label>
+                    <input asp-for="CoverImage" type="file" class="form-control" name="CoverImage" placeholder="CoverImage" />
+                <span asp-validation-for="CoverImage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageListCar" class="control-label"></label>
+                    <input asp-for="ImageListCar" type="file" class="form-control" name="ImageListCar" placeholderImageListCarImage" multiple/>
+                <span asp-validation-for="ImageListCar" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="AirConditionner" /> @Html.DisplayNameFor(model => model.AirConditionner)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Bluetooth" /> @Html.DisplayNameFor(model => model.Bluetooth)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Gps" /> @Html.DisplayNameFor(model => model.Gps)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="SpeedRegulator" /> @Html.DisplayNameFor(model => model.SpeedRegulator)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Airbags" /> @Html.DisplayNameFor(model => model.Airbags)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="ReversingRadar" /> @Html.DisplayNameFor(model => model.ReversingRadar)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Abs" /> @Html.DisplayNameFor(model => model.Abs)
+                </label>
+            </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

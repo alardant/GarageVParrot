@@ -71,7 +71,7 @@ namespace GarageVParrot.Controllers
                 string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
                 string fileName = Guid.NewGuid().ToString() + " - " + serviceVM.Image.FileName;
                 string filePath = Path.Combine(uploadsFolder, fileName);
-                serviceVM.Image.CopyTo(new FileStream(filePath, FileMode.Create));
+                await serviceVM.Image.CopyToAsync(new FileStream(filePath, FileMode.Create));
 
                 var service = new Service
                 {
@@ -107,7 +107,7 @@ namespace GarageVParrot.Controllers
                 UserId = service.UserId,
                 Title = service.Title,
                 Description = service.Description,
-                URL = service.Image,
+                ImageURL = service.Image,
             };
             return View(serviceVM);
         }
@@ -126,7 +126,7 @@ namespace GarageVParrot.Controllers
                 var service = await _context.Services.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
                 if (service.Image != null)
                 {
-                    string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
+                                    string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
                     string oldFilePath = Path.Combine(uploadDir, service.Image);
                     if (System.IO.File.Exists(oldFilePath))
                     {
@@ -138,7 +138,7 @@ namespace GarageVParrot.Controllers
                     string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
                     string fileName = Guid.NewGuid().ToString() + "-" + serviceVM.Image.FileName;
                     string filePath = Path.Combine(uploadDir, fileName);
-                    serviceVM.Image.CopyTo(new FileStream(filePath, FileMode.Create));
+                    await serviceVM.Image.CopyToAsync(new FileStream(filePath, FileMode.Create));
                     var serviceToUpdate = new Service
                     {
                         Id = id,

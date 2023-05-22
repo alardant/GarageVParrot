@@ -4,6 +4,7 @@ using GarageVParrot.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GarageVParrot.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230522151209_ModifyCarImages")]
+    partial class ModifyCarImages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,7 +111,7 @@ namespace GarageVParrot.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Cars", (string)null);
+                    b.ToTable("Cars");
                 });
 
             modelBuilder.Entity("GarageVParrot.Models.ImageListCar", b =>
@@ -135,7 +137,7 @@ namespace GarageVParrot.Data.Migrations
 
                     b.HasIndex("CarId");
 
-                    b.ToTable("ImageListCar", (string)null);
+                    b.ToTable("ImageListCar");
                 });
 
             modelBuilder.Entity("GarageVParrot.Models.Review", b =>
@@ -170,7 +172,7 @@ namespace GarageVParrot.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("GarageVParrot.Models.Service", b =>
@@ -201,7 +203,7 @@ namespace GarageVParrot.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Services", (string)null);
+                    b.ToTable("Services");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

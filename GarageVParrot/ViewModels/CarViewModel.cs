@@ -5,11 +5,12 @@ using System.Xml.Linq;
 
 namespace GarageVParrot.ViewModels
 {
-    public class CarVieWModel
+    public class CarViewModel
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Le prix est obligatoire.")]
         [Display(Name = "Prix")]
+        [Range(1, double.MaxValue, ErrorMessage = "Le prix doit être au moins égale à 1.")]
         public double Price { get; set; }
         [Required]
         [Display(Name = "Image de couverture")]
@@ -19,6 +20,7 @@ namespace GarageVParrot.ViewModels
         public IFormFileCollection ImageListCar { get; set; }
         [Required]
         [Display(Name = "Année")]
+        [Range(1900, double.MaxValue, ErrorMessage = "L'année doit être au moins égale à 1900")]
         public int Year { get; set; }
         [Required]
         [Display(Name = "Kilomètres")]
@@ -31,6 +33,8 @@ namespace GarageVParrot.ViewModels
         public string Model { get; set; }
         [Required]
         [Display(Name = "Nombre de portes")]
+        
+        [Range(3, double.MaxValue, ErrorMessage = "Le prix doit être au moins égal à 3 ")]
         public int NumberOfDoors { get; set; }
         [Required]
         [Display(Name = "Nombre de sièges")]

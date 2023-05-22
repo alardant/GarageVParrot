@@ -11,7 +11,7 @@ namespace GarageVParrot.ViewModels
         public string Title { get; set; }
         public string Description { get; set; }
         public IFormFile Image { get; set; }
-        public string? URL { get; set; }
+        public string? ImageURL { get; set; }
         public string? UserId { get; set; }
     }
 }

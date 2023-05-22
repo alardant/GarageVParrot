@@ -1,0 +1,145 @@
+﻿@model GarageVParrot.Models.Car
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Car</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Year)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Year)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Kilometers)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Kilometers)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Brand)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Brand)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Model)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Model)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NumberOfDoors)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NumberOfDoors)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NumberOfSeats)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NumberOfSeats)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AirConditionner)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AirConditionner)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Power)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Power)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Motor)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Motor)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Bluetooth)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Bluetooth)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Gps)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Gps)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SpeedRegulator)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SpeedRegulator)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Airbags)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Airbags)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReversingRadar)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReversingRadar)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CritAir)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CritAir)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Warranty)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Warranty)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Abs)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Abs)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Energy)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Energy)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.GearType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.GearType)
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
