@@ -26,7 +26,7 @@ namespace GarageVParrot.Models
         public bool Airbags { get; set; }
         public bool ReversingRadar { get; set; }
         public int CritAir { get; set; }
-        public int Warranty { get; set; }
+        public int? Warranty { get; set; }
         public bool Abs { get; set; }
         public Energy Energy { get; set; }
         public Category Category { get; set; }

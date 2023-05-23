@@ -26,8 +26,8 @@ namespace GarageVParrot.Controllers
         // GET: Cars
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Cars.Include(c => c.User);
-            return View(await applicationDbContext.ToListAsync());
+            var listCar = await _context.Cars.ToListAsync();
+            return View(listCar);
         }
 
         // GET: Cars/Details/5

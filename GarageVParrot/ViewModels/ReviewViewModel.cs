@@ -7,14 +7,14 @@ namespace GarageVParrot.ViewModels
     public class ReviewViewModel
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Le nom est obligatoire.")]
         [Display(Name = "Nom")]
         public string Name { get; set; }
-        [Required]
+        [Required(ErrorMessage = "La description est obligatoire.")]
         public string Description { get; set; }
-        [Required]
+        [Required(ErrorMessage = "La note est obligatoire.")]
         [Display(Name = "Note")]
-        [Range(1,5)]
+        [Range(1,5, ErrorMessage = "La note doit être comprise entre 1 et 5 étoiles.")]
         public int Rating { get; set; }
         [Display(Name = "Valider")]
         public bool Accepted { get; set; } = false;
