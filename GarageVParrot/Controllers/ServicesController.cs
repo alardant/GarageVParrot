@@ -112,14 +112,14 @@ namespace GarageVParrot.Controllers
                 UserId = service.UserId,
                 Title = service.Title,
                 Description = service.Description,
-                ImageURL = service.Image,
+                Image = service.Image,
             };
             return View(serviceVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, EditServiceViewModel serviceVM)
+        public async Task<IActionResult> Edit(int id, EditServiceViewModel serviceVM, IFormFile? file)
         {
             if (id != serviceVM.Id)
             {
@@ -129,27 +129,35 @@ namespace GarageVParrot.Controllers
             if (ModelState.IsValid)
             {
                 var service = await _context.Services.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
-                if (service.Image != null)
+                string imageFileName = null;
+
+                if (file != null)
                 {
                     string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
-                    string oldFilePath = Path.Combine(uploadDir, service.Image);
-                    if (System.IO.File.Exists(oldFilePath))
+                    string fileName = Guid.NewGuid().ToString() + " - " + file.FileName;
+                    string filePath = Path.Combine(uploadDir, fileName);
+                    await file.CopyToAsync(new FileStream(filePath, FileMode.Create));
+
+                    imageFileName = fileName;
+
+                    if (service.Image != null)
                     {
-                        System.IO.File.Delete(oldFilePath);
+                        string dir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
+                        string oldFilePath = Path.Combine(dir, service.Image);
+                        if (System.IO.File.Exists(oldFilePath))
+                        {
+                            System.IO.File.Delete(oldFilePath);
+                        }
                     }
+                
+                        
+                } else
+                {
+                    imageFileName = service.Image;
                 }
+            
                 try
                 {
-                    string imageFileName = null;
-                    if (serviceVM.Image != null)
-                    {
-                        string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
-                        string fileName = Guid.NewGuid().ToString() + " - " + serviceVM.Image.FileName;
-                        string filePath = Path.Combine(uploadDir, fileName);
-                        await serviceVM.Image.CopyToAsync(new FileStream(filePath, FileMode.Create));
-
-                        imageFileName = fileName;
-                    }
                     var serviceToUpdate = new Service
                     {
                         Id = id,
