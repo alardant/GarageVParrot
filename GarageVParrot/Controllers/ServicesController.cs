@@ -68,17 +68,22 @@ namespace GarageVParrot.Controllers
         {
             if (ModelState.IsValid)
             {
-                string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
-                string fileName = Guid.NewGuid().ToString() + " - " + serviceVM.Image.FileName;
-                string filePath = Path.Combine(uploadsFolder, fileName);
-                await serviceVM.Image.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                string imageFileName = null;
+                if (serviceVM.Image != null)
+                {
+                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
+                    string fileName = Guid.NewGuid().ToString() + " - " + serviceVM.Image.FileName;
+                    string filePath = Path.Combine(uploadsFolder, fileName);
+                    await serviceVM.Image.CopyToAsync(new FileStream(filePath, FileMode.Create));
 
+                    imageFileName = fileName;
+                }
                 var service = new Service
                 {
                     UserId = serviceVM.UserId,
                     Title = serviceVM.Title,
                     Description = serviceVM.Description,
-                    Image = fileName
+                    Image = imageFileName
                 };
 
                 await _context.AddAsync(service);
@@ -126,7 +131,7 @@ namespace GarageVParrot.Controllers
                 var service = await _context.Services.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
                 if (service.Image != null)
                 {
-                                    string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
+                    string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
                     string oldFilePath = Path.Combine(uploadDir, service.Image);
                     if (System.IO.File.Exists(oldFilePath))
                     {
@@ -135,23 +140,30 @@ namespace GarageVParrot.Controllers
                 }
                 try
                 {
-                    string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
-                    string fileName = Guid.NewGuid().ToString() + "-" + serviceVM.Image.FileName;
-                    string filePath = Path.Combine(uploadDir, fileName);
-                    await serviceVM.Image.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                    string imageFileName = null;
+                    if (serviceVM.Image != null)
+                    {
+                        string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
+                        string fileName = Guid.NewGuid().ToString() + " - " + serviceVM.Image.FileName;
+                        string filePath = Path.Combine(uploadDir, fileName);
+                        await serviceVM.Image.CopyToAsync(new FileStream(filePath, FileMode.Create));
+
+                        imageFileName = fileName;
+                    }
                     var serviceToUpdate = new Service
                     {
                         Id = id,
                         UserId = serviceVM.UserId,
                         Title = serviceVM.Title,
                         Description = serviceVM.Description,
-                        Image = fileName
+                        Image = imageFileName
                     };
                     _context.Update(serviceToUpdate);
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!(_context.Services?.Any(e => e.Id == id)).GetValueOrDefault())
+                    if (!ServiceExists(service.Id))
                     {
                         return NotFound();
                     }
@@ -160,7 +172,6 @@ namespace GarageVParrot.Controllers
                         throw;
                     }
                 }
-                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(serviceVM);
@@ -207,6 +218,10 @@ namespace GarageVParrot.Controllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+        private bool ServiceExists(int id)
+        {
+            return (_context.Services?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

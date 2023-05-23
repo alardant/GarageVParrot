@@ -7,8 +7,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GarageVParrot.Data;
 using GarageVParrot.Models;
+using Microsoft.Extensions.Configuration.UserSecrets;
+using Microsoft.AspNetCore.Identity;
 using GarageVParrot.ViewModels;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Hosting.Internal;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using System.Net;
 
 namespace GarageVParrot.Controllers
 {
@@ -23,14 +28,14 @@ namespace GarageVParrot.Controllers
             _hostingEnvironment = hostingEnvironment;
         }
 
-        // GET: Cars
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var listCar = await _context.Cars.ToListAsync();
             return View(listCar);
         }
 
-        // GET: Cars/Details/5
+        [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Cars == null)
@@ -38,15 +43,18 @@ namespace GarageVParrot.Controllers
                 return NotFound();
             }
 
-            var car = await _context.Cars
-                .Include(c => c.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var car = await _context.Cars.FirstOrDefaultAsync(i => i.Id == id);
             if (car == null)
             {
                 return NotFound();
             }
+            var editCarVM = new EditCarViewModel
+            {
+                UserId = car.UserId,
 
-            return View(car);
+            };
+
+            return View(editCarVM);
         }
 
         [HttpGet]
@@ -141,29 +149,141 @@ namespace GarageVParrot.Controllers
                 return NotFound();
             }
 
-            var car = await _context.Cars.FindAsync(id);
+            var car = await _context.Cars.FirstOrDefaultAsync(i => i.Id == id);
+            List<ImageListCar> imageList = _context.ImagesListCar.Where(image => image.CarId == id).ToList();
+
             if (car == null)
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", car.UserId);
-            return View(car);
+            var editCarViewModel = new EditCarViewModel
+            {
+                UserId = car.UserId,
+                Price = car.Price,
+                ImageCoverURL = car.CoverImage,
+                ImageListCars = imageList,
+                Year = car.Year,
+                Kilometers = car.Kilometers,
+                Brand = car.Brand,
+                Model = car.Model,
+                NumberOfDoors = car.NumberOfDoors,
+                NumberOfSeats = car.NumberOfSeats,
+                AirConditionner = car.AirConditionner,
+                Power = car.Power,
+                Motor = car.Motor,
+                Gps = car.Gps,
+                Bluetooth = car.Bluetooth,
+                SpeedRegulator = car.SpeedRegulator,
+                Airbags = car.Airbags,
+                ReversingRadar = car.ReversingRadar,
+                CritAir = car.CritAir,
+                Warranty = car.Warranty,
+                Abs = car.Abs,
+                Energy = car.Energy,
+                Category = car.Category,
+                GearType = car.GearType
+            };
+            return View(editCarViewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Price,CoverImage,Year,Kilometers,Brand,Model,NumberOfDoors,NumberOfSeats,AirConditionner,Power,Motor,Bluetooth,Gps,SpeedRegulator,Airbags,ReversingRadar,CritAir,Warranty,Abs,Energy,Category,GearType,UserId")] Car car)
+        public async Task<IActionResult> Edit(int id, EditCarViewModel carVM)
         {
-            if (id != car.Id)
+            if (id != carVM.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                var car = await _context.Cars.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+                if (car.CoverImage != null)
+                {
+                    string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageCover");
+                    string oldFilePath = Path.Combine(uploadDir, car.CoverImage);
+                    if (System.IO.File.Exists(oldFilePath))
+                    {
+                        System.IO.File.Delete(oldFilePath);
+                    }
+                }
+                // à modifier
+                if (ImagesListCarExists(id))  // <- pas de retour
+                {
+                    List<ImageListCar> imageList = _context.ImagesListCar.Where(image => image.CarId == id).ToList();
+                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
+                    foreach (var imageFile in imageList)
+                    {
+                        string oldFilePath = Path.Combine(uploadsFolder, imageFile.ImagePath);
+                        if (System.IO.File.Exists(oldFilePath))
+                        {
+                            System.IO.File.Delete(oldFilePath);
+                        }
+                    }
+                }
                 try
                 {
-                    _context.Update(car);
+                    string coverImageFileName = null;
+                    List<ImageListCar> listImageFileName = new List<ImageListCar>();
+                    if (carVM.CoverImage != null)
+                    {
+                        string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageCover");
+                        string fileName = Guid.NewGuid().ToString() + " - " + carVM.CoverImage.FileName;
+                        string filePath = Path.Combine(uploadsFolder, fileName);
+                        await carVM.CoverImage.CopyToAsync(new FileStream(filePath, FileMode.Create));
+
+                        coverImageFileName = fileName;
+                    }
+
+                    if (carVM.ImageListCar != null && carVM.ImageListCar.Count > 0)
+                    {
+                        string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
+                        foreach (IFormFile imageFile in carVM.ImageListCar)
+                        {
+                            string fileName = Guid.NewGuid().ToString() + " - " + imageFile.FileName;
+                            string filePath = Path.Combine(uploadsFolder, fileName);
+                            await imageFile.CopyToAsync(new FileStream(filePath, FileMode.Create));
+
+                            ImageListCar image = new ImageListCar
+                            {
+                                ImageName = imageFile.FileName,
+                                ImagePath = fileName,
+                                CarId = carVM.Id
+                            };
+
+                            listImageFileName.Add(image);
+                        }
+                    }
+
+                    var CarToUpdate = new Car
+                    {
+                        Id = id,
+                        Price = carVM.Price,
+                        CoverImage = coverImageFileName,
+                        ImageListCar = listImageFileName,
+                        Year = carVM.Year,
+                        Kilometers = carVM.Kilometers,
+                        Brand = carVM.Brand,
+                        Model = carVM.Model,
+                        NumberOfDoors = carVM.NumberOfDoors,
+                        NumberOfSeats = carVM.NumberOfSeats,
+                        AirConditionner = carVM.AirConditionner,
+                        Power = carVM.Power,
+                        Motor = carVM.Motor,
+                        Bluetooth = carVM.Bluetooth,
+                        Gps = carVM.Gps,
+                        SpeedRegulator = carVM.SpeedRegulator,
+                        Airbags = carVM.Airbags,
+                        ReversingRadar = carVM.ReversingRadar,
+                        CritAir = carVM.CritAir,
+                        Warranty = carVM.Warranty,
+                        Abs = carVM.Abs,
+                        Energy = carVM.Energy,
+                        Category = carVM.Category,
+                        GearType = carVM.GearType,
+                        UserId = carVM.UserId,
+                    };
+                    _context.Update(CarToUpdate);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -179,8 +299,8 @@ namespace GarageVParrot.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", car.UserId);
-            return View(car);
+            
+            return View(carVM);
         }
 
         [HttpGet]
@@ -252,7 +372,8 @@ namespace GarageVParrot.Controllers
 
         private bool ImagesListCarExists(int id)
         {
-            return (_context.ImagesListCar?.Any(e => e.Id == id)).GetValueOrDefault();
+            
+            return _context.ImagesListCar.Any(image => image.CarId == id);
         }
 
     }
