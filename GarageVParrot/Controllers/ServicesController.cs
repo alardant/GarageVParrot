@@ -169,6 +169,10 @@ namespace GarageVParrot.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
+            if (id == null || _context.Services == null)
+            {
+                return NotFound();
+            }
             var service = await _context.Services.FirstOrDefaultAsync(i => i.Id == id);
             if (service == null)
             {
@@ -177,7 +181,6 @@ namespace GarageVParrot.Controllers
             return View(service);
         }
 
-        // POST: Services/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -186,8 +189,8 @@ namespace GarageVParrot.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Reviews'  is null.");
             }
-            var service = await _context.Services.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
 
+            var service = await _context.Services.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
             if (service.Image != null)
             {
                 string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");

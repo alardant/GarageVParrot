@@ -4,18 +4,16 @@ using GarageVParrot.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace GarageVParrot.Data.Migrations
+namespace GarageVParrot.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230521095240_ChangeUpload")]
-    partial class ChangeUpload
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,6 +48,10 @@ namespace GarageVParrot.Data.Migrations
 
                     b.Property<int>("Category")
                         .HasColumnType("int");
+
+                    b.Property<string>("CoverImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CritAir")
                         .HasColumnType("int");
@@ -97,7 +99,7 @@ namespace GarageVParrot.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Warranty")
+                    b.Property<int?>("Warranty")
                         .HasColumnType("int");
 
                     b.Property<int>("Year")
@@ -110,7 +112,7 @@ namespace GarageVParrot.Data.Migrations
                     b.ToTable("Cars");
                 });
 
-            modelBuilder.Entity("GarageVParrot.Models.ImageCarUpload", b =>
+            modelBuilder.Entity("GarageVParrot.Models.ImageListCar", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -121,18 +123,19 @@ namespace GarageVParrot.Data.Migrations
                     b.Property<int>("CarId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ImagePath")
+                    b.Property<string>("ImageName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsFrontImage")
-                        .HasColumnType("bit");
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CarId");
 
-                    b.ToTable("ImageCarUpload");
+                    b.ToTable("ImagesListCar");
                 });
 
             modelBuilder.Entity("GarageVParrot.Models.Review", b =>
@@ -150,12 +153,12 @@ namespace GarageVParrot.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Grade")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -421,19 +424,19 @@ namespace GarageVParrot.Data.Migrations
 
             modelBuilder.Entity("GarageVParrot.Models.Car", b =>
                 {
-                    b.HasOne("GarageVParrot.Models.User", "user")
-                        .WithMany()
+                    b.HasOne("GarageVParrot.Models.User", "User")
+                        .WithMany("Cars")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("user");
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("GarageVParrot.Models.ImageCarUpload", b =>
+            modelBuilder.Entity("GarageVParrot.Models.ImageListCar", b =>
                 {
                     b.HasOne("GarageVParrot.Models.Car", "car")
-                        .WithMany("Images")
+                        .WithMany("ImageListCar")
                         .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -444,7 +447,7 @@ namespace GarageVParrot.Data.Migrations
             modelBuilder.Entity("GarageVParrot.Models.Review", b =>
                 {
                     b.HasOne("GarageVParrot.Models.User", "user")
-                        .WithMany()
+                        .WithMany("Reviews")
                         .HasForeignKey("UserId");
 
                     b.Navigation("user");
@@ -453,7 +456,7 @@ namespace GarageVParrot.Data.Migrations
             modelBuilder.Entity("GarageVParrot.Models.Service", b =>
                 {
                     b.HasOne("GarageVParrot.Models.User", "user")
-                        .WithMany()
+                        .WithMany("Services")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -514,7 +517,16 @@ namespace GarageVParrot.Data.Migrations
 
             modelBuilder.Entity("GarageVParrot.Models.Car", b =>
                 {
-                    b.Navigation("Images");
+                    b.Navigation("ImageListCar");
+                });
+
+            modelBuilder.Entity("GarageVParrot.Models.User", b =>
+                {
+                    b.Navigation("Cars");
+
+                    b.Navigation("Reviews");
+
+                    b.Navigation("Services");
                 });
 #pragma warning restore 612, 618
         }

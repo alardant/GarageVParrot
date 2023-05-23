@@ -133,7 +133,7 @@ namespace GarageVParrot.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Cars/Edit/5
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Cars == null)
@@ -150,9 +150,6 @@ namespace GarageVParrot.Controllers
             return View(car);
         }
 
-        // POST: Cars/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Price,CoverImage,Year,Kilometers,Brand,Model,NumberOfDoors,NumberOfSeats,AirConditionner,Power,Motor,Bluetooth,Gps,SpeedRegulator,Airbags,ReversingRadar,CritAir,Warranty,Abs,Energy,Category,GearType,UserId")] Car car)
@@ -186,7 +183,7 @@ namespace GarageVParrot.Controllers
             return View(car);
         }
 
-        // GET: Cars/Delete/5
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Cars == null)
@@ -194,9 +191,7 @@ namespace GarageVParrot.Controllers
                 return NotFound();
             }
 
-            var car = await _context.Cars
-                .Include(c => c.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var car = await _context.Cars.FirstOrDefaultAsync(i => i.Id == id);
             if (car == null)
             {
                 return NotFound();
@@ -205,28 +200,60 @@ namespace GarageVParrot.Controllers
             return View(car);
         }
 
-        // POST: Cars/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id, ImageListCar imageListCar)
         {
             if (_context.Cars == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Cars'  is null.");
             }
-            var car = await _context.Cars.FindAsync(id);
+
+            var car = await _context.Cars.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+
+            if (car.CoverImage != null)
+            {
+                string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageCover");
+                string oldFilePath = Path.Combine(uploadDir, car.CoverImage);
+                if (System.IO.File.Exists(oldFilePath))
+                {
+                    System.IO.File.Delete(oldFilePath);
+                }
+            }
+
+            if (ImagesListCarExists(id))
+            {
+                List<ImageListCar> imageList = _context.ImagesListCar.Where(image => image.CarId == id).ToList();
+                string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
+                foreach (var imageFile in imageList)
+                {
+                    string oldFilePath = Path.Combine(uploadsFolder, imageFile.ImagePath);
+                    if (System.IO.File.Exists(oldFilePath))
+                    {
+                        System.IO.File.Delete(oldFilePath);
+                    }
+                }
+            }
+
             if (car != null)
             {
                 _context.Cars.Remove(car);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+
         }
 
         private bool CarExists(int id)
         {
-          return (_context.Cars?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Cars?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        private bool ImagesListCarExists(int id)
+        {
+            return (_context.ImagesListCar?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
     }
-}
+} 

@@ -10,7 +10,7 @@ namespace GarageVParrot.Models
         public int Id { get; set; }
         public double Price { get; set; }
         public string CoverImage { get; set; }
-        public List<ImageListCar> ImageListCar { get; set; } = new List<ImageListCar>();
+        public List<ImageListCar> ImageListCar { get; set; }
         public int Year { get; set; }
         public int Kilometers { get; set; }
         public string Brand { get; set; }
