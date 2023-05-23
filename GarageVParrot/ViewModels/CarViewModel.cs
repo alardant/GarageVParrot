@@ -10,7 +10,7 @@ namespace GarageVParrot.ViewModels
         public int Id { get; set; }
         [Required(ErrorMessage = "Le prix est obligatoire.")]
         [Display(Name = "Prix")]
-        [Range(1, double.MaxValue, ErrorMessage = "Le prix doit être au moins égale à 1.")]
+        [Range(1, double.MaxValue, ErrorMessage = "Le prix doit être au moins égal à 1.")]
         public double Price { get; set; }
         [Required(ErrorMessage = "L'image de couverture est obligatoire.")]
         [Display(Name = "Image de couverture")]
@@ -19,7 +19,7 @@ namespace GarageVParrot.ViewModels
         public IFormFileCollection ImageListCar { get; set; }
         [Required(ErrorMessage = "L'année est obligatoire.")]
         [Display(Name = "Année")]
-        [Range(1900, double.MaxValue, ErrorMessage = "L'année doit être au moins égale à 1900.")]
+        [Range(1900, int.MaxValue, ErrorMessage = "L'année doit être au moins égale à 1900.")]
         public int Year { get; set; }
         [Required(ErrorMessage = "Le kilomètrage est obligatoire.")]
         [Display(Name = "Kilomètrage")]

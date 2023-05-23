@@ -16,6 +16,9 @@ namespace GarageVParrot.ViewModels
         public string? CoverImage { get; set; }
         [Display(Name = "Modifier les autres images.")]
         public List<ImageListCar>? ImageListCar { get; set; }
+        [Required(ErrorMessage = "L'année est obligatoire.")]
+        [Display(Name = "Année")]
+        [Range(1900, int.MaxValue, ErrorMessage = "L'année doit être au moins égale à 1900.")]
         public int Year { get; set; }
         [Required(ErrorMessage = "Le kilomètrage est obligatoire.")]
         [Display(Name = "Kilomètrage")]
