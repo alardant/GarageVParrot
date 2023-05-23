@@ -12,12 +12,10 @@ namespace GarageVParrot.ViewModels
         [Display(Name = "Prix")]
         [Range(1, double.MaxValue, ErrorMessage = "Le prix doit être au moins égale à 1.")]
         public double Price { get; set; }
-        [Display(Name = "Image de couverture")]
-        public IFormFile? CoverImage { get; set; }
-        [Display(Name = "Ajouter d'autres images")]
-        public string? ImageCoverURL { get; set; }
-        public IFormFileCollection? ImageListCar { get; set; }
-        public List<ImageListCar>? ImageListCars { get; set; }
+        [Display(Name = "Modifier l'mage de couverture.")]
+        public string? CoverImage { get; set; }
+        [Display(Name = "Modifier les autres images.")]
+        public List<ImageListCar>? ImageListCar { get; set; }
         public int Year { get; set; }
         [Required(ErrorMessage = "Le kilomètrage est obligatoire.")]
         [Display(Name = "Kilomètrage")]

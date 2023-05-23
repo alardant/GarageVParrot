@@ -160,8 +160,8 @@ namespace GarageVParrot.Controllers
             {
                 UserId = car.UserId,
                 Price = car.Price,
-                ImageCoverURL = car.CoverImage,
-                ImageListCars = imageList,
+                CoverImage = car.CoverImage,
+                ImageListCar = imageList,
                 Year = car.Year,
                 Kilometers = car.Kilometers,
                 Brand = car.Brand,
@@ -188,7 +188,7 @@ namespace GarageVParrot.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, EditCarViewModel carVM)
+        public async Task<IActionResult> Edit(int id, EditCarViewModel carVM, IFormFile? file, IFormFileCollection files)
         {
             if (id != carVM.Id)
             {
@@ -198,63 +198,74 @@ namespace GarageVParrot.Controllers
             if (ModelState.IsValid)
             {
                 var car = await _context.Cars.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
-                if (car.CoverImage != null)
+                string coverImageFileName = null;
+                List<ImageListCar> listImageFileName = new List<ImageListCar>();
+                
+                if (file != null)
                 {
                     string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageCover");
-                    string oldFilePath = Path.Combine(uploadDir, car.CoverImage);
-                    if (System.IO.File.Exists(oldFilePath))
+                    string fileName = Guid.NewGuid().ToString() + " - " + file.FileName;
+                    string filePath = Path.Combine(uploadDir, fileName);
+                    await file.CopyToAsync(new FileStream(filePath, FileMode.Create));
+
+                    coverImageFileName = fileName;
+
+                    if (car.CoverImage != null)
                     {
-                        System.IO.File.Delete(oldFilePath);
-                    }
-                }
-                // à modifier
-                if (ImagesListCarExists(id))  // <- pas de retour
-                {
-                    List<ImageListCar> imageList = _context.ImagesListCar.Where(image => image.CarId == id).ToList();
-                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
-                    foreach (var imageFile in imageList)
-                    {
-                        string oldFilePath = Path.Combine(uploadsFolder, imageFile.ImagePath);
+                        string dir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageCover");
+                        string oldFilePath = Path.Combine(dir, car.CoverImage);
                         if (System.IO.File.Exists(oldFilePath))
                         {
                             System.IO.File.Delete(oldFilePath);
                         }
                     }
                 }
-                try
+                else
                 {
-                    string coverImageFileName = null;
-                    List<ImageListCar> listImageFileName = new List<ImageListCar>();
-                    if (carVM.CoverImage != null)
+                    coverImageFileName = car.CoverImage;
+                }
+                if (files != null && files.Count > 0)
+                {
+                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
+                    foreach (IFormFile imageFile in files)
                     {
-                        string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageCover");
-                        string fileName = Guid.NewGuid().ToString() + " - " + carVM.CoverImage.FileName;
+                        string fileName = Guid.NewGuid().ToString() + " - " + imageFile.FileName;
                         string filePath = Path.Combine(uploadsFolder, fileName);
-                        await carVM.CoverImage.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                        await imageFile.CopyToAsync(new FileStream(filePath, FileMode.Create));
 
-                        coverImageFileName = fileName;
-                    }
-
-                    if (carVM.ImageListCar != null && carVM.ImageListCar.Count > 0)
-                    {
-                        string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
-                        foreach (IFormFile imageFile in carVM.ImageListCar)
+                        ImageListCar image = new ImageListCar
                         {
-                            string fileName = Guid.NewGuid().ToString() + " - " + imageFile.FileName;
-                            string filePath = Path.Combine(uploadsFolder, fileName);
-                            await imageFile.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                            ImageName = imageFile.FileName,
+                            ImagePath = fileName,
+                            CarId = carVM.Id
+                        };
 
-                            ImageListCar image = new ImageListCar
+                        listImageFileName.Add(image);
+                    }
+                    if (ImagesListCarExists(id))
+                    {
+                        var imageListCar = await _context.ImagesListCar.AsNoTracking().Where(image => image.CarId == id).ToListAsync();
+                        string uploadsPath = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
+                        foreach (var imageFile in imageListCar)
+                        {
+                            string oldFilePath = Path.Combine(uploadsPath, imageFile.ImagePath);
+                            if (System.IO.File.Exists(oldFilePath))
                             {
-                                ImageName = imageFile.FileName,
-                                ImagePath = fileName,
-                                CarId = carVM.Id
-                            };
-
-                            listImageFileName.Add(image);
+                                System.IO.File.Delete(oldFilePath);
+                          
+                            }
+                                _context.Remove(imageFile);
                         }
                     }
-
+                } 
+/*                else
+                {
+                    // ne récupère pas la liste
+                    listImageFileName = car.ImageListCar;
+                }
+*/
+                try
+                {
                     var CarToUpdate = new Car
                     {
                         Id = id,
@@ -299,7 +310,7 @@ namespace GarageVParrot.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            
+
             return View(carVM);
         }
 
@@ -322,7 +333,7 @@ namespace GarageVParrot.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id, ImageListCar imageListCar)
+        public async Task<IActionResult> Delete(int id)
         {
             if (_context.Cars == null)
             {
@@ -343,7 +354,7 @@ namespace GarageVParrot.Controllers
 
             if (ImagesListCarExists(id))
             {
-                List<ImageListCar> imageList = _context.ImagesListCar.Where(image => image.CarId == id).ToList();
+                var imageList = await _context.ImagesListCar.Where(image => image.CarId == id).ToListAsync();
                 string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
                 foreach (var imageFile in imageList)
                 {
@@ -352,6 +363,7 @@ namespace GarageVParrot.Controllers
                     {
                         System.IO.File.Delete(oldFilePath);
                     }
+                    _context.Remove(imageFile);
                 }
             }
 
@@ -372,9 +384,9 @@ namespace GarageVParrot.Controllers
 
         private bool ImagesListCarExists(int id)
         {
-            
+
             return _context.ImagesListCar.Any(image => image.CarId == id);
         }
 
     }
-} 
+}

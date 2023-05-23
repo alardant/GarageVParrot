@@ -48,7 +48,7 @@ namespace GarageVParrot.Controllers
 
         [HttpGet]
         public IActionResult Create()
-        
+
         {
             var reviewViewModel = new ReviewViewModel();
             reviewViewModel.UserId = User.Identity.IsAuthenticated ? HttpContext.User.GetUserId() : null;
@@ -180,14 +180,14 @@ namespace GarageVParrot.Controllers
             {
                 _context.Reviews.Remove(review);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ReviewExists(int id)
         {
-          return (_context.Reviews?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Reviews?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

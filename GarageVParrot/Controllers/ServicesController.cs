@@ -149,13 +149,14 @@ namespace GarageVParrot.Controllers
                             System.IO.File.Delete(oldFilePath);
                         }
                     }
-                
-                        
-                } else
+
+
+                }
+                else
                 {
                     imageFileName = service.Image;
                 }
-            
+
                 try
                 {
                     var serviceToUpdate = new Service
@@ -223,7 +224,7 @@ namespace GarageVParrot.Controllers
             {
                 _context.Services.Remove(service);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
