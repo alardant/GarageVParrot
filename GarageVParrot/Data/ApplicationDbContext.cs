@@ -10,6 +10,7 @@ namespace GarageVParrot.Data
             : base(options)
         {
         }
+
         public DbSet<Car> Cars { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Service> Services { get; set; }
