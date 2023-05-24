@@ -1,0 +1,24 @@
+﻿@model GarageVParrot.Models.OpenHours
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Lise des services</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MondayOpenHours)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => model.MondayOpenHours)
+                </td>
+            </tr>
+    </tbody>
+</table>

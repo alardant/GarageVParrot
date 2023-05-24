@@ -10,7 +10,7 @@ namespace GarageVParrot.ViewModels
         public int Id { get; set; }
         [Required(ErrorMessage = "Le prix est obligatoire.")]
         [Display(Name = "Prix")]
-        [Range(1, double.MaxValue, ErrorMessage = "Le prix doit être au moins égale à 1.")]
+        [Range(1, double.MaxValue, ErrorMessage = "Le prix doit être au moins égal à 1.")]
         public double Price { get; set; }
         [Display(Name = "Modifier l'mage de couverture.")]
         public string? CoverImage { get; set; }

@@ -16,7 +16,7 @@ namespace GarageVParrot.ViewModels
         [Display(Name = "Note")]
         [Range(1,5, ErrorMessage = "La note doit être comprise entre 1 et 5 étoiles.")]
         public int Rating { get; set; }
-        [Display(Name = "Valider")]
+        [Display(Name = "Validé")]
         public bool Accepted { get; set; } = false;
         public DateTime datePublished { get; set; }
         public string? UserId { get; set; }

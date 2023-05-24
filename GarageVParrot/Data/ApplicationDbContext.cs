@@ -15,7 +15,7 @@ namespace GarageVParrot.Data
         public DbSet<Service> Services { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<ImageListCar> ImagesListCar { get; set; }
-        public DbSet<OpenHours> openHours { get; set; }
+        public DbSet<OpenHours> OpenHours { get; set; }
 
     }
 }

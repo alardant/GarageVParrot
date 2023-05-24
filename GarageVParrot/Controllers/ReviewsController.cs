@@ -20,7 +20,7 @@ namespace GarageVParrot.Controllers
             _context = context;
         }
 
-        // GET: Reviews
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var reviewList = await _context.Reviews.ToListAsync();
