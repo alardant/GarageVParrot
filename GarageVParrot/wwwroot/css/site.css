@@ -16,3 +16,14 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/*NAVBAR STYLE CSS*/
+
+.logo {
+    width:100px;
+    height:100px;
+}
+
+.navbar-nav > li {
+    color: #337AB7;
+}
