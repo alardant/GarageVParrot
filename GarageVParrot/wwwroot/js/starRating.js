@@ -1,30 +1,30 @@
 ﻿function CRateOut(rating) {
     for (var i = 1; i <= rating; i++) {
-        $("#span" + i).attr('class', 'glyphicon glyphicon-star-empty');
+        $("#i" + i).attr('class', 'bi bi-star');
     }
 }
 
 function CRateOver(rating) {
     for (var i = 1; i <= rating; i++) {
-        $("#span" + i).attr('class', 'glyphicon glyphicon-star');
+        $("#i" + i).attr('class', 'bi bi-star-fill');
     }
 }
 
 function CRateClick(rating) {
     $("#lblRating").val(rating);
     for (var i = 1; i <= rating; i++) {
-        $("#span" + i).attr('class', 'glyphicon glyphicon-star');
+        $("#i" + i).attr('class', 'bi bi-star-fill');
     }
 
     for (var i = rating + 1; i <= 5; i++) {
-        $("#span" + i).attr('class', 'glyphicon glyphicon-star-empty');
+        $("#i" + i).attr('class', 'bi bi-star');
     }
 }
 
 function CRateSelected() {
     var rating = $("#lblRating").val();
     for (i = 1; i < rating; i++) {
-        $("#span" + i).attr('class', 'glyphicon glyphicon-star');
+        $("#i" + i).attr('class', 'bi bi-star-fill');
     }
 }
 

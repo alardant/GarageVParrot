@@ -1,20 +1,16 @@
-﻿@model IEnumerable<GarageVParrot.ViewModels.HomeViewModel>
-
-@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model GarageVParrot.ViewModels.HomeViewModel
 
 <h2>Nos Services</h2>
 
-@*@foreach(var item in Model)
-{
-    <div class="d-flex">
-        <div>
-        <img src="" alt="" />
-        </div>
-        <div class="d-flex flex-column">
-        <h3>@item.Service.Title</h3>
-        <p>@item.Service.</p>
-        </div>
-    </div>
-}*@
+<div class="Services">
+	@foreach(Service service in @Model.Services)
+	{
+		<div class="d-flex servce-div">
+			<img class="service-miage" src="@service.Image" alt="Image du service"/>
+			<span>
+				<h3 class="service-title">@service.Title</h3>
+				<p>@service.Description</p>
+			</span>
+		</div>
+	}
+</div>

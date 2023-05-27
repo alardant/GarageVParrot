@@ -1,10 +1,12 @@
 ﻿html {
-  font-size: 14px;
+    font-size: 14px;
+    font-family: 'Source Serif Pro';
+    position: relative;
 }
 
 @media (min-width: 768px) {
   html {
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 
@@ -19,12 +21,47 @@ body {
     color: #1D100B;
 }
 
+h1, h2,h3, h4, h5, h6 {
+    font-family: "oswald";
+}
+
+h2 {
+    margin-top: 20px;
+    font-size: 26px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+    h2:before {
+        content: '';
+        display: block;
+        border: 1px solid #1D100B;
+        width: 30%;
+        text-align: center;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+h3 {
+    font-size:20px;
+}
+
+h4 {
+    font-size:16px;
+}
+
 a {
-    color: #0D5B82;
-    text-decoration: none;
+    color:#1D100B;
 }
 
 /*NAVBAR STYLE CSS*/
+
+@media (max-width: 575px) {
+    .imageHeaderContainer {
+        display:none;
+    }
+}
 
 navbar {
     color : #fcfcfc;
@@ -56,7 +93,7 @@ navbar {
 }
 
 .imageHeaderContainer {
-    height:200px;
+    height:150px;
     width:100%;
 }
 .imageHeader {
@@ -64,3 +101,47 @@ navbar {
     height:100%;
     object-fit: cover
 }
+
+/*FOOTER STYLE CSS*/
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(13, 91, 130, 0.1);
+}
+
+.hours-footer {
+    border: 1px solid #1D100B;
+    padding: 2px;
+    margin: 5px;
+}
+
+.footer-underline:after {
+    font-family: 'Source Serif Pro';
+    content: '';
+    display: block;
+    border: 0.5px solid #1D100B;
+    width: 70%;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom:10px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.underline {
+    text-decoration: underline;
+    text-underline-offset:3px;
+    text-decoration-thickness:2px;
+}
+
+.contact-footer > p > a {
+    text-decoration: none;
+    color: #1D100B;
+}
+
+/*HOMEPAGE STYLE CSS*/
+
+
+
