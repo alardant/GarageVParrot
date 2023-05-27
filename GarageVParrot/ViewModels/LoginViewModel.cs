@@ -13,6 +13,5 @@ namespace GarageVParrot.ViewModels
         [Required(ErrorMessage = "Le mot de passe est obligatoire.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-        public OpenHours OpenHours { get; set; }
     }
 }

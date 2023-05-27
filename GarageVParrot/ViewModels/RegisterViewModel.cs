@@ -18,6 +18,5 @@ namespace GarageVParrot.ViewModels
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Les mots de passe ne sont pas identiques")]
         public string ConfirmPassword { get; set; }
-        public OpenHours OpenHours { get; set; }
     }
 }

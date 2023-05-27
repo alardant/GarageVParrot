@@ -26,7 +26,6 @@ namespace GarageVParrot.Controllers
             var HomeVM = new HomeViewModel
             {
                 Reviews = reviews,
-                OpenHours = openhours,
                 Services = services,
             };
             return View(HomeVM);
