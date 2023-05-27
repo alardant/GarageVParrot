@@ -1,0 +1,35 @@
+﻿@model GarageVParrot.ViewModels.LoginViewModel;
+
+
+        <h4>Se Connecter</h4>
+        <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">Retour à l'acceuil</a>
+<div class="row">
+    <div class="col-12">
+        @if (TempData["Error"] != null)
+        {
+            <div class="col-md-12 alert alert-danger">
+                <span>@TempData["Error"]</span>
+            </div>
+        }
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form asp-action="Login">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="EmailAddress" class="control-label"></label>
+                        <input asp-for="EmailAddress" class="form-control">
+                        <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-outline-success float right" type="submit" value="Se Connecter" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

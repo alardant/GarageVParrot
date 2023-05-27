@@ -31,6 +31,7 @@ namespace GarageVParrot.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            var openhours = await _context.OpenHours.FirstOrDefaultAsync();
             var listCar = await _context.Cars.ToListAsync();
             return View(listCar);
         }

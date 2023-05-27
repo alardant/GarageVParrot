@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity;
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +39,23 @@
                             <a class="nav-link" asp-area="" asp-controller="Reviews" asp-action="Index"><h3>Témoignages</h3></a>
                         </li>
                     </ul>
-                    <partial name="_LoginPartial" />
+                    <ul class="navbar-nav">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Cars" asp-action="Index"><h3>Espace Employé</h3></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="login" asp-area="" asp-controller="Account" asp-action="Logout"><h4>Se déconnecter</h4></a>>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" id="login" asp-area="" asp-controller="Account" asp-action="Login"><h4>Vous êtes employé ?<br />Connectez vous ici</h4></a>
+                            </li>
+                        }
+                    </ul>
                 </div>
             </div>
         </nav>
