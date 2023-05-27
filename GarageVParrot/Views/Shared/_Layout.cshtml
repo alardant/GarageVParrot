@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Identity;
+﻿@using GarageVParrot.Data;
+@using Microsoft.AspNetCore.Identity;
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
@@ -73,13 +74,8 @@
         <div class="container d-flex justify-content-between align-items-center">
             <div class="hours-footer text-center mx-1">
                 <h3 class="underline">Horaires d'ouverture</h3>
-                <p class="mb-0">Lundi : @Model.OpenHours.MondayOpenHours <br />
-                    Mardi : @Model.OpenHours.TuesdayOpenHours<br />
-                    Mercredi : @Model.OpenHours.WednesdayOpenHours<br />
-                    Jeudi : @Model.OpenHours.ThursdayOpenHours<br />
-                    Vendredi : @Model.OpenHours.FridayOpenHours<br />
-                    Samedi : @Model.OpenHours.SaturdayOpenHours<br />
-                    Dimanche : @Model.OpenHours.SundayOpenHours</p>
+                <p class="mb-0">
+                    @await Component.InvokeAsync("OpenHours")
             </div>
             <div class="garage-footer text-center mx-1">
                 <h3 class="footer-underline">Garage V. Parrot</h3>

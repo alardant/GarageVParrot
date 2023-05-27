@@ -24,11 +24,7 @@ namespace GarageVParrot.Controllers
         [HttpGet]
         public async Task<IActionResult> Login()
         {
-            var openhours = await _context.OpenHours.FirstOrDefaultAsync();
-            var response = new LoginViewModel
-            {
-                OpenHours = openhours
-            };
+            var response = new LoginViewModel();
             return View(response);
         }
 
@@ -67,11 +63,7 @@ namespace GarageVParrot.Controllers
         [HttpGet]
         public async Task<IActionResult> Register()
         {
-            var openhours = await _context.OpenHours.FirstOrDefaultAsync();
-            var response = new RegisterViewModel
-            {
-                OpenHours = openhours
-            };
+            var response = new RegisterViewModel();
             return View(response);
         }
 
@@ -111,14 +103,8 @@ namespace GarageVParrot.Controllers
         [Route("Account/Welcome")]
         public async Task<IActionResult> Index(int page = 0)
         {
-            var openhours = await _context.OpenHours.FirstOrDefaultAsync();
             var users = await _context.Users.ToListAsync();
-            var listUser = new UserViewModel
-            {
-                OpenHours = openhours,
-                Users = users
-            };
-            return View(listUser);
+            return View(users);
         }
     }
 }
