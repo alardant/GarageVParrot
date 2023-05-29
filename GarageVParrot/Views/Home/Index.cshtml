@@ -2,15 +2,17 @@
 
 <h2>Nos Services</h2>
 
-<div class="Services">
+<section class="services">
 	@foreach(Service service in @Model.Services)
 	{
-		<div class="d-flex servce-div">
-			<img class="service-miage" src="@service.Image" alt="Image du service"/>
-			<span>
-				<h3 class="service-title">@service.Title</h3>
-				<p>@service.Description</p>
-			</span>
+		<div class="service-div p-2 container">
+			<div class="image-service-container m-2">
+				<img class="service-image" src="~/Uploads/ServicesImage/@service.Image" alt="Image du service" />
+			</div>
+			<div class="service-text">
+				<h3 class="service-title mb-1">@Html.DisplayFor(modelItem => service.Title)</h3>
+				<p class="text-description">@Html.Raw(service.Description)</p>
+			</div>
 		</div>
 	}
-</div>
+</section>

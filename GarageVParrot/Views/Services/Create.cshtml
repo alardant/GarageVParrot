@@ -31,7 +31,7 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Valider" class="btn m-2" />
             </div>
         </form>
     </div>
@@ -39,4 +39,11 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor emoticons table visualblocks wordcount',
+            toolbar: 'undo redo | bold italic underline strikethrough | numlist bullist indent outdent | emoticons charmap | removeformat',
+        });
+    </script>
 }

@@ -39,4 +39,11 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor emoticons table visualblocks wordcount',
+            toolbar: 'undo redo | bold italic underline strikethrough | numlist bullist indent outdent | emoticons charmap | removeformat',
+        });
+    </script>
 }

@@ -100,11 +100,22 @@ namespace GarageVParrot.Controllers
         }
 
         [HttpGet]
-        [Route("Account/Welcome")]
         public async Task<IActionResult> Index(int page = 0)
         {
             var users = await _context.Users.ToListAsync();
             return View(users);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, User user)
+        {
+            return View();
         }
     }
 }
