@@ -1,7 +1,6 @@
 ﻿using GarageVParrot.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using GarageVParrot.Data;
 using GarageVParrot.Models;
 using GarageVParrot.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +21,7 @@ namespace GarageVParrot.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Login()
+        public IActionResult Login()
         {
             var response = new LoginViewModel();
             return View(response);
@@ -61,7 +60,7 @@ namespace GarageVParrot.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Register()
+        public IActionResult Register()
         {
             var response = new RegisterViewModel();
             return View(response);
@@ -107,13 +106,13 @@ namespace GarageVParrot.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int id)
+        public IActionResult Edit(int id)
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, User user)
+        public IActionResult Edit(int id, User user)
         {
             return View();
         }

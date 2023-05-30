@@ -21,7 +21,11 @@ body {
     color: #1D100B;
 }
 
-h1, h2,h3, h4, h5, h6 {
+section {
+    padding: 10px;
+}
+
+h1, h2, h3, h4, h5, h6 {
     font-family: "oswald";
 }
 
@@ -34,7 +38,7 @@ h2 {
     h2:before {
         content: '';
         display: block;
-        border: 1px solid #1D100B;
+        border: 1px solid #1D100B!important;
         width: 30%;
         text-align: center;
         margin-bottom: 10px;
@@ -45,7 +49,6 @@ h2 {
 
 h3 {
     font-size:20px;
-    text-decoration:underline;
 }
 
 h4 {
@@ -56,8 +59,15 @@ a {
     color:#1D100B;
 }
 
-/*NAVBAR STYLE CSS*/
+q {
+    font-style:italic;
+}
 
+.bi-star-fill, .bi-star{
+    color: #F9C611;
+}
+
+/*NAVBAR STYLE CSS*/
 @media (max-width: 575px) {
     .imageHeaderContainer {
         display:none;
@@ -135,10 +145,8 @@ footer {
     margin-left: auto;
 }
 
-.underline {
-    text-decoration: underline;
-    text-underline-offset:3px;
-    text-decoration-thickness:2px;
+footer h3{
+    text-decoration:underline
 }
 
 .contact-footer > p > a {
@@ -148,24 +156,10 @@ footer {
 
 /*HOMEPAGE STYLE CSS*/
 
+/*SERVICE SECTION CSS STYLE */
 
 .image-service-container {
     grid-area: image;
-}
-
-@media (max-width: 767px) {
-    .service-div {
-        display: grid;
-        grid-template-columns: 1fr!important;
-        grid-template-areas:
-            "text";
-    }
-    .image-service-container {
-        display:none;
-    }
-    .service-title {
-        text-align: end;
-    }
 }
 
 .service-div {
@@ -173,27 +167,58 @@ footer {
     grid-template-columns: 1fr 3fr;
     grid-template-areas:
         "image text";
-    margin-bottom:20px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 767px) {
+    .service-div {
+        display: grid;
+        grid-template-columns: 1fr !important;
+        grid-template-areas:
+            "text";
+    }
+
+    .image-service-container {
+        display: none;
+    }
+
+    .service-title {
+        text-align: end;
+    }
+}
+
+@media (max-width: 992px) {
+    .service-div {
+        display: grid;
+        grid-template-columns: 2fr 3fr;
+        grid-template-areas:
+            "image text";
+        margin-bottom: 20px;
+    }
 }
 
 .service-text {
     align-items: center;
     position: relative;
     grid-area: text;
-    padding-right:30px;
-    padding-left:10px;
-    padding-top:10px;
+    padding-right: 30px;
+    padding-left: 10px;
+    padding-top: 10px;
 }
 
-.service-text:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    border-top: 2px solid #0D5B82;
-    border-right: 2px solid #0D5B82;
-    width: 30%;
-    height: 40%;
+    .service-text:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        border-top: 2px solid #0D5B82;
+        border-right: 2px solid #0D5B82;
+        width: 30%;
+        height: 40%;
+    }
+
+.service-text h3{
+    text-decoration:underline;
 }
 
 
@@ -205,29 +230,139 @@ footer {
 
 .service-text > p {
     text-align: justify;
-    text-indent: 2rem;
 }
 
 
-.service-div:nth-child(even) {
+.service-div:nth-child(odd) {
     display: grid;
     grid-template-columns: 3fr 1fr;
     grid-template-areas: "text image";
 }
 
-.service-div:nth-child(even) .service-text:after {
-right: auto;
-left: 0;
-border-right: none;
-border-left: 2px solid #0D5B82;
+    .service-div:nth-child(odd) .service-text:after {
+        right: auto;
+        left: 0;
+        border-right: none;
+        border-left: 2px solid #0D5B82;
+    }
+
+    .service-div:nth-child(odd) > .service-text {
+        align-items: center;
+        position: relative;
+        grid-area: text;
+        padding-right: 10px;
+        padding-left: 30px;
+        padding-top: 10px;
+    }
+
+/*SECTION REVIEWS STYLE CSS*/
+
+s
+
+.reviews {
+    background-color: #0D5B82;
 }
 
-.service-div:nth-child(even) > .service-text{
+.reviews h2 {
+    color: #fcfcfc;
+}
+
+    .reviews h2:before {
+        content: '';
+        display: block;
+        border: 1px solid #fcfcfc !important;
+        width: 30%;
+        text-align: center;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        margin-left: auto;
+        margin-right: auto;
+    }*/
+/*
+.card-header {
+    background-color: #fcfcfc;
+}
+
+.card-body {
+    flex-direction: column;
+    justify-content: space-between;
+    text-indent: 2rem;
+}
+
+.review-list .review-container {
+    max-width: 100%;
+    padding: 20px;
+    white-space: nowrap;
+}
+.review-container {
+    margin-bottom: 20px;
+    
+}
+*/
+.reviews {
+    margin: 0;
+    display: flex;
+    justify-content: center;
     align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #000;
+}
+
+#wrapper {
+    width: 100%;
+    max-width: 964px;
     position: relative;
-    grid-area: text;
-    padding-right: 10px;
-    padding-left: 30px;
-    padding-top: 10px;
+}
+
+#carousel {
+    overflow: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+    #carousel::-webkit-scrollbar {
+        height: 0;
+    }
+
+#prev,
+#next {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    background: white;
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    outline: 0;
+    cursor: pointer;
+    position: absolute;
+}
+
+#prev {
+    top: 50%;
+    left: 0;
+    transform: translate(50%, -50%);
+    display: none;
+}
+
+#next {
+    top: 50%;
+    right: 0;
+    transform: translate(-50%, -50%);
+}
+
+#content {
+    display: grid;
+    grid-gap: 16px;
+    grid-auto-flow: column;
+    margin: auto;
+    box-sizing: border-box;
+}
+
+.item {
+    width: 180px;
+    height: 180px;
+    background: green;
 }
 
