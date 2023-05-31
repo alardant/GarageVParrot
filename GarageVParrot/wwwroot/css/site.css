@@ -257,7 +257,11 @@ footer h3{
 
 /*SECTION REVIEWS STYLE CSS*/
 
-s
+
+.card {
+    height:100%;
+    width:100%;
+}
 
 .reviews {
     background-color: #0D5B82;
@@ -277,8 +281,7 @@ s
         margin-top: 10px;
         margin-left: auto;
         margin-right: auto;
-    }*/
-/*
+    }
 .card-header {
     background-color: #fcfcfc;
 }
@@ -289,25 +292,23 @@ s
     text-indent: 2rem;
 }
 
-.review-list .review-container {
+.#carousel #wrapper {
     max-width: 100%;
     padding: 20px;
     white-space: nowrap;
 }
-.review-container {
+#wrapper {
     margin-bottom: 20px;
     
 }
-*/
+
 .reviews {
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 100vh;
-    background-color: #000;
-}
+ }
 
 #wrapper {
     width: 100%;
@@ -361,8 +362,8 @@ s
 }
 
 .item {
-    width: 180px;
-    height: 180px;
-    background: green;
+    width: 250px;
+    height: 200px;
+    background: #fcfcfc;
 }
 
