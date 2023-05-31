@@ -258,7 +258,7 @@ footer h3{
 /*SECTION REVIEWS STYLE CSS*/
 
 
-.card {
+.card-review {
     height:100%;
     width:100%;
 }
@@ -291,15 +291,16 @@ footer h3{
     flex-direction: column;
     justify-content: space-between;
     text-indent: 2rem;
+    background-color: #fcfcfc;
 }
 
 
-.#carousel #wrapper {
+.#carousel-review #wrapper-review {
     max-width: 100%;
     padding: 20px;
     white-space: nowrap;
 }
-#wrapper {
+#wrapper-review {
     margin-bottom: 20px;
 }
 
@@ -311,20 +312,20 @@ footer h3{
     flex-direction: column;
  }
 
-#wrapper {
+#wrapper-review {
     width: 100%;
     position: relative;
     padding-right: 20px;
-    padding-left:20px
+    padding-left: 20px
 }
 
-#carousel {
+#carousel-review {
     overflow: auto;
     scroll-behavior: smooth;
     scrollbar-width: none;
 }
 
-    #carousel::-webkit-scrollbar {
+    #carousel-review::-webkit-scrollbar {
         height: 0;
     }
 
@@ -355,22 +356,20 @@ footer h3{
     transform: translate(-50%, -50%);
 }
 
-#content {
-    display: grid;
-    grid-gap: 16px;
-    grid-auto-flow: column;
+#content-review {
+    gap: 16px;
     margin: auto;
     box-sizing: border-box;
+    white-space:nowrap;
+    overflow:hidden;
+
 }
 
-.item {
-    width: 300px;;
+.item-review {
+    width: 300px;
     height: 200px;
     background: #fcfcfc;
 }
 
-@media (max-width: 992px) {
-    .item {
-    }
-}
+
 

@@ -19,9 +19,9 @@
 <section class="reviews">
     <h2>Quelques Témoignages</h2>
 
-    <div id="wrapper">
-        <div id="carousel">
-            <div id="content">
+    <div id="wrapper-review">
+        <div id="carousel-review">
+            <div id="content-review">
                 @{
                     List<Review> selectedReviews = Model.Reviews.Where(review => review.Accepted && review.Rating == 5).OrderBy(review => review.datePublished).Take(10).ToList();
                 }
@@ -29,8 +29,8 @@
                 {
                     if (review.Accepted == true && review.Rating == 5)
                     {
-                        <div class="item" >
-                            <div class="card">
+                        <div class="item-review" >
+                            <div class="card-review">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <div class="rating">
                                         @for (int r = 0; r < review.Rating; r++)

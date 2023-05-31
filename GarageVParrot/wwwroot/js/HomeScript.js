@@ -1,7 +1,7 @@
 ﻿const gap = 16;
 
-const carousel = document.getElementById("carousel"),
-    content = document.getElementById("content"),
+const carousel = document.getElementById("carousel-review"),
+    content = document.getElementById("content-review"),
     next = document.getElementById("next"),
     prev = document.getElementById("prev");
 
