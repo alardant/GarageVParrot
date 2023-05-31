@@ -17,72 +17,9 @@
 </section>
  
 <section class="reviews">
-@*    <h2>Quelques Témoignages</h2>
-
-    <div id="wrapper">
-        <div id="carousel">
-            <div id="content">
-                @{
-                    List<Review> selectedReviews = Model.Reviews.Where(review => review.Accepted && review.Rating == 5).OrderBy(review => review.datePublished).Take(10).ToList();
-                }
-                @foreach (Review review in selectedReviews)
-                {
-                    if (review.Accepted == true && review.Rating == 5)
-                    {
-                        <div class="item" >
-                            <div class="card">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <div class="rating">
-                                        @for (int r = 0; r < review.Rating; r++)
-                                        {
-                                            <i class="bi bi-star-fill"></i>
-                                        }
-                                        @for (int r = review.Rating; r < 5; r++)
-                                        {
-                                            <i class="bi bi-star"></i>
-                                        }
-                                    </div>
-                                    <div>
-                                        @{
-                                            string parameterValue = review.datePublished.ToString("MMMM yyyy");
-                                        }
-                                        @Html.DisplayFor(modelItem =>parameterValue)
-                                    </div>
-                                </div>
-                                <div class="card-body p-1 d-block d-flex">
-                                    <q>@Html.DisplayFor(modelItem => review.Description)</q>
-                                    <p class="mt-2">@Html.DisplayFor(modelItem => review.Name)</p>
-                                </div>
-
-                            </div>
-                        </div>
-                    }
-                }
-                
-            </div>
-        </div>
-        <button id="prev">
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 width="24"
-                 height="24"
-                 viewBox="0 0 24 24">
-                <path fill="none" d="M0 0h24v24H0V0z" />
-                <path d="M15.61 7.41L14.2 6l-6 6 6 6 1.41-1.41L11.03 12l4.58-4.59z" />
-            </svg>
-        </button>
-        <button id="next">
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 width="24"
-                 height="24"
-                 viewBox="0 0 24 24">
-                <path fill="none" d="M0 0h24v24H0V0z" />
-                <path d="M10.02 6L8.61 7.41 13.19 12l-4.58 4.59L10.02 18l6-6-6-6z" />
-            </svg>
-        </button>
-    </div>*@
-
-    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
+    <h2>Quelques Témoignages</h2>
+    <div class="carousel-wrap">
+        <div class="owl-carousel owl-theme carousel">
             @{
                 List<Review> selectedReviews = Model.Reviews.Where(review => review.Accepted && review.Rating == 5).OrderBy(review => review.datePublished).Take(10).ToList();
             }
@@ -90,9 +27,9 @@
             {
                 if (review.Accepted == true && review.Rating == 5)
                 {
-                    <div class="carousel-item">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="card-items">
+                        <div class="card card-review">
+                            <div class="card-header card-header-review d-flex justify-content-between align-items-center">
                                 <div class="rating">
                                     @for (int r = 0; r < review.Rating; r++)
                                     {
@@ -110,7 +47,7 @@
                                     @Html.DisplayFor(modelItem =>parameterValue)
                                 </div>
                             </div>
-                            <div class="card-body p-1 d-block d-flex">
+                            <div class="card-body card-body(review p-1 d-block d-flex">
                                 <q>@Html.DisplayFor(modelItem => review.Description)</q>
                                 <p class="mt-2">@Html.DisplayFor(modelItem => review.Name)</p>
                             </div>
@@ -120,18 +57,15 @@
                 }
             }
         </div>
-        <button class="carousel-control-prev carousel-control" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next carousel-control" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
+    </div>
+    <div class="review-link d-flex justify-content-around">
+         <a class="nav-link" asp-area="" asp-controller="Reviews" asp-action="Create"><h3>Rédiger un avis</h3></a>
+         <a class="nav-link" asp-area="" asp-controller="Reviews" asp-action="Index"><h3>Voir tous les avis</h3></a>
     </div>
 </section>
 
 @section Scripts {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript" src="~/js/HomeScript.js"></script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

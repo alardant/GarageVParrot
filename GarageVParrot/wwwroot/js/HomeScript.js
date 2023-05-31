@@ -1,20 +1,27 @@
-﻿var carouselWidth = $(".carousel-inner")[0].scrollWidth;
-var cardWidth = $(".carousel-item").width();
-var scrollPosition = 0;
-$(".carousel-control-next").on("click", function () {
-    if (scrollPosition < (carouselWidth - cardWidth)) { //check if you can go any further
-        scrollPosition += cardWidth;  //update scroll position
-        $(".carousel-inner").animate({ scrollLeft: scrollPosition }, cardWidth); //scroll left
+﻿$('.owl-carousel').owlCarousel({
+    loop: true,
+    margin: 10,
+    nav: true,
+    responsive: {
+        // breakpoint from 0 up
+        0: {
+            items: 1
+        },
+        // breakpoint from 575 up
+        575: {
+            items: 1
+        },
+        // breakpoint from 768 up
+        768: {
+            items: 2
+        },
+        // breakpoint from 992 up
+        992: {
+            items: 3
+        },
+        // breakpoint from 1200 up
+        1200: {
+            items: 4
+        }
     }
 });
-
-$(".carousel-control-prev").on("click", function () {
-    if (scrollPosition > 0) {
-        scrollPosition -= cardWidth;
-        $(".carousel-inner").animate(
-            { scrollLeft: scrollPosition },
-            cardWidth
-        );
-    }
-});
-
