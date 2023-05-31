@@ -257,8 +257,10 @@ footer h3{
 
 /*SECTION REVIEWS STYLE CSS*/
 
+.carousel-inner {
+    display: flex;
 
-/*.card {
+.card {
     height:100%;
     width:100%;
 }
@@ -374,10 +376,8 @@ footer h3{
     }
 }
 
-*/
 
-.carousel-inner {
-    display: flex;
+
 }
 
 .carousel-item {
