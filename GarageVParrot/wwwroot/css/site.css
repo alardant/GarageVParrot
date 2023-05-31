@@ -284,6 +284,7 @@ footer h3{
     }
 .card-header {
     background-color: #fcfcfc;
+    border:none;
 }
 
 .card-body {
@@ -292,6 +293,7 @@ footer h3{
     text-indent: 2rem;
 }
 
+
 .#carousel #wrapper {
     max-width: 100%;
     padding: 20px;
@@ -299,7 +301,6 @@ footer h3{
 }
 #wrapper {
     margin-bottom: 20px;
-    
 }
 
 .reviews {
@@ -312,8 +313,9 @@ footer h3{
 
 #wrapper {
     width: 100%;
-    max-width: 964px;
     position: relative;
+    padding-right: 20px;
+    padding-left:20px
 }
 
 #carousel {
@@ -362,8 +364,13 @@ footer h3{
 }
 
 .item {
-    width: 250px;
+    width: 300px;;
     height: 200px;
     background: #fcfcfc;
+}
+
+@media (max-width: 992px) {
+    .item {
+    }
 }
 
