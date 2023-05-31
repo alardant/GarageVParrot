@@ -290,7 +290,7 @@ footer h3{
 .card-body {
     flex-direction: column;
     justify-content: space-between;
-    text-indent: 2rem;
+    text-indent: 3rem;
     background-color:#fcfcfc;
 }
 
@@ -327,15 +327,15 @@ footer h3{
 .owl-nav button span {
     position: absolute;
     width: 40px;
-    height: 85px;
+    height: 90px;
 }
 
 .carousel .owl-next {
-    right: -10px;
+    right: 0px;
 }
 
 .carousel .owl-prev {
-    left: -10px;
+    left: 0px;
 }
 
 .review-link h3 {
