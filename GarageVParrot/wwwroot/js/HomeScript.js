@@ -1,4 +1,6 @@
-﻿$('.owl-carousel').owlCarousel({
+﻿// SCRIPT DU CAROUSEL //
+
+$('.owl-carousel').owlCarousel({
     loop: true,
     margin: 10,
     nav: true,
@@ -25,3 +27,4 @@
         }
     }
 });
+

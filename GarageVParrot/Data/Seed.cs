@@ -22,7 +22,7 @@ namespace GarageVParrot.Data
 
                 //Users
                 var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<User>>();
-                string adminUserEmail = "garagevparrot@gmail.com";
+                string adminUserEmail = "garagevparrot@outlook.com";
 
                 var adminUser = await userManager.FindByEmailAsync(adminUserEmail);
                 if (adminUser == null)
