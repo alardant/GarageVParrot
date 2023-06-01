@@ -1,5 +1,6 @@
 ﻿using GarageVParrot.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Net.Mail;
 using System;
 using System.Threading.Tasks;
@@ -35,11 +36,11 @@ public class ContactController : Controller
                 smtpClient.Credentials = new System.Net.NetworkCredential("garagevparrot@outlook.fr", "Garage123!"); // Entrez vos informations d'authentification SMTP
                 smtpClient.EnableSsl = true;
                 smtpClient.SendMailAsync(mail);
-                contact.IsSend = "success";
+                TempData["Message"] = "Le formulaire a été envoyé avec succès.";
             }
             catch (Exception ex)
             {
-                contact.IsSend = "failed";
+                TempData["Message"] = "Le formulaire a échoué, veuillez réessayer.";
             }
         }
 

@@ -1,14 +1,16 @@
 ﻿@model GarageVParrot.ViewModels.ContactViewModel
+@using Microsoft.AspNetCore.Mvc
+@using Microsoft.AspNetCore.Mvc.ViewFeatures
 
 <section class="contact">
     
 	<h2>Nous Contacter</h2>
-    <div class="container">
+    <div class="form-container">
         <div class="row">
             <div class="contact-text col-4">
 			    <h3>Vous avez besoin d’un devis ? Vous souhaitez plus d’informations sur nos voitures ?</h3>
 			    <p>Vous pouvez nous joindre par téléphone au 05.05.05.05.05 ou en remplissant le formulaire de contact ci-contre</p>
-			    <p>Vous pouvez également passer nous voir directement au garage:</p>
+			    <p>Vous pouvez également passer nous voir directement au garage</p>
 			    <p>
 				    Garage V. Parrot<br />
 				    63 chemin des printemps bleus<br />
@@ -16,52 +18,50 @@
 			    </p>
 		    </div>
 
-            <div class="form col-8">
+            <div class="form col-8 p-2">
                 <div class="contact-form">
                     <form method="post" asp-controller="Contact" asp-action="SendEmail">
                         <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl" />
-                        <div class="form-group">
-                            <label asp-for="FirstName">Prénom</label>
-                            <input type="text" asp-for="FirstName" class="form-control" placeholder="Votre prénom" />
+                        <div class="form-names d-flex justify-content-between">
+                            <div class="form-group">
+                                <label asp-for="FirstName">Prénom :</label>
+                                <input type="text" asp-for="FirstName" class="form-control" placeholder="Votre prénom" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="LastName">Nom :</label>
+                                <input type="text" asp-for="LastName" class="form-control" placeholder="Votre nom" />
+                            </div>
+                        </div>
+                        <div class="form-contacts d-flex justify-content-between">
+                            <div class="form-group">
+                                <label asp-for="Email">Email :</label>
+                                <input type="email" asp-for="Email" class="form-control" placeholder="Votre email" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Phone">Téléphone :</label>
+                                <input type="tel" asp-for="Phone" class="form-control" placeholder="Votre téléphone" />
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label asp-for="LastName">Nom</label>
-                            <input type="text" asp-for="LastName" class="form-control" placeholder="Votre nom" />
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Email">Email</label>
-                            <input type="email" asp-for="Email" class="form-control" placeholder="Votre email" />
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Phone">Téléphone</label>
-                            <input type="tel" asp-for="Phone" class="form-control" placeholder="Votre téléphone" />
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Subject">Sujet</label>
+                            <label asp-for="Subject">Sujet :</label>
                             <input type="text" asp-for="Subject" class="form-control" placeholder="Sujet" />
                         </div>
                         <div class="form-group">
-                            <label asp-for="Message">Message</label>
+                            <label asp-for="Message">Message :</label>
                             <textarea asp-for="Message" class="form-control"></textarea>
                         </div>
                         <div>
                             <button type="submit" class="send" value="Envoyer">Envoyer</button>
                         </div>
                     </form>
-                    @if(@Model.IsSend == "success")
+                    @if (TempData["Message"] != null)
                     {
-                        <p style="color:#0D5B82">L'email a été bien été envoyé!</p>
-                    }
-                    @if (@Model.IsSend == "failed")
-                    {
-                        <p style="color:red">Échec de l'envoi de l'email, veuillez réessayer.</p>
+                        <div class="tempdata-form">
+                            @TempData["Message"]
+                        </div>
                     }
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-@*@section Scripts {
-    <script type="text/javascript" src="~/js/form.js"></script>
-}*@

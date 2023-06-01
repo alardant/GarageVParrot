@@ -22,7 +22,6 @@ namespace GarageVParrot.ViewModels
         public string Subject { get; set; }
         [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Le sujet est obligatoire.")]
         public string Message { get; set; }
-        public string IsSend { get; set; } = "";
         public string ReturnUrl { get; set; }
     }
 }
