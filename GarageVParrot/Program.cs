@@ -44,7 +44,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var seed = services.GetRequiredService<Seed>();
-    await Seed.SeedUsersAndRolesAsync(app);
+    await seed.SeedServicesAsync(services.GetRequiredService<UserManager<User>>());
 
 }
 

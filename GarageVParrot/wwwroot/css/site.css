@@ -199,7 +199,7 @@ footer h3{
         display: none;
     }
 
-    .service-title {
+    .service-div:nth-child(odd) .service-title {
         text-align: end;
     }
 }
@@ -364,7 +364,6 @@ footer h3{
 
 .tempdata-form {
     color: #0D5B82;
-    border: 1px solid #0D5B82;
 }
 
 .contact-text {
