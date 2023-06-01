@@ -407,3 +407,23 @@ footer h3{
     padding:8px;
 }
 
+@media (max-width:767px) {
+    .contact-text {
+        width: 100%;
+        background-color: #fcfcfc;
+        color: #1D100B;
+    }
+    .form {
+        width: 100%;
+        background-color: #0D5B82;
+    }
+    .form label{
+        color:#fcfcfc;
+    }
+
+        .form button {
+            background-color: #fcfcfc;
+            color: #0D5B82;
+        }
+}
+
