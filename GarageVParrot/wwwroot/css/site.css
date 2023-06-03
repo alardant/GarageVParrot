@@ -62,11 +62,13 @@ a {
 }
 
 q {
-    font-style:italic;
+    font-style: italic;
+    text-align: justify;
 }
 
 .bi-star-fill, .bi-star{
     color: #F9C611;
+    font-size:16px;
 }
 
 input, textarea {
@@ -292,6 +294,13 @@ footer h3{
 
 /*SECTION REVIEWS STYLE CSS*/
 
+
+.card-header {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    grid-gap: 20px;
+}
+
 .reviews {
     background-color: #0D5B82;
 }
@@ -315,6 +324,7 @@ footer h3{
 
 .card-review{
     height:200px;
+    background-color:#fcfcfc;
 }
 
 .card-header {
@@ -427,3 +437,67 @@ footer h3{
         }
 }
 
+/*REVIEWS STYLE PAGE*/
+
+.cards-review {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 20px;
+}
+
+@media (max-width:992px) {
+    .cards-review {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media (max-width:767px) {
+    .cards-review {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+    .cards-review .card-review {
+        height: 100%;
+        border: none;
+        position: relative;
+        padding: 10px;
+    }
+
+        .cards-review .card-review:before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            border-bottom: 2px solid #0D5B82;
+            border-right: 2px solid #0D5B82;
+            width: 40%;
+            height: 50%;
+        }
+
+.edit > a, .delete > a {
+    text-decoration: none;
+    color: #fcfcfc;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 10px;
+    z-index: 1;
+    position: relative;
+}
+
+.edit, .delete {
+    border: 1px solid #1D100B;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.edit {
+    background-color: #0D5B82;
+}
+
+.delete {
+    background-color: #BE0C0C;
+}
+
+.card-buttons{
+    text-align:end;
+}

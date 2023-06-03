@@ -1,57 +1,52 @@
 ﻿@model IEnumerable<GarageVParrot.Models.Review>
 
+<section>
+    <h2>Témoignages</h2>
+    <div class=" container cards-review">
 
-<h2>Témoignages</h2>
-<p>
-    <a asp-action="Create">Ajouter un témoignage
-    </a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rating)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.datePublished)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                    @for (int i = 0; i < item.Rating; i++)
-                    {
-                        <i class="bi bi-star-fill"></i>
+        @foreach (Review review in Model.OrderBy(r => r.datePublished))
+        {
+            if(review.Accepted == true)
+            {
+                <div class="card card-review">
+                    <div class="card-header card-header-review d-flex justify-content-between align-items-center">
+                        <div class="rating">
+                            @for (int r = 0; r < review.Rating; r++)
+                            {
+                                <i class="bi bi-star-fill"></i>
+                            }
+                            @for (int r = review.Rating; r < 5; r++)
+                            {
+                                <i class="bi bi-star"></i>
+                            }
+                        </div>
+                        <div>
+                            @{
+                                string parameterValue = review.datePublished.ToString("MMMM yyyy");
+                            }
+                            @Html.DisplayFor(modelItem =>parameterValue)
+                        </div>
+                    </div>
+                    <div class="card-body card-body(review p-1 d-block d-flex">
+                        <q>@Html.DisplayFor(modelItem => review.Description)</q>
+                        <p class="mt-2">@Html.DisplayFor(modelItem => review.Name)</p>
+                    </div>
+                    @if(User.Identity.IsAuthenticated) {
+                    <div class="card-buttons">
+                        <button class="edit"><a asp-action="Edit" asp-route-id="@review.Id">Modifier</a></button>
+                        <button class="delete"><a asp-action="Delete" asp-route-id="@review.Id">Supprimer</a></button>
+                    </div>
                     }
-                    @for (int i = item.Rating ; i < 5; i++)
-                    {
-                        <i class="bi bi-star"></i>
-                    }
-                </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.datePublished)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+                </div>
+            }
+        }
+     </div>
+</section>
+
+@{
+    var contactModel = new GarageVParrot.ViewModels.ContactViewModel
+            {
+                ReturnUrl = Context.Request.Path
+            };
 }
-    </tbody>
-</table>
+@await Html.PartialAsync("_contactForm", contactModel)

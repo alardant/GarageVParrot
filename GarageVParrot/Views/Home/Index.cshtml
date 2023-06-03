@@ -25,36 +25,33 @@
             }
             @foreach (Review review in selectedReviews)
             {
-                if (review.Accepted == true && review.Rating == 5)
-                {
-                    <div class="card-items">
-                        <div class="card card-review">
-                            <div class="card-header card-header-review d-flex justify-content-between align-items-center">
-                                <div class="rating">
-                                    @for (int r = 0; r < review.Rating; r++)
-                                    {
-                                        <i class="bi bi-star-fill"></i>
-                                    }
-                                    @for (int r = review.Rating; r < 5; r++)
-                                    {
-                                        <i class="bi bi-star"></i>
-                                    }
-                                </div>
-                                <div>
-                                    @{
-                                        string parameterValue = review.datePublished.ToString("MMMM yyyy");
-                                    }
-                                    @Html.DisplayFor(modelItem =>parameterValue)
-                                </div>
+                <div class="card-items">
+                    <div class="card card-review">
+                        <div class="card-header card-header-review">
+                            <div class="rating">
+                                @for (int r = 0; r < review.Rating; r++)
+                                {
+                                    <i class="bi bi-star-fill"></i>
+                                }
+                                @for (int r = review.Rating; r < 5; r++)
+                                {
+                                    <i class="bi bi-star"></i>
+                                }
                             </div>
-                            <div class="card-body card-body(review p-1 d-block d-flex">
-                                <q>@Html.DisplayFor(modelItem => review.Description)</q>
-                                <p class="mt-2">@Html.DisplayFor(modelItem => review.Name)</p>
+                            <div>
+                                @{
+                                    string parameterValue = review.datePublished.ToString("MMMM yyyy");
+                                }
+                                @Html.DisplayFor(modelItem =>parameterValue)
                             </div>
-
                         </div>
+                        <div class="card-body card-body-review p-1 d-block d-flex">
+                            <q>@Html.DisplayFor(modelItem => review.Description)</q>
+                            <p class="mt-2">@Html.DisplayFor(modelItem => review.Name)</p>
+                        </div>
+
                     </div>
-                }
+                </div>
             }
         </div>
     </div>
