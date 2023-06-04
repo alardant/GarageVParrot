@@ -64,21 +64,30 @@ namespace GarageVParrot.Controllers
 
             if (ModelState.IsValid)
             {
-                var review = new Review
+                try
                 {
-                    UserId = reviewVM.UserId == null ? reviewVM.UserId : null,
-                    Name = reviewVM.Name,
-                    Description = reviewVM.Description,
-                    Rating = reviewVM.Rating,
-                    Accepted = reviewVM.Accepted,
-                };
+                    var review = new Review
+                    {
+                        UserId = reviewVM.UserId == null ? reviewVM.UserId : null,
+                        Name = reviewVM.Name,
+                        Description = reviewVM.Description,
+                        Rating = reviewVM.Rating,
+                        Accepted = reviewVM.Accepted,
+                    };
 
-                await _context.AddAsync(review);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                    await _context.AddAsync(review);
+                    await _context.SaveChangesAsync();
+                    TempData["Message"] = "Votre témoignage a été envoyé avec succès.";
+                }
+                catch (Exception ex)
+                {
+                    TempData["Message"] = "Échec de la création de votre témoignage, veuillez réessayer.";
+                }
+                return View();
+                
             }
-
-            return RedirectToAction("Index");
+            TempData["Message"] = "Échec de la création de votre témoignage, veuillez réessayer.";
+            return View();
         }
 
         [HttpGet]

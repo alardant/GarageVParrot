@@ -1,15 +1,19 @@
 ﻿@model GarageVParrot.ViewModels.ReviewViewModel
 
-@{
-    ViewData["Title"] = "Create";
-}
 
-<div>
-    <a asp-action="Index">Retour à la liste</a>
-</div>
 
 <h2>Ajouter un témoignage</h2>
 
+<button class="return-index">
+    <a asp-action="Index">Retour à la liste</a>
+</button>
+
+@if (TempData["Message"] != null)
+{
+    <div class="tempdata-form">
+        @TempData["Message"]
+    </div>
+}
 <div class="row">
     <div class="col-12">
         <form asp-action="Create" onsubmit="return VerifyRating()">
@@ -18,19 +22,21 @@
             } 
             <input type="hidden" id="datePublished" name="datePublished" asp-for="datePublished" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="d-flex">
-                <div class="form-group col-md-6">
+            <div class="review-name-rating">
+                <div class="form-group review-name">
                     <label asp-for="Name" class="control-label">Nom</label>
                     <input asp-for="Name" class="form-control" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
-                <div onmouseout="CRateSelected" class="col-md-6">
+                <div onmouseout="CRateSelected" class="review-rating">
                     <label asp-for="Rating" class="control-label">Notes</label>
-                    <i id="i1" onmouseout="CRateOut(1)" onmouseover="CRateOver(1)" onclick="CRateClick(1)" class="bi bi-star"></i>
-                    <i id="i2" onmouseout="CRateOut(2)" onmouseover="CRateOver(2)" onclick="CRateClick(2)" class="bi bi-star"></i>
-                    <i id="i3" onmouseout="CRateOut(3)" onmouseover="CRateOver(3)" onclick="CRateClick(3)" class="bi bi-star"></i>
-                    <i id="i4" onmouseout="CRateOut(4)" onmouseover="CRateOver(4)" onclick="CRateClick(4)" class="bi bi-star"></i>
-                    <i id="i5" onmouseout="CRateOut(5)" onmouseover="CRateOver(5)" onclick="CRateClick(5)" class="bi bi-star"></i>
+                    <div class="d-flex gap-2">
+                        <i id="i1" onmouseout="CRateOut(1)" onmouseover="CRateOver(1)" onclick="CRateClick(1)" class="bi bi-star"></i>
+                        <i id="i2" onmouseout="CRateOut(2)" onmouseover="CRateOver(2)" onclick="CRateClick(2)" class="bi bi-star"></i>
+                        <i id="i3" onmouseout="CRateOut(3)" onmouseover="CRateOver(3)" onclick="CRateClick(3)" class="bi bi-star"></i>
+                        <i id="i4" onmouseout="CRateOut(4)" onmouseover="CRateOver(4)" onclick="CRateClick(4)" class="bi bi-star"></i>
+                        <i id="i5" onmouseout="CRateOut(5)" onmouseover="CRateOver(5)" onclick="CRateClick(5)" class="bi bi-star"></i>
+                    </div>
                 </div>
                 <div>
                     <input type="hidden" id="lblRating" name="Rating" asp-for="Rating" value="0"/>
@@ -38,22 +44,32 @@
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                    <textarea asp-for="Description" class="form-control"></textarea>
+                <textarea asp-for="Description" rows="5" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             @if(User.Identity.IsAuthenticated) {
              <div class="form-group form-check">
-                <label class="form-check-label">Valider le témoignange</label>
+                <label class="form-check-label">
                  <input class="form-check-input" type="checkbox" asp-for="Accepted"/>
+                        Valider le témoignage
+                    </label>
              </div>
             }
             <div class="form-group">
-                <input type="submit" value="Envoyer" class="btn" />
+                <button type="submit" class="send" value="Envoyer">Envoyer</button>
             </div>
         </form>
     </div>
 </div>
 
+@{
+    var contactModel = new GarageVParrot.ViewModels.ContactViewModel
+            {
+                ReturnUrl = Context.Request.Path
+            };
+}
+
+@await Html.PartialAsync("_contactForm", contactModel)
 
 @section Scripts {
     <script type="text/javascript" src="~/js/starRating.js"></script>

@@ -4,9 +4,14 @@
     <a asp-action="Index">Retour à la liste</a>
 </div>
 
-<h2>Modifier un témoignage</h2>
-
-<div class="row">
+@if (Model.Accepted == true)
+{
+    <h2>Modifier le témoignage</h2>
+}else
+{
+    <h2>Valider le témoignage</h2>
+}
+<div class="row review-edit">
     <div class="col-12">
         <form asp-action="Edit" onsubmit="return VerifyRating()">
             @if (User.Identity.IsAuthenticated)
@@ -16,12 +21,12 @@
             <input type="hidden" id="datePublished" name="datePublished" asp-for="datePublished" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="d-flex">
-                <div class="form-group col-md-6">
+                <div class="form-group">
                     <label asp-for="Name" class="control-label">Nom</label>
                     <input asp-for="Name" class="form-control" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
-                <div onmouseout="CRateSelected" class="col-md-6">
+                <div onmouseout="CRateSelected">
                     <label asp-for="Rating" class="control-label">Notes</label>
                     <span id="span1" onmouseout="CRateOut(1)" onmouseover="CRateOver(1)" onclick="CRateClick(1)" class="bi bi-star"></span>
                     <span id="span2" onmouseout="CRateOut(2)" onmouseover="CRateOver(2)" onclick="CRateClick(2)" class="bi bi-star"></span>
