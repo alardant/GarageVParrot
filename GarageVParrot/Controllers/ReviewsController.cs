@@ -90,7 +90,7 @@ namespace GarageVParrot.Controllers
             return View();
         }
 
-        [HttpGet]
+/*        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Reviews == null)
@@ -156,26 +156,9 @@ namespace GarageVParrot.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(reviewViewModel);
-        }
+        }*/
 
-        [HttpGet]
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Reviews == null)
-            {
-                return NotFound();
-            }
-
-            var review = await _context.Reviews.FirstOrDefaultAsync(i => i.Id == id);
-            if (review == null)
-            {
-                return NotFound();
-            }
-
-            return View(review);
-        }
-
-        // POST: Reviews/Delete/5
+        // POST: Reviews/Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -184,13 +167,20 @@ namespace GarageVParrot.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Reviews'  is null.");
             }
+            try { 
             var review = await _context.Reviews.FirstOrDefaultAsync(i => i.Id == id);
             if (review != null)
             {
                 _context.Reviews.Remove(review);
             }
+                await _context.SaveChangesAsync();
+                TempData["Message"] = "Le témoignage a bien été supprimé.";
 
-            await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = "Échec de la suppression du témoignage, veuillez réessayer.";
+            }
             return RedirectToAction(nameof(Index));
         }
 
