@@ -56,7 +56,7 @@ h2 {
     }
 
 h3 {
-    font-size:20px;
+    font-size: 20px;
 }
 
 h4 {
@@ -149,20 +149,26 @@ navbar {
     height:70px;
 }
 
-.nav-link {
+.nav-link, .dropdown-item {
     color: #0D5B82;
-    font-size:16px;
-    margin-right:5px;
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.dropdown-toggle {
+    display: -webkit-inline-box;
+    color: #0D5B82!important;
 }
 
 .custom-toggler.navbar-toggler {
     border-color: #0D5B82;
 }
 
-.nav-link:hover {
+.nav-link:hover, .dropdown-item:hover {
     transition: color 0.2s;
     transform: scale(1.03);
-    color: #0D5B82
+    color: #0D5B82;
+    background-color:inherit;
 }
 
 .nav-link.active {
@@ -198,7 +204,6 @@ footer {
 }
 
 .footer-underline:after {
-    font-family: 'Source Serif Pro';
     content: '';
     display: block;
     border: 0.5px solid #1D100B;
@@ -436,8 +441,6 @@ footer h3{
 /*CONTACT-FORM SECTION CSS STYLE */
 
 .tempdata-form {
-    color: #BE0C0C;
-    font-weight: bold;
     font-size: inherit;
     text-decoration: underline;
 }
@@ -649,16 +652,37 @@ footer h3{
 
 /*VALIDATE REVIEW STYLE CSS*/
 
-.review-validate-table .send{
-    float:none;
+.review-validate-checkbox input:hover{
+    cursor:pointer;
 }
 
-.review-validate-table tbody td, .review-validate-table thead th {
-    text-align: center;
-    vertical-align: middle;
+.review-grid-body div {
+    margin-right: 3px;
+    margin-left: 3px;
 }
 
-.review-validate-buttons {
+.reviews-grid .d-grid {
+    grid-template-columns: 1fr 3fr 1fr 0.5fr 1.5fr;
     text-align: center;
-    vertical-align: middle;
+    align-items:center
+}
+
+.review-validate-description {
+    text-align: justify;
+}
+
+.reviews-grid h4 {
+    font-family: 'oswald';
+    font-weight: bold;
+}
+
+.review-grid-header {
+    text-align: center;
+    align-items: center
+}
+
+@media (max-width:767px){
+    .review-validate-buttons{
+        display:grid;
+    }
 }

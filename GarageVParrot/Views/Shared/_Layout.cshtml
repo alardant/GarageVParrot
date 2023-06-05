@@ -45,8 +45,27 @@
                     <ul class="navbar-nav">
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Cars" asp-action="Index"><h3>Espace Employé</h3></a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <h3>Espace employé</h3>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li>
+                                        <a class="dropdown-item" id="login" asp-area="" asp-controller="Cars" asp-action="Index"><h4>Gestion des véhicules</h4></a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" id="login" asp-area="" asp-controller="Reviews" asp-action="Validate"><h4>Gestion des témoignages</h4></a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" id="login" asp-area="" asp-controller="Account" asp-action="Index"><h4>Modifier les accès employés</h4></a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" id="login" asp-area="" asp-controller="Services" asp-action="Index"><h4>Gestion des services</h4></a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" id="login" asp-area="" asp-controller="OpenHours" asp-action="Edit"><h4>Modifier les horaires</h4></a>
+                                    </li>
+                                </ul>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="login" asp-area="" asp-controller="Account" asp-action="Logout"><h3>Se déconnecter</h3></a>
@@ -90,11 +109,11 @@
                 <p><a href="mailto:garagevparrot@outlook.com"><img src="~/Uploads/email.png" width="15xp" height="15px" /> garagevparrot@outlook.com</a></p>
                 <div class="d-flex align-items-center ">
                     <img src="~/Uploads/position.png" width="16px" height="16px" />
-                    <span>
+                    <div>
                         <p class="mb-0">Garage V. Parrot<br />
                         63 chemin des printemps bleus<br />
                         33330 Nouvelle-Ville</p>
-                    </span>
+                    </div>
                 </div>
             </div>
         </div>

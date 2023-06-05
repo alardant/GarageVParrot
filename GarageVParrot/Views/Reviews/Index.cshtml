@@ -35,14 +35,6 @@
                     <q>@Html.DisplayFor(modelItem => review.Description)</q>
                     <p>@Html.DisplayFor(modelItem => review.Name)</p>
                 </div>
-                @if(User.Identity.IsAuthenticated) {
-                <div class="card-buttons">
-@*                        <button class="edit"><a asp-action="Edit" asp-route-id="@review.Id">Modifier</a></button>
-*@                            <button type="button" class="delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-review-id="@review.Id">
-                            Supprimer
-                        </button>
-                </div>
-                }
             </div>
         }
      </div>
@@ -59,10 +51,5 @@
 }
 @await Html.PartialAsync("_contactForm", contactModel)
 
-@await Html.PartialAsync("_DeleteModal")
-
-@section Scripts {
-    <script type="text/javascript" src="~/js/deleteModal.js"></script>
-    }
 
 
