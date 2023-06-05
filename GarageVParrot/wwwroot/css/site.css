@@ -23,6 +23,9 @@ body {
     margin-bottom: 60px;
     background-color: #fcfcfc;
     color: #1D100B;
+    display:flex;
+    flex-direction: column !important;
+    height:100%;
 }
 main {
     position: relative;
@@ -188,7 +191,7 @@ navbar {
 /*FOOTER STYLE CSS*/
 
 footer {
-    margin-top : 10px;
+    margin-top:auto;
     width: 100%;
     background-color: rgba(13, 91, 130, 0.1);
 }
@@ -339,10 +342,10 @@ footer h3{
         padding-left: 30px;
         padding-top: 10px;
     }
-
+.service-text{
+    display:grid;
+}
 /*SECTION REVIEWS STYLE CSS*/
-
-
 .card-header {
     display: grid;
     grid-template-columns: 3fr 2fr;

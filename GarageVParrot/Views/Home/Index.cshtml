@@ -10,7 +10,7 @@
 			</div>
 			<div class="service-text">
 				<h3 class="service-title mb-1">@Html.DisplayFor(modelItem => service.Title)</h3>
-				<p class="text-description">@Html.Raw(service.Description)</p>
+				@Html.Raw(service.Description)
 			</div>
 		</div>
 	}
