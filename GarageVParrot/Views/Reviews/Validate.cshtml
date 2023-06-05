@@ -3,9 +3,7 @@
 
 <h2>Liste des témoignages à valider</h2>
 
-<button class="return-index">
-    <a asp-action="Create">Ajouter un témoignage</a>
-</button>
+    <a class="return-index" asp-action="Create">Ajouter un témoignage</a>
 
 @if (TempData["Message"] != null)
 {
@@ -13,7 +11,7 @@
         @TempData["Message"]
     </div>
 }
-    <table class="table">
+    <table class="table review-validate-table">
         <thead>
             <tr>
                 <th>
@@ -60,11 +58,11 @@
                         }
                     </td>
 
-                <td>
+                <td class="review-validate-checkbox">
                     <input type="checkbox" id="Accepted" name="Accepted" asp-for="@review.Accepted" value="true" />
                 </td>
-                <td>
-                    <input type="submit" value="Valider" class="btn"/>
+                <td class="review-validate-buttons">
+                    <button type="submit" value="Valider" class="send">Valider</button>
                     <button type="button" class="delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-review-id="@review.Id">Supprimer</button>
                 </td>
                 </form>

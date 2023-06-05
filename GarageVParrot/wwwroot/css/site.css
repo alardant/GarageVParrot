@@ -115,18 +115,27 @@ label {
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     margin-top: 10px;
     margin-bottom: 10px;
+    text-decoration: none;
+    color: #fcfcfc;
+    padding: 5px;
+    padding:1px 6px;
 }
 
-    .return-index a {
-        color: #fcfcfc;
-        text-decoration:none;
+
+@media (max-width: 575px) {
+    .return-index{
+        position:relative;
     }
+    .return-index-div{
+        display:flex;
+        justify-content:end;
 
-
+    }
+}
 /*NAVBAR STYLE CSS*/
 @media (max-width: 575px) {
     .imageHeaderContainer {
-    display:none;
+        display: none;
     }
 }
 
@@ -542,6 +551,8 @@ footer h3{
 
 .delete {
     background-color: #BE0C0C;
+    text-align: center;
+    vertical-align: middle;
 }
 
 .card-buttons{
@@ -553,17 +564,16 @@ footer h3{
     grid-template-columns: 3fr 2fr;
 }
 
-.create-review-button {
+.create-review {
+    color: #0D5B82;
+    text-decoration: none;
     margin: 30px;
     background-color: #fcfcfc;
     border: 2px solid #0D5B82;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    text-align:center;
-}
-
-.create-review {
-    color: #0D5B82;
-    text-decoration: none
+    text-align: center;
+    padding-right: 5px;
+    padding-left: 5px;
 }
 
     .create-review h2 {
@@ -638,3 +648,17 @@ footer h3{
 }
 
 /*VALIDATE REVIEW STYLE CSS*/
+
+.review-validate-table .send{
+    float:none;
+}
+
+.review-validate-table tbody td, .review-validate-table thead th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.review-validate-buttons {
+    text-align: center;
+    vertical-align: middle;
+}

@@ -1,12 +1,10 @@
 ﻿@model GarageVParrot.ViewModels.ReviewViewModel
 
 
-
 <h2>Ajouter un témoignage</h2>
-
-<button class="return-index">
-    <a asp-action="Index">Retour à la liste</a>
-</button>
+<div class="return-index-div">
+    <a class="return-index" asp-action="Index">Retour à la liste</a>
+</div>
 
 @if (TempData["Message"] != null)
 {
