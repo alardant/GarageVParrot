@@ -1,0 +1,27 @@
+﻿
+
+<div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Êtes-vous sur de vouloir supprimer cet élément ?</h5>
+                <button type="button" class="btn-close button-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>La suppresion de cet élément sera définitive.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn button-close" data-bs-dismiss="modal">Annuler</button>
+                <form asp-action="Delete">
+                    <input type="hidden" id="reviewId" name="Id" />
+                    <button type="submit" value="Delete" class="btn button-submit">Supprimer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/deleteModal.js"></script>
+        
+}

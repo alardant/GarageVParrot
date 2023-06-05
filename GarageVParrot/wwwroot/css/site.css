@@ -427,10 +427,10 @@ footer h3{
 /*CONTACT-FORM SECTION CSS STYLE */
 
 .tempdata-form {
-    color: #0D5B82;
+    color: #BE0C0C;
     font-weight: bold;
     font-size: inherit;
-    text-decoration:underline;
+    text-decoration: underline;
 }
 
 .contact-text {
@@ -617,15 +617,24 @@ footer h3{
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     font-size:14px;
 }
-}
 
-.button-close {
-    background-color: #fcfcfc!important;
-    color: #0D5B82!important;
+.modal-footer .button-close {
+    background-color: #fcfcfc !important;
+    color: #0D5B82 !important;
 }
 
 .modal-header {
     background-color: #0D5B82 !important;
     color: #fcfcfc !important;
+    font-family:"oswald";
 }
 
+.modal-body, .modal-footer {
+    font-family: 'Source Serif Pro';
+}
+
+.button-submit:hover {
+    color: #fcfcfc;
+}
+
+/*VALIDATE REVIEW STYLE CSS*/

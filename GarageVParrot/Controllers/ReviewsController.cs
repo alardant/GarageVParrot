@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GarageVParrot.Data;
 using GarageVParrot.Models;
 using GarageVParrot.ViewModels;
+using System.Xml.Linq;
 
 namespace GarageVParrot.Controllers
 {
@@ -23,27 +24,55 @@ namespace GarageVParrot.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var reviewList = await _context.Reviews.ToListAsync();
+            var reviewList = await _context.Reviews.Where(i => i.Accepted == true).ToListAsync();
             return View(reviewList);
         }
 
-        // GET: Reviews/Details/5
-        public async Task<IActionResult> Details(int? id)
+        [HttpGet]
+        public async Task<IActionResult> Validate()
         {
-            if (id == null || _context.Reviews == null)
-            {
-                return NotFound();
-            }
+            var reviewList = await _context.Reviews.AsNoTracking().Where(i => i.Accepted == false).ToListAsync();
+            return View(reviewList);
+        }
 
-            var review = await _context.Reviews
-                .Include(r => r.user)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (review == null)
-            {
-                return NotFound();
-            }
+        [HttpPost]
+        public async Task<IActionResult> Validate(int id, ReviewViewModel reviewVM)
+        {
+            var reviewList = await _context.Reviews.Where(i => i.Accepted == false).ToListAsync();
 
-            return View(review);
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var reviewToUpdate = await _context.Reviews.FirstOrDefaultAsync(i => i.Id == id);
+                    if (reviewToUpdate == null)
+                    {
+                        return NotFound();
+                    }
+                    reviewToUpdate.Accepted = reviewVM.Accepted;
+                    reviewToUpdate.UserId = reviewVM.UserId;
+
+                    _context.Update(reviewToUpdate);
+                    await _context.SaveChangesAsync();
+                    TempData["Message"] = "Le témoignage a bien été modifié.";
+                    var reviewListUpadted = await _context.Reviews.AsNoTracking().Where(i => i.Accepted == false).ToListAsync();
+                    return View(reviewListUpadted);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!(_context.Reviews?.AsNoTracking().Any(e => e.Id == id)).GetValueOrDefault())
+                    {
+                        TempData["Message"] = "Échec de la modification du témoignage, veuillez réessayer.";
+                        return View(reviewList);
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            TempData["Message"] = "Échec de la modification du témoignage, veuillez réessayer.";
+            return View(reviewList);
         }
 
         [HttpGet]
@@ -68,7 +97,7 @@ namespace GarageVParrot.Controllers
                 {
                     var review = new Review
                     {
-                        UserId = reviewVM.UserId == null ? reviewVM.UserId : null,
+                        UserId = reviewVM.UserId,
                         Name = reviewVM.Name,
                         Description = reviewVM.Description,
                         Rating = reviewVM.Rating,
@@ -77,17 +106,18 @@ namespace GarageVParrot.Controllers
 
                     await _context.AddAsync(review);
                     await _context.SaveChangesAsync();
-                    TempData["Message"] = "Votre témoignage a été envoyé avec succès.";
+                    TempData["Message"] = "Votre témoignage a été soumis avec succès.";
                 }
                 catch (Exception ex)
                 {
                     TempData["Message"] = "Échec de la création de votre témoignage, veuillez réessayer.";
                 }
-                return View();
+                ModelState.Clear();
+                return RedirectToAction("Index");
                 
             }
             TempData["Message"] = "Échec de la création de votre témoignage, veuillez réessayer.";
-            return View();
+            return RedirectToAction("Index");
         }
 
 /*        [HttpGet]
@@ -165,23 +195,35 @@ namespace GarageVParrot.Controllers
         {
             if (_context.Reviews == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Reviews'  is null.");
+                TempData["Message"] = "Échec de la suppression du témoignage, veuillez réessayer.";
             }
-            try { 
-            var review = await _context.Reviews.FirstOrDefaultAsync(i => i.Id == id);
-            if (review != null)
+            try
             {
-                _context.Reviews.Remove(review);
-            }
-                await _context.SaveChangesAsync();
-                TempData["Message"] = "Le témoignage a bien été supprimé.";
-
+                var review = await _context.Reviews.FirstOrDefaultAsync(i => i.Id == id);
+                if (review != null)
+                {
+                    _context.Reviews.Remove(review);
+                    await _context.SaveChangesAsync();
+                    TempData["Message"] = "Le témoignage a bien été supprimé.";
+                } else
+                {
+                    TempData["Message"] = "Échec de la suppression du témoignage, veuillez réessayer.";
+                }
             }
             catch (Exception ex)
             {
                 TempData["Message"] = "Échec de la suppression du témoignage, veuillez réessayer.";
             }
-            return RedirectToAction(nameof(Index));
+            string referrerUrl = Request.Headers["Referer"].ToString();
+            if (!string.IsNullOrEmpty(referrerUrl))
+            {
+                return Redirect(referrerUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index"); // ou une autre action par défaut si le referer est manquant
+            }
+
         }
 
         private bool ReviewExists(int id)

@@ -16,7 +16,7 @@ namespace GarageVParrot.ViewModels
         [Display(Name = "Image de couverture")]
         public IFormFile CoverImage { get; set; }
         [Display(Name = "Ajouter d'autres images")]
-        public IFormFileCollection ImageListCar { get; set; }
+        public IFormFileCollection? ImageListCar { get; set; }
         [Required(ErrorMessage = "L'année est obligatoire.")]
         [Display(Name = "Année")]
         [Range(1900, int.MaxValue, ErrorMessage = "L'année doit être au moins égale à 1900.")]

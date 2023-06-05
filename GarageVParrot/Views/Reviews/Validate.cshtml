@@ -1,0 +1,81 @@
+﻿@model IEnumerable<GarageVParrot.Models.Review>
+
+
+<h2>Liste des témoignages à valider</h2>
+
+<button class="return-index">
+    <a asp-action="Create">Ajouter un témoignage</a>
+</button>
+
+@if (TempData["Message"] != null)
+{
+    <div class="tempdata-form">
+        @TempData["Message"]
+    </div>
+}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Nom
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Note
+                </th>
+                <th>
+                    Valider le témoignage
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Review review in Model)
+            {
+                <tr>
+                <form asp-action="Validate" method="post">
+                    <input type="hidden" id="Id" name="Id" asp-for="@review.Id" />
+                    <input type="hidden" id="Name" name="Name" asp-for="@review.Name" />
+                    <input type="hidden" id="Description" name="Description" asp-for="@review.Description" />
+                    <input type="hidden" id="Rating" name="Rating" asp-for="@review.Rating" />
+                    <input type="hidden" id="UserId" name="UserId" asp-for="@review.UserId" />
+                    <td>
+                                @Html.DisplayFor(modelItem => review.Name)
+                    </td>
+                    <td>
+                                @Html.DisplayFor(modelItem => review.Description)
+                    </td>
+                    <td>
+                                @for (int r = 0; r < review.Rating; r++)
+                        {
+                            <i class="bi bi-star-fill"></i>
+                        }
+                                @for (int r = review.Rating; r < 5; r++)
+                        {
+                            <i class="bi bi-star"></i>
+                        }
+                    </td>
+
+                <td>
+                    <input type="checkbox" id="Accepted" name="Accepted" asp-for="@review.Accepted" value="true" />
+                </td>
+                <td>
+                    <input type="submit" value="Valider" class="btn"/>
+                    <button type="button" class="delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-review-id="@review.Id">Supprimer</button>
+                </td>
+                </form>
+                </tr>
+
+                }
+        </tbody>
+    </table>
+@await Html.PartialAsync("_DeleteModal")
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/deleteModal.js"></script>
+    }
+

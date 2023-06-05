@@ -1,4 +1,4 @@
-﻿// SCRIPT DU CAROUSEL //
+﻿// CAROUSEL SCRIPT//
 
 $('.owl-carousel').owlCarousel({
     loop: true,

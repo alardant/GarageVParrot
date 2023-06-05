@@ -10,43 +10,40 @@
     }
     <div class=" container cards-review">
 
-        @foreach (Review review in Model.OrderBy(r => r.datePublished))
+        @foreach (Review review in Model.OrderByDescending(r => r.datePublished))
         {
-            if(review.Accepted == true)
-            {
-                <div class="card card-review">
-                    <div class="card-header card-header-review d-flex justify-content-between align-items-center">
-                        <div class="rating">
-                            @for (int r = 0; r < review.Rating; r++)
-                            {
-                                <i class="bi bi-star-fill"></i>
-                            }
-                            @for (int r = review.Rating; r < 5; r++)
-                            {
-                                <i class="bi bi-star"></i>
-                            }
-                        </div>
-                        <div>
-                            @{
-                                string parameterValue = review.datePublished.ToString("MMMM yyyy");
-                            }
-                            @Html.DisplayFor(modelItem =>parameterValue)
-                        </div>
+            <div class="card card-review">
+                <div class="card-header card-header-review d-flex justify-content-between align-items-center">
+                    <div class="rating">
+                        @for (int r = 0; r < review.Rating; r++)
+                        {
+                            <i class="bi bi-star-fill"></i>
+                        }
+                        @for (int r = review.Rating; r < 5; r++)
+                        {
+                            <i class="bi bi-star"></i>
+                        }
                     </div>
-                    <div class="card-body card-body-review p-1 d-block d-flex">
-                        <q>@Html.DisplayFor(modelItem => review.Description)</q>
-                        <p>@Html.DisplayFor(modelItem => review.Name)</p>
+                    <div>
+                        @{
+                            string parameterValue = review.datePublished.ToString("MMMM yyyy");
+                        }
+                        @Html.DisplayFor(modelItem =>parameterValue)
                     </div>
-                    @if(User.Identity.IsAuthenticated) {
-                    <div class="card-buttons">
+                </div>
+                <div class="card-body card-body-review p-1 d-block d-flex">
+                    <q>@Html.DisplayFor(modelItem => review.Description)</q>
+                    <p>@Html.DisplayFor(modelItem => review.Name)</p>
+                </div>
+                @if(User.Identity.IsAuthenticated) {
+                <div class="card-buttons">
 @*                        <button class="edit"><a asp-action="Edit" asp-route-id="@review.Id">Modifier</a></button>
 *@                            <button type="button" class="delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-review-id="@review.Id">
-                                Supprimer
-                            </button>
-                    </div>
-                    }
+                            Supprimer
+                        </button>
                 </div>
-            }
+                }
+            </div>
         }
      </div>
      <div class="d-flex justify-content-center">
@@ -64,34 +61,10 @@
 }
 @await Html.PartialAsync("_contactForm", contactModel)
 
-<div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Êtes-vous sur de vouloir supprimer cet élément ?</h5>
-                <button type="button" class="btn-close button-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>La suppresion de cet élément sera définitive.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn button-close" data-bs-dismiss="modal">Annuler</button>
-                <form asp-action="Delete">
-                    <input type="hidden" id="reviewId" name="Id" />
-                    <button type="submit" value="Delete" class="btn button-submit">Supprimer</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+@await Html.PartialAsync("_DeleteModal")
 
 @section Scripts {
-    <script>
-        $(document).ready(function () {
-            $('.delete').click(function () {
-                var reviewId = $(this).data('review-id');
-                $('#reviewId').val(reviewId);
-            });
-        });
-    </script>
-}
+    <script type="text/javascript" src="~/js/deleteModal.js"></script>
+    }
+
+

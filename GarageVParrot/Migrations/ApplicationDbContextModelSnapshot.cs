@@ -104,7 +104,7 @@ namespace GarageVParrot.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Cars");
+                    b.ToTable("Cars", (string)null);
                 });
 
             modelBuilder.Entity("GarageVParrot.Models.ImageListCar", b =>
@@ -128,7 +128,7 @@ namespace GarageVParrot.Migrations
 
                     b.HasIndex("CarId");
 
-                    b.ToTable("ImagesListCar");
+                    b.ToTable("ImagesListCar", (string)null);
                 });
 
             modelBuilder.Entity("GarageVParrot.Models.OpenHours", b =>
@@ -167,7 +167,7 @@ namespace GarageVParrot.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OpenHours");
+                    b.ToTable("OpenHours", (string)null);
                 });
 
             modelBuilder.Entity("GarageVParrot.Models.Review", b =>
@@ -200,7 +200,7 @@ namespace GarageVParrot.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("GarageVParrot.Models.Service", b =>
@@ -228,7 +228,7 @@ namespace GarageVParrot.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Services");
+                    b.ToTable("Services", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

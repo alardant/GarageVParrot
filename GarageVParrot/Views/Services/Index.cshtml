@@ -1,14 +1,17 @@
 ﻿@model IEnumerable<GarageVParrot.Models.Service>
 
-@{
-    ViewData["Title"] = "Index";
-}
-
 <h2>Lise des services</h2>
 
-<p>
+<div>
     <a asp-action="Create">Ajouter un service</a>
-</p>
+</div>
+
+@if (TempData["Message"] != null)
+{
+    <div class="tempdata-form">
+        @TempData["Message"]
+    </div>
+}
 <table class="table">
     <thead>
         <tr>
