@@ -688,4 +688,13 @@ footer h3{
     .review-validate-buttons{
         display:grid;
     }
+    .reviews-grid .send {
+        margin-right: 0px;
+    }
+}
+
+.reviews-grid .send {
+    float: unset;
+    vertical-align:middle;
+    margin-right:10px;
 }

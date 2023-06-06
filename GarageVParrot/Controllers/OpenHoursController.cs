@@ -33,7 +33,7 @@ namespace GarageVParrot.Controllers
         public async Task<IActionResult> Edit()
         
         {
-            var openHours = await _context.OpenHours.FirstOrDefaultAsync();
+            var openHours = await _context.OpenHours.FirstOrDefaultAsync(i => i.Id == 1);
             if (openHours == null)
             {
                 return NotFound();
@@ -49,12 +49,15 @@ namespace GarageVParrot.Controllers
             {
                 return NotFound();
             }
+            openHours.Id = 1;
             if (ModelState.IsValid) 
-            { 
-                 _context.OpenHours.Update(openHours);
+            {
+                _context.OpenHours.Update(openHours);
                 await _context.SaveChangesAsync();
+                TempData["Message"] = "Les horaires ont bien été modifiées.";
                 return View(openHours);
             }
+            TempData["Message"] = "Échec de la modification des horaires, veuillez réessayer.";
             return View(openHours);
         }
     }

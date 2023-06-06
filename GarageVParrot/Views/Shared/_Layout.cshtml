@@ -109,11 +109,13 @@
                 <p><a href="mailto:garagevparrot@outlook.com"><img src="~/Uploads/email.png" width="15xp" height="15px" /> garagevparrot@outlook.com</a></p>
                 <div class="d-flex align-items-center ">
                     <img src="~/Uploads/position.png" width="16px" height="16px" />
-                    <div>
-                        <p class="mb-0">Garage V. Parrot<br />
-                        63 chemin des printemps bleus<br />
-                        33330 Nouvelle-Ville</p>
-                    </div>
+                    @{
+                        var openHours = new GarageVParrot.Models.OpenHours
+                        {
+                            Id = 1
+                        };
+                    }
+                    @await Html.PartialAsync("_OpenHours", openHours)
                 </div>
             </div>
         </div>
