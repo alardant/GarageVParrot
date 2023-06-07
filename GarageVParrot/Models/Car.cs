@@ -8,7 +8,7 @@ namespace GarageVParrot.Models
     public class Car
     {
         public int Id { get; set; }
-        public double Price { get; set; }
+        public int Price { get; set; }
         public string CoverImage { get; set; }
         public List<ImageListCar>? ImageListCar { get; set; }
         public int Year { get; set; }

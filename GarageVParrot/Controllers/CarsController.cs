@@ -144,9 +144,10 @@ namespace GarageVParrot.Controllers
 
                 await _context.AddAsync(car);
                 await _context.SaveChangesAsync();
+                TempData["Message"] = "Le véhicule a bien été crée.";
                 return RedirectToAction("Index");
             }
-
+            TempData["Message"] = "Échec de la création du véhicule, veuillez réessayer.";
             return RedirectToAction("Index");
         }
 
@@ -317,13 +318,14 @@ namespace GarageVParrot.Controllers
                         throw;
                     }
                 }
+                TempData["Message"] = "Le véhicule a bien été modifié.";
                 return RedirectToAction(nameof(Index));
             }
-
+            TempData["Message"] = "Échec de la modification du véhicule, veuillez réessayer.";
             return View(carVM);
         }
 
-        [HttpGet]
+/*        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Cars == null)
@@ -338,7 +340,7 @@ namespace GarageVParrot.Controllers
             }
 
             return View(car);
-        }
+        }*/
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -382,6 +384,7 @@ namespace GarageVParrot.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["Message"] = "Le véhicule a bien été supprimé.";
             return RedirectToAction(nameof(Index));
 
         }

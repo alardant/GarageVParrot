@@ -11,7 +11,8 @@ namespace GarageVParrot.ViewModels
         [Required(ErrorMessage = "Le prix est obligatoire.")]
         [Display(Name = "Prix")]
         [Range(1, double.MaxValue, ErrorMessage = "Le prix doit être au moins égal à 1.")]
-        public double Price { get; set; }
+        [RegularExpression("(^[0-9]+$)", ErrorMessage = "Veuillez entre un nombre valide")]
+        public int Price { get; set; }
         [Display(Name = "Modifier l'mage de couverture.")]
         public string? CoverImage { get; set; }
         [Display(Name = "Modifier les autres images.")]
@@ -19,8 +20,11 @@ namespace GarageVParrot.ViewModels
         [Required(ErrorMessage = "L'année est obligatoire.")]
         [Display(Name = "Année")]
         [Range(1900, int.MaxValue, ErrorMessage = "L'année doit être au moins égale à 1900.")]
+        [RegularExpression("(^[0-9]+$)", ErrorMessage = "Veuillez entre un nombre valide")]
+
         public int Year { get; set; }
         [Required(ErrorMessage = "Le kilomètrage est obligatoire.")]
+        [RegularExpression("(^[0-9]+$)", ErrorMessage = "Veuillez entre un nombre valide")]
         [Display(Name = "Kilomètrage")]
         public int Kilometers { get; set; }
         [Required(ErrorMessage = "La marque est obligatoire.")]
@@ -32,10 +36,12 @@ namespace GarageVParrot.ViewModels
         [Required(ErrorMessage = "Le nombre de porte est obligatoire.")]
         [Display(Name = "Nombre de portes")]
         [Range(3, int.MaxValue, ErrorMessage = "Le nombre de portes doit être au moins égal à 3.")]
+        [RegularExpression("(^[0-9]+$)", ErrorMessage = "Veuillez entre un nombre valide")]
         public int NumberOfDoors { get; set; }
         [Required(ErrorMessage = "Le nombre de sièges est obligatoire.")]
         [Display(Name = "Nombre de sièges")]
         [Range(2, int.MaxValue, ErrorMessage = "Le nombre de sièges doit être au moins égal à 2.")]
+        [RegularExpression("(^[0-9]+$)", ErrorMessage = "Veuillez entre un nombre valide")]
         public int NumberOfSeats { get; set; }
         [Display(Name = "Climatisation")]
         public bool AirConditionner { get; set; }
@@ -56,8 +62,10 @@ namespace GarageVParrot.ViewModels
         [Required(ErrorMessage = "La Crit'Air est obligatoire.")]
         [Display(Name = "Crit'air")]
         [Range(1, 6, ErrorMessage = "Le Crit'Air doit être compris entre 1 et 6.")]
+        [RegularExpression("(^[0-9]+$)", ErrorMessage = "Veuillez entre un nombre valide")]
         public int CritAir { get; set; }
         [Display(Name = "Garantie")]
+        [RegularExpression("(^[0-9]+$)", ErrorMessage = "Veuillez entre un nombre valide")]
         public int? Warranty { get; set; }
         [Display(Name = "ABS")]
         public bool Abs { get; set; }
