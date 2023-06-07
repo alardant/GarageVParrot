@@ -12,16 +12,11 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn button-close" data-bs-dismiss="modal">Annuler</button>
-                <form asp-action="Delete">
-                    <input type="hidden" id="reviewId" name="Id" />
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" id="ItemToDeleteId" name="id" value="" />
                     <button type="submit" value="Delete" class="btn button-submit">Supprimer</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
-@section Scripts {
-    <script type="text/javascript" src="~/js/deleteModal.js"></script>
-        
-}

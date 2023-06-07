@@ -54,17 +54,21 @@
                 </div>
                 <div class="review-validate-buttons">
                     <button type="submit" value="Valider" class="send">Valider</button>
-                    <button type="button" class="delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-review-id="@review.Id">Supprimer</button>
+                    <button type="button" class="delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-review-id="@review.Id" onclick="setItemIdToDelete('@review.Id')">Supprimer</button>
                 </div>
             </div>
             <hr />
         </form>
-        
     }
 </div>
+
+
 @await Html.PartialAsync("_DeleteModal")
 
 @section Scripts {
-    <script type="text/javascript" src="~/js/deleteModal.js"></script>
+    <script>
+        function setItemIdToDelete(itemId) {
+            document.getElementById('ItemToDeleteId').value = itemId;
+        }
+    </script>
     }
-

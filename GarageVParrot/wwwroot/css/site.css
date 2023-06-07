@@ -125,14 +125,14 @@ label {
 }
 
 
-@media (max-width: 575px) {
-    .return-index{
-        position:relative;
+@media (max-width: 768px) {
+    .return-index {
+        position: relative;
     }
-    .return-index-div{
-        display:flex;
-        justify-content:end;
 
+    .return-index-div {
+        display: flex;
+        justify-content: end;
     }
 }
 /*NAVBAR STYLE CSS*/
@@ -687,6 +687,7 @@ footer h3{
 @media (max-width:767px){
     .review-validate-buttons{
         display:grid;
+        justify-items:end;
     }
     .reviews-grid .send {
         margin-right: 0px;
@@ -698,3 +699,70 @@ footer h3{
     vertical-align:middle;
     margin-right:10px;
 }
+
+
+/*CAR MANAGEMENT STYLE CSS*/
+
+.car-grid .d-grid {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    text-align: center;
+    align-items: center
+}
+
+.car-list-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover
+}
+
+.car-grid-body div {
+    margin-right: 3px;
+    margin-left: 3px;
+}
+
+.car-grid h4 {
+    font-family: 'oswald';
+    font-weight: bold;
+}
+
+.car-grid-header {
+    text-align: center;
+    align-items: center
+}
+
+@media (max-width:767px) {
+    .car-validate-buttons {
+        display: grid;
+        justify-items: end;
+    }
+
+    .car-grid .send {
+        margin-right: 0px;
+    }
+}
+
+.car-management-image{
+}
+
+.car-grid .send {
+    float: unset;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.car-validate-buttons a{
+    text-decoration:none;
+    color:#fcfcfc;
+}
+
+.search-btn {
+    float:unset;
+}
+
+.search-input {
+    width: auto;
+    height: max-content;
+    padding: 5px;
+}
+
+

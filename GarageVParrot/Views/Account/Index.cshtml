@@ -1,1 +1,55 @@
-﻿
+﻿@*@model IEnumerable<GarageVParrot.Models.User>
+
+
+<h2>Liste des accès employés</h2>
+
+<a class="return-index" asp-action="Create">Ajouter un employé</a>
+
+@if (TempData["Message"] != null)
+{
+    <div class="tempdata-form" style="color: @(TempData["Message"].ToString().Contains("Échec") ? "#BE0C0C" : "#0D5B82")">
+        @TempData["Message"]
+    </div>
+}
+
+<div class="car-grid">
+    <div class="review-grid-header d-grid">
+        <div><h4>Adresse email</h4></div>
+        <div><h4>Accès administrateur </h4></div>
+        <div><h4>Action</h4></div>
+    </div>
+
+    <hr />
+    @foreach (User user in Model)
+    {
+
+        <form asp-action="Validate" method="post">
+            <div class="d-grid review-grid-body">
+                <div class="user-list-email">
+                    @Html.DisplayFor(modelItem => user.Email)
+                </div>
+                <div class="user-list-role">
+                    <input type="checkbox" id="Accepted" name="Accepted" asp-for="@review.Accepted" value="true" />
+                </div>
+                <div class="car-management-image">
+                    <img class="service-image" src="~/Uploads/CarImageCover/@car.CoverImage" alt="Image de la voiture" />
+                </div>
+                <div class="review-validate-buttons">
+                    <a asp-action="Edit" asp-route-id="@car.Id">Edit</a>
+                    <button type="button" class="delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-review-id="@car.Id" onclick="setItemIdToDelete('@car.Id')">Supprimer</button>
+                </div>
+            </div>
+            <hr />
+        </form>
+
+    }
+</div>
+@await Html.PartialAsync("_DeleteModal")
+
+@section Scripts {
+    <script>
+        function setItemIdToDelete(itemId) {
+            document.getElementById('ItemToDeleteId').value = itemId;
+        }
+    </script>
+    }*@

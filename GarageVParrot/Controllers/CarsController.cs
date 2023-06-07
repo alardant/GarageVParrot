@@ -37,6 +37,14 @@ namespace GarageVParrot.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> CarManagement()
+        {
+            var openhours = await _context.OpenHours.FirstOrDefaultAsync();
+            var listCar = await _context.Cars.ToListAsync();
+            return View(listCar);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Cars == null)

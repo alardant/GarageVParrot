@@ -223,7 +223,6 @@ namespace GarageVParrot.Controllers
             {
                 return RedirectToAction("Index"); // ou une autre action par défaut si le referer est manquant
             }
-
         }
 
         private bool ReviewExists(int id)

@@ -51,7 +51,7 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li>
-                                        <a class="dropdown-item" id="login" asp-area="" asp-controller="Cars" asp-action="Index"><h4>Gestion des véhicules</h4></a>
+                                        <a class="dropdown-item" id="login" asp-area="" asp-controller="Cars" asp-action="CarManagement"><h4>Gestion des véhicules</h4></a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" id="login" asp-area="" asp-controller="Reviews" asp-action="Validate"><h4>Gestion des témoignages</h4></a>
@@ -97,7 +97,12 @@
             <div class="hours-footer text-center mx-1">
                 <h3>Horaires d'ouverture</h3>
                 <p class="mb-0">
-                    @await Component.InvokeAsync("OpenHours")
+                    @{
+                        var dbContext = Context.RequestServices.GetService<ApplicationDbContext>();
+                        var openHours = dbContext.OpenHours.FirstOrDefault(i => i.Id == 1);
+                    }
+
+                    @await Html.PartialAsync("_OpenHours", openHours)
             </div>
             <div class="garage-footer text-center mx-1">
                 <h3 class="footer-underline">Garage V. Parrot</h3>
@@ -109,13 +114,13 @@
                 <p><a href="mailto:garagevparrot@outlook.com"><img src="~/Uploads/email.png" width="15xp" height="15px" /> garagevparrot@outlook.com</a></p>
                 <div class="d-flex align-items-center ">
                     <img src="~/Uploads/position.png" width="16px" height="16px" />
-                    @{
-                        var openHours = new GarageVParrot.Models.OpenHours
-                        {
-                            Id = 1
-                        };
-                    }
-                    @await Html.PartialAsync("_OpenHours", openHours)
+                    <div>
+                        <p>
+                            Garage V. Parrot<br />
+                            63 chemin des printemps bleus<br />
+                            33330 Nouvelle-Ville
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
