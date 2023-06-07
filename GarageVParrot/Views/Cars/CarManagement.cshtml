@@ -11,15 +11,18 @@
         @TempData["Message"]
     </div>
 }
-<div class="search-bar d-flex gap-2 align-items-center mb-3 form-group ">
-    <input class="form-control search-input" type="search" placeholder="Rechercher un véhicule" aria-label="Search">
-    <button class="search-btn send control-label" type="submit">Rechercher</button>
-</div>
+<form asp-controller="Cars" asp-action="CarManagement" method="get">
+    <div class="search-bar d-flex gap-2 align-items-center mb-3 form-group ">
+        <input class="form-control search-input" type="text" placeholder="Filtrer" name="SearchString">
+        <button class="search-btn send control-label" type="submit">Rechercher</button>
+    </div>
+</form>
 
 <div class="car-grid">
     <div class="car-grid-header d-grid">
         <div><h4>Marque et modèle</h4></div>
-        <div><h4>Année et kilométrage </h4></div>
+        <div><h4>Année</h4></div>
+        <div><h4>Kilomètrage</h4></div>
         <div><h4>Image</h4></div>
         <div><h4>Action</h4></div>
     </div>
@@ -32,8 +35,11 @@
                     @Html.DisplayFor(modelItem => car.Brand) - @Html.DisplayFor(modelItem => car.Model)
                 </div>
                 <div class="car-management-year">
-                    @Html.DisplayFor(modelItem => car.Year) - @Html.DisplayFor(modelItem => car.Kilometers) km
+                    @Html.DisplayFor(modelItem => car.Year)
                 </div>
+            <div class="car-management-year">
+                @Html.DisplayFor(modelItem => car.Kilometers) km
+            </div>
                 <div class="car-management-image">
                     <img class="car-list-image" src="~/Uploads/CarImageCover/@car.CoverImage" alt="Image de la voiture" />
                 </div>

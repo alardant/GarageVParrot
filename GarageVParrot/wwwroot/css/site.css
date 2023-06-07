@@ -704,7 +704,7 @@ footer h3{
 /*CAR MANAGEMENT STYLE CSS*/
 
 .car-grid .d-grid {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 0.5fr 0.5fr 1fr 1fr;
     text-align: center;
     align-items: center
 }

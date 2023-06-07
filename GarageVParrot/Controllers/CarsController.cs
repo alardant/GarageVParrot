@@ -37,11 +37,26 @@ namespace GarageVParrot.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> CarManagement()
+        public async Task<IActionResult> CarManagement(string searchString)
         {
             var openhours = await _context.OpenHours.FirstOrDefaultAsync();
-            var listCar = await _context.Cars.ToListAsync();
-            return View(listCar);
+            var listCar = _context.Cars.AsQueryable();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                if (int.TryParse(searchString, out int searchNumber))
+                {
+                    listCar = listCar.Where(i => i.Brand.Contains(searchString) || i.Model.Contains(searchString) || i.Year == searchNumber || (int)i.Kilometers == searchNumber);
+                }
+                else
+                {
+                    listCar = listCar.Where(i => i.Brand.Contains(searchString) || i.Model.Contains(searchString));
+                }
+            }
+
+            var result = await listCar.ToListAsync();
+
+            return View(result);
         }
 
         [HttpGet]
