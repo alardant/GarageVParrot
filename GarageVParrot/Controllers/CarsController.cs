@@ -39,7 +39,6 @@ namespace GarageVParrot.Controllers
         [HttpGet]
         public async Task<IActionResult> CarManagement(string searchString)
         {
-            var openhours = await _context.OpenHours.FirstOrDefaultAsync();
             var listCar = _context.Cars.AsQueryable();
 
             if (!String.IsNullOrEmpty(searchString))

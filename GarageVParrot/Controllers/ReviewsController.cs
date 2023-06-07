@@ -29,11 +29,21 @@ namespace GarageVParrot.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Validate()
+        public async Task<IActionResult> Validate(string searchString)
         {
-            var reviewList = await _context.Reviews.AsNoTracking().Where(i => i.Accepted == false).ToListAsync();
-            return View(reviewList);
+            var listReviews = _context.Reviews.Where(i => i.Accepted == false).AsQueryable();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+
+                listReviews = listReviews.Where(i => i.Name.Contains(searchString) || i.Description.Contains(searchString));
+
+            }
+            var result = await listReviews.ToListAsync();
+
+            return View(result);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Validate(int id, ReviewViewModel reviewVM)

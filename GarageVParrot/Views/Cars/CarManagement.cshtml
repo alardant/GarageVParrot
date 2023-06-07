@@ -5,18 +5,19 @@
 
 <a class="return-index" asp-action="Create">Ajouter un véhicule</a>
 
-@if (TempData["Message"] != null)
-{
-    <div class="tempdata-form" style="color: @(TempData["Message"].ToString().Contains("Échec") ? "#BE0C0C" : "#0D5B82")">
-        @TempData["Message"]
-    </div>
-}
 <form asp-controller="Cars" asp-action="CarManagement" method="get">
     <div class="search-bar d-flex gap-2 align-items-center mb-3 form-group ">
         <input class="form-control search-input" type="text" placeholder="Filtrer" name="SearchString">
         <button class="search-btn send control-label" type="submit">Rechercher</button>
     </div>
 </form>
+
+@if (TempData["Message"] != null)
+{
+    <div class="tempdata-form" style="color: @(TempData["Message"].ToString().Contains("Échec") ? "#BE0C0C" : "#0D5B82")">
+        @TempData["Message"]
+    </div>
+}
 
 <div class="car-grid">
     <div class="car-grid-header d-grid">
