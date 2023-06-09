@@ -215,16 +215,19 @@ namespace GarageVParrot.Controllers
                     _context.Reviews.Remove(review);
                     await _context.SaveChangesAsync();
                     TempData["Message"] = "Le témoignage a bien été supprimé.";
+                    return RedirectToAction("Validate");
                 } else
                 {
                     TempData["Message"] = "Échec de la suppression du témoignage, veuillez réessayer.";
+                    return RedirectToAction("Validate");
                 }
             }
             catch (Exception ex)
             {
                 TempData["Message"] = "Échec de la suppression du témoignage, veuillez réessayer.";
+                return RedirectToAction("Validate");
             }
-            string referrerUrl = Request.Headers["Referer"].ToString();
+/*            string referrerUrl = Request.Headers["Referer"].ToString();
             if (!string.IsNullOrEmpty(referrerUrl))
             {
                 return Redirect(referrerUrl);
@@ -232,7 +235,7 @@ namespace GarageVParrot.Controllers
             else
             {
                 return RedirectToAction("Index"); // ou une autre action par défaut si le referer est manquant
-            }
+            }*/
         }
 
         private bool ReviewExists(int id)

@@ -44,7 +44,7 @@ h2 {
     margin-top: 20px;
     font-size: 26px;
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
 }
     h2:before {
         content: '';
@@ -80,9 +80,9 @@ q {
     font-size:16px;
 }
 
-input, textarea {
-    background-color: #fcfcfc!important;
-    border: 1px solid #1175A7!important;
+input, select, textarea {
+    background-color: #fcfcfc !important;
+    border: 1px solid #1175A7 !important;
 }
 
 .form-check-input:hover{
@@ -124,9 +124,13 @@ label {
     padding:1px 6px;
 }
 
+    .return-index:hover{
+        color:#fcfcfc;
+    }
 
-@media (max-width: 768px) {
-    .return-index {
+
+    @media (max-width: 768px) {
+        .return-index {
         position: relative;
     }
 
@@ -704,9 +708,18 @@ footer h3{
 /*CAR MANAGEMENT STYLE CSS*/
 
 .car-grid .d-grid {
-    grid-template-columns: 1fr 0.5fr 0.5fr 1fr 1fr;
+    grid-template-columns: 1fr 0.5fr 0.5fr 0.5fr 1fr;
     text-align: center;
-    align-items: center
+    align-items: center;
+    grid-template-rows: 50px
+}
+
+.car-management-image{
+    height:100%;
+}
+
+.car-grid img {
+    object-fit: contain;
 }
 
 .car-list-image {
@@ -765,4 +778,35 @@ footer h3{
     padding: 5px;
 }
 
+.car-grid-body {
+    
+}
+
+/*CAR CREATE UPDATE STYLE CSS*/
+
+.car-create-update-form {
+    grid-template-columns: 1fr 1fr;
+    gap:4rem;
+}
+
+.car-options {
+    grid-template-columns: 1fr 1fr;
+}
+
+.car-create-update-form h4 {
+    margin-top:revert;
+    text-decoration:underline;
+}
+
+@media (max-width: 575px) {
+    .car-create-update-form {
+        grid-template-columns: 1fr;
+        gap:unset;
+    }
+}
+
+.car-create-update .send {
+    margin-bottom: 20px;
+    margin-top: auto;
+}
 
