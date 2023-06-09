@@ -330,14 +330,14 @@ namespace GarageVParrot.Controllers
                     else
                     {
                         TempData["Message"] = "Échec de la modification du véhicule, veuillez réessayer.";
-                        return View(carVM);
+                        return RedirectToAction(nameof(CarManagement));
                     }
                 }
                 TempData["Message"] = "Le véhicule a bien été modifié.";
                 return RedirectToAction(nameof(CarManagement));
             }
             TempData["Message"] = "Échec de la modification du véhicule, veuillez réessayer.";
-            return View(CarManagement);
+            return RedirectToAction(nameof(CarManagement));
         }
 
 /*        [HttpGet]
@@ -363,7 +363,7 @@ namespace GarageVParrot.Controllers
         {
             if (_context.Cars == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Cars'  is null.");
+                TempData["Message"] = "Échec de la suppression du véhicule, veuillez réessayer.";
             }
 
             var car = await _context.Cars.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);

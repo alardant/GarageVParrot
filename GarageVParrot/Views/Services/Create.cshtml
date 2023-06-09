@@ -1,10 +1,11 @@
 ﻿@model GarageVParrot.ViewModels.ServiceViewModel
 
+<h2>Ajouter un service</h2>
+
 <div>
-    <a asp-action="Index">Retour à la liste</a>
+    <a class="return-index" asp-action="Index">Retour à la liste</a>
 </div>
 
-<h2>Ajouter un service</h2>
 
 <div class="row">
     <div class="col-12">
@@ -23,11 +24,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label">Description</label>
-                <textarea asp-for="Description" class="form-control"></textarea>
+                <textarea class="tinyMCE" asp-for="Description" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Valider" class="btn m-2" />
+                <button type="submit" class="send" value="Ajouter">Ajouter</button>
             </div>
         </form>
     </div>
@@ -38,8 +39,10 @@
     <script>
         tinymce.init({
             selector: 'textarea',
+            content_css: "CUSTOM",
+            skin: 'CUSTOM',
             plugins: 'anchor emoticons table visualblocks wordcount',
-            toolbar: 'undo redo | bold italic underline strikethrough | numlist bullist indent outdent | emoticons charmap | removeformat',
+            toolbar: 'undo redo | bold italic underline strikethrough | numlist bullist indent outdent | emoticons charmap |',
         });
     </script>
 }

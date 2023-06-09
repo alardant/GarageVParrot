@@ -68,6 +68,7 @@ namespace GarageVParrot.Controllers
         {
             if (ModelState.IsValid)
             {
+                try { 
                 string imageFileName = null;
                 if (serviceVM.Image != null)
                 {
@@ -88,9 +89,15 @@ namespace GarageVParrot.Controllers
 
                 await _context.AddAsync(service);
                 await _context.SaveChangesAsync();
+                TempData["Message"] = "Le service a bien été crée.";
                 return RedirectToAction("Index");
-            }
 
+                } catch(Exception ex) {
+                    TempData["Message"] = "Échec de la création du service, veuillez réessayer.";
+                    return RedirectToAction("Index");
+                }
+            }
+            TempData["Message"] = "Échec de la création du service, veuillez réessayer.";
             return RedirectToAction("Index");
         }
 
@@ -178,15 +185,18 @@ namespace GarageVParrot.Controllers
                     }
                     else
                     {
-                        throw;
+                        TempData["Message"] = "Échec de la modification du service, veuillez réessayer.";
+                        return RedirectToAction(nameof(Index));
                     }
                 }
+                TempData["Message"] = "Le service a bien été modifié.";
                 return RedirectToAction(nameof(Index));
             }
-            return View(serviceVM);
+            TempData["Message"] = "Échec de la modification du service, veuillez réessayer.";
+            return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet]
+/*        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Services == null)
@@ -199,7 +209,7 @@ namespace GarageVParrot.Controllers
                 return NotFound();
             }
             return View(service);
-        }
+        }*/
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -207,10 +217,12 @@ namespace GarageVParrot.Controllers
         {
             if (_context.Reviews == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Reviews'  is null.");
+                TempData["Message"] = "Échec de la suppression du service, veuillez réessayer.";
             }
 
             var service = await _context.Services.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+
+            try { 
             if (service.Image != null)
             {
                 string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
@@ -225,8 +237,15 @@ namespace GarageVParrot.Controllers
                 _context.Services.Remove(service);
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
+                TempData["Message"] = "Le service a bien été supprimé.";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = "Échec de la service du véhicule, veuillez réessayer.";
+                return RedirectToAction(nameof(Index));
+            }
         }
         private bool ServiceExists(int id)
         {

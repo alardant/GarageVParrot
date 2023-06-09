@@ -29,6 +29,7 @@
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
     <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\tinyMce\" />
     <Folder Include="wwwroot\Uploads\CarImageCover\" />
     <Folder Include="wwwroot\Uploads\CarImageList\" />
   </ItemGroup>

@@ -1,50 +1,52 @@
 ﻿@model IEnumerable<GarageVParrot.Models.Service>
 
-<h2>Lise des services</h2>
 
-<div>
-    <a asp-action="Create">Ajouter un service</a>
-</div>
+<h2>Liste des services</h2>
+
+<a class="return-index" asp-action="Create">Ajouter un Service</a>
 
 @if (TempData["Message"] != null)
 {
-    <div class="tempdata-form">
+    <div class="tempdata-form" style="color: @(TempData["Message"].ToString().Contains("Échec") ? "#BE0C0C" : "#0D5B82")">
         @TempData["Message"]
     </div>
 }
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td width="100px" height="100px">
-                    <img class="service-image" src="~/Uploads/ServicesImage/@item.Image" alt="Image du service" />
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Modifier</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<div class="service-grid">
+    <div class="service-grid-header d-grid">
+        <div><h4>Titre</h4></div>
+        <div><h4>Description</h4></div>
+        <div><h4>Image</h4></div>
+        <div><h4>Action</h4></div>
+    </div>
+
+    <hr />
+    @foreach (Service service in Model)
+    {
+        <div class="d-grid service-grid-body">
+            <div class="service-grid-title">
+                @Html.DisplayFor(modelItem => service.Title)
+            </div>
+            <div class="service-grid-description">
+                @Html.Raw(service.Description)
+            </div>
+            <div class="service-grid-image">
+                <img class="service-list-image" src="~/Uploads/ServicesImage/@service.Image" alt="Image du service" />
+            </div>
+            <div class="service-validate-buttons">
+                <button class="send"><a asp-action="Edit" asp-route-id="@service.Id">Modifier</a></button>
+                <button type="button" class="delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-review-id="@service.Id" onclick="setItemIdToDelete('@service.Id')">Supprimer</button>
+            </div>
+        </div>
+        <hr />
+    }
+</div>
+@await Html.PartialAsync("_DeleteModal")
+
+@section Scripts {
+    <script>
+        function setItemIdToDelete(itemId) {
+            document.getElementById('ItemToDeleteId').value = itemId;
+        }
+    </script>
+    }

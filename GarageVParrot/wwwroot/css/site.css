@@ -3,7 +3,7 @@
 
 html, pre, label {
     font-size: 14px;
-    font-family: 'Source Serif Pro';
+    font-family: '';
     position: relative;
     color: #1D100B;
 }
@@ -44,7 +44,7 @@ h2 {
     margin-top: 20px;
     font-size: 26px;
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 14px;
 }
     h2:before {
         content: '';
@@ -132,12 +132,12 @@ label {
     @media (max-width: 768px) {
         .return-index {
         position: relative;
-    }
+        }
 
-    .return-index-div {
-        display: flex;
-        justify-content: end;
-    }
+        .return-index-div {
+            display: flex;
+            justify-content: end;
+        }
 }
 /*NAVBAR STYLE CSS*/
 @media (max-width: 575px) {
@@ -670,8 +670,9 @@ footer h3{
 
 .reviews-grid .d-grid {
     grid-template-columns: 1fr 3fr 1fr 0.5fr 1.5fr;
+    grid-template-rows: 50px;
     text-align: center;
-    align-items:center
+    align-items: center
 }
 
 .review-validate-description {
@@ -715,17 +716,11 @@ footer h3{
 }
 
 .car-management-image{
-    height:100%;
+    height:100%
 }
 
 .car-grid img {
     object-fit: contain;
-}
-
-.car-list-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover
 }
 
 .car-grid-body div {
@@ -754,9 +749,6 @@ footer h3{
     }
 }
 
-.car-management-image{
-}
-
 .car-grid .send {
     float: unset;
     vertical-align: middle;
@@ -776,10 +768,6 @@ footer h3{
     width: auto;
     height: max-content;
     padding: 5px;
-}
-
-.car-grid-body {
-    
 }
 
 /*CAR CREATE UPDATE STYLE CSS*/
@@ -810,3 +798,89 @@ footer h3{
     margin-top: auto;
 }
 
+/*SERVICE INDEX STYLE CSS */
+
+.service-grid .d-grid {
+    grid-template-columns: 1fr 2fr 1fr 1fr;
+    text-align: center;
+    align-items: center;
+}
+@media (max-width: 768px) {
+    .service-grid {
+        margin-top: 14px;
+    }
+}
+
+.service-list-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover
+}
+
+.service-grid-body div {
+    margin-right: 3px;
+    margin-left: 3px;
+}
+
+.service-grid h4 {
+    font-family: 'oswald';
+    font-weight: bold;
+}
+
+.service-grid-header {
+    text-align: center;
+    align-items: center
+}
+
+@media (max-width:767px) {
+    .service-validate-buttons {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .service-grid .send {
+        margin-right: 0px;
+    }
+
+    .service-grid .service-grid-body {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        gap:1rem;
+        grid-template-areas:
+            ".service-grid-title"
+            ".service-management-description"
+            ".service-grid-title .service-validate-buttons";
+        }
+    }
+
+.service-grid .send {
+    float: unset;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.service-validate-buttons a {
+    text-decoration: none;
+    color: #fcfcfc;
+}
+
+/* SERVICE CREATE UPDATE STYLE*/
+
+/* TINYMCE*/
+/*.tox-menubar, .tox-editor-header, .tox-toolbar__primary, .tox-statusbar, .tox-edit-area__iframe {
+    background-color: #fcfcfc !important;
+}
+
+.tox-tinymce button, .tox-tinymce button span, .tox-statusbar__path-item, #tinymce p {
+    color: red !important;
+}
+
+.tox-tinymce svg {
+    fill: red !important;
+}
+
+.tox-tinymce {
+    border: 20px solid green;
+    border-radius: unset;
+}
+*/

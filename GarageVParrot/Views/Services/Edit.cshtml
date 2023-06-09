@@ -1,14 +1,11 @@
 ﻿@model GarageVParrot.ViewModels.EditServiceViewModel
 
-@{
-    ViewData["Title"] = "Edit";
-}
-
 <h2>Modifier un service</h2>
 
 <div>
-    <a asp-action="Index">Retour à la liste</a>
+    <a class="return-index" asp-action="Index">Retour à la liste</a>
 </div>
+
 
 <div class="row">
     <div class="col-12">
@@ -31,7 +28,7 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Modifier" class="btn btn-primary" />
+                <button type="submit" class="send" value="Modifier">Modifier</button>
             </div>
         </form>
     </div>
@@ -42,6 +39,7 @@
     <script>
         tinymce.init({
             selector: 'textarea',
+            content_css: "~/css/tinyMce.css"
             plugins: 'anchor emoticons table visualblocks wordcount',
             toolbar: 'undo redo | bold italic underline strikethrough | numlist bullist indent outdent | emoticons charmap | removeformat',
         });
