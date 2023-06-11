@@ -1,4 +1,4 @@
-﻿/*stop navigate faster, feel free stop press ctrl + fieldset command type thead font-face-name color-profile thead page you area looking for : Home, Review, Car...
+﻿/*to navigate faster, feel free stop press ctrl + fieldset command type thead font-face-name color-profile thead page you area looking for : Home, Review, Car...
 */
 
 html, pre, label {
@@ -41,9 +41,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h2 {
-    margin-top: 20px;
     font-size: 26px;
     text-align: center;
+    margin-top: 14px;
     margin-bottom: 14px;
 }
     h2:before {
@@ -75,6 +75,11 @@ q {
     text-align: justify;
 }
 
+hr{
+    margin-top:10px;
+    margin-bottom:10px
+}
+
 .bi-star-fill, .bi-star{
     color: #F9C611;
     font-size:16px;
@@ -94,9 +99,13 @@ input, select, textarea {
 
 }
 
-
 label {
     margin-top: 10px;
+    font-weight:bold;
+}
+
+.form-check-label {
+    font-weight: normal !important;
 }
 
 .send {
@@ -104,9 +113,9 @@ label {
     background-color: #0D5B82;
     border: 1px solid #1D100B;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    margin-top:10px;
-    margin-bottom:10px;
-    float:right
+    margin-top: 10px;
+    margin-bottom: 10px;
+    float: right
 }
 
 .return-index {
@@ -313,7 +322,6 @@ footer h3{
     text-decoration:underline;
 }
 
-
 .image-service-container img {
     width: 100%;
     height: 100%;
@@ -323,7 +331,6 @@ footer h3{
 .service-text > p {
     text-align: justify;
 }
-
 
 .service-div:nth-child(odd) {
     display: grid;
@@ -349,6 +356,7 @@ footer h3{
 .service-text{
     display:grid;
 }
+
 /*SECTION REVIEWS STYLE CSS*/
 .card-header {
     display: grid;
@@ -689,13 +697,14 @@ footer h3{
     align-items: center
 }
 
-@media (max-width:767px){
+@media (max-width:767px) {
     .review-validate-buttons{
         display:grid;
-        justify-items:end;
+        justify-items:center;
+        gap:5px;
     }
-    .reviews-grid .send {
-        margin-right: 0px;
+    .review-validate-buttons button{
+        margin:unset!important;
     }
 }
 
@@ -712,14 +721,17 @@ footer h3{
     grid-template-columns: 1fr 0.5fr 0.5fr 0.5fr 1fr;
     text-align: center;
     align-items: center;
-    grid-template-rows: 50px
+    grid-template-rows: auto;
 }
 
-.car-management-image{
-    height:100%
+.car-management-image {
+    height:auto;
 }
 
-.car-grid img {
+.car-list-image {
+    max-height: 100px;
+    height: 100%;
+    width:100%;
     object-fit: contain;
 }
 
@@ -741,11 +753,12 @@ footer h3{
 @media (max-width:767px) {
     .car-validate-buttons {
         display: grid;
-        justify-items: end;
+        justify-items: center;
+        gap: 10px;
     }
 
-    .car-grid .send {
-        margin-right: 0px;
+    .car-validate-buttons button {
+        margin: unset !important;
     }
 }
 
@@ -755,13 +768,13 @@ footer h3{
     margin-right: 10px;
 }
 
-.car-validate-buttons a{
-    text-decoration:none;
-    color:#fcfcfc;
+.car-validate-buttons a {
+    text-decoration: none;
+    color: #fcfcfc;
 }
 
 .search-btn {
-    float:unset;
+    float: unset;
 }
 
 .search-input {
@@ -782,8 +795,9 @@ footer h3{
 }
 
 .car-create-update-form h4 {
-    margin-top:revert;
-    text-decoration:underline;
+    margin-top: revert;
+    text-decoration: underline;
+    font-weight: bold;
 }
 
 @media (max-width: 575px) {
@@ -866,21 +880,52 @@ footer h3{
 
 /* SERVICE CREATE UPDATE STYLE*/
 
-/* TINYMCE*/
-/*.tox-menubar, .tox-editor-header, .tox-toolbar__primary, .tox-statusbar, .tox-edit-area__iframe {
-    background-color: #fcfcfc !important;
+.account-grid .d-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+    text-align: center;
+    align-items: center;
 }
 
-.tox-tinymce button, .tox-tinymce button span, .tox-statusbar__path-item, #tinymce p {
-    color: red !important;
+@media (max-width: 768px) {
+    .account-grid {
+        margin-top: 14px;
+    }
 }
 
-.tox-tinymce svg {
-    fill: red !important;
+.account-grid-body div {
+    margin-right: 3px;
+    margin-left: 3px;
 }
 
-.tox-tinymce {
-    border: 20px solid green;
-    border-radius: unset;
+.account-grid h4 {
+    font-family: 'oswald';
+    font-weight: bold;
 }
-*/
+
+.account-grid-header {
+    text-align: center;
+    align-items: center
+}
+
+@media (max-width:767px) {
+    .account-validate-buttons {
+        display: grid;
+        justify-items: center;
+        gap: 10px;
+    }
+
+    .account-validate-buttons button {
+        margin: unset !important;
+    }
+}
+
+.account-grid .send {
+    float: unset;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.account-validate-buttons a {
+    text-decoration: none;
+    color: #fcfcfc;
+}

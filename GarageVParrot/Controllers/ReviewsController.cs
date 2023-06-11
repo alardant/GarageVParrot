@@ -123,11 +123,11 @@ namespace GarageVParrot.Controllers
                     TempData["Message"] = "Échec de la création de votre témoignage, veuillez réessayer.";
                 }
                 ModelState.Clear();
-                return RedirectToAction("Index");
+                return View(reviewVM);
                 
             }
             TempData["Message"] = "Échec de la création de votre témoignage, veuillez réessayer.";
-            return RedirectToAction("Index");
+            return View(reviewVM);
         }
 
 /*        [HttpGet]
@@ -198,7 +198,6 @@ namespace GarageVParrot.Controllers
             return View(reviewViewModel);
         }*/
 
-        // POST: Reviews/Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -207,35 +206,33 @@ namespace GarageVParrot.Controllers
             {
                 TempData["Message"] = "Échec de la suppression du témoignage, veuillez réessayer.";
             }
-            try
+            if (ModelState.IsValid)
             {
-                var review = await _context.Reviews.FirstOrDefaultAsync(i => i.Id == id);
-                if (review != null)
+                try
                 {
-                    _context.Reviews.Remove(review);
-                    await _context.SaveChangesAsync();
-                    TempData["Message"] = "Le témoignage a bien été supprimé.";
-                    return RedirectToAction("Validate");
-                } else
+                    var review = await _context.Reviews.FirstOrDefaultAsync(i => i.Id == id);
+                    if (review != null)
+                    {
+                        _context.Reviews.Remove(review);
+                        await _context.SaveChangesAsync();
+                        TempData["Message"] = "Le témoignage a bien été supprimé.";
+                        return RedirectToAction("Validate");
+                    }
+                    else
+                    {
+                        TempData["Message"] = "Échec de la suppression du témoignage, veuillez réessayer.";
+                        return RedirectToAction("Validate");
+                    }
+                }
+                catch (Exception ex)
                 {
                     TempData["Message"] = "Échec de la suppression du témoignage, veuillez réessayer.";
                     return RedirectToAction("Validate");
                 }
             }
-            catch (Exception ex)
-            {
-                TempData["Message"] = "Échec de la suppression du témoignage, veuillez réessayer.";
-                return RedirectToAction("Validate");
-            }
-/*            string referrerUrl = Request.Headers["Referer"].ToString();
-            if (!string.IsNullOrEmpty(referrerUrl))
-            {
-                return Redirect(referrerUrl);
-            }
-            else
-            {
-                return RedirectToAction("Index"); // ou une autre action par défaut si le referer est manquant
-            }*/
+            TempData["Message"] = "Échec de la suppression du témoignage, veuillez réessayer.";
+            return RedirectToAction("Validate");
+                
         }
 
         private bool ReviewExists(int id)

@@ -51,11 +51,11 @@ namespace GarageVParrot.Controllers
                     }
                 }
                 //Password is incorrect
-                TempData["Error"] = "Les identifiants sont incorrects.";
+                TempData["Error"] = "Échec de identification, veuillez réessayer.";
                 return View(loginViewModel);
             }
             //User not found
-            TempData["Error"] = "Les identifiants sont incorrects.";
+            TempData["Error"] = "Échec de l'identification, veuillez réessayer.";
             return View(loginViewModel);
         }
 
@@ -69,26 +69,44 @@ namespace GarageVParrot.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
-            if (!ModelState.IsValid) return View(registerViewModel);
+            if (ModelState.IsValid) 
+            { 
+                try
+                {
+                    var user = await _userManager.FindByEmailAsync(registerViewModel.EmailAddress);
+                    if (user != null)
+                    {
+                        TempData["Message"] = "Échec de la création de l'employé, cette adresse email est déjà utilisée.";
+                        return View(registerViewModel);
+                    }
 
-            var user = await _userManager.FindByEmailAsync(registerViewModel.EmailAddress);
-            if (user != null)
-            {
-                TempData["Error"] = "Cette adresse email est déjà utilisée.";
-                return View(registerViewModel);
+                    bool isAdmin = registerViewModel.Role;
+                    string role = isAdmin ? UserRoles.Admin : UserRoles.User;
+
+                    var newUser = new User()
+                    {
+                        Email = registerViewModel.EmailAddress,
+                        UserName = registerViewModel.EmailAddress,
+                        Role = role
+                    };
+                    var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
+
+                    if (newUserResponse.Succeeded)
+                    {
+                        string userRole = isAdmin ? UserRoles.Admin : UserRoles.User;
+                        await _userManager.AddToRoleAsync(newUser, userRole);
+                    }
+                    TempData["Message"] = "L'employé a bien été crée.";
+
+                    return RedirectToAction("Index");
+                } catch (Exception ex)
+                {
+                    TempData["Message"] = "Échec de la création de l'employé, veuillez réessayer.";
+                    return View(registerViewModel);
+                }
             }
-
-            var newUser = new User()
-            {
-                Email = registerViewModel.EmailAddress,
-                UserName = registerViewModel.EmailAddress
-            };
-            var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
-
-            if (newUserResponse.Succeeded)
-                await _userManager.AddToRoleAsync(newUser, UserRoles.User);
-
-            return RedirectToAction("Index", "Home");
+            TempData["Message"] = "Échec de la création de l'employé, veuillez réessayer.";
+            return View(registerViewModel);
         }
 
         [HttpGet]
@@ -99,10 +117,54 @@ namespace GarageVParrot.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int page = 0)
+        public async Task<IActionResult> Index()
         {
             var users = await _context.Users.ToListAsync();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                user.Role = roles.FirstOrDefault();
+            }
+
             return View(users);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (_context.Reviews == null)
+            {
+                TempData["Message"] = "Échec de la suppression de l'employé, veuillez réessayer.";
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var user = await _context.Users.FirstOrDefaultAsync(i => i.Id == id);
+                    if (user != null)
+                    {
+                        _context.Users.Remove(user);
+                        await _context.SaveChangesAsync();
+                        TempData["Message"] = "L'employé a bien été supprimé.";
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        TempData["Message"] = "Échec de la suppression de l'employé, veuillez réessayer.";
+                        return RedirectToAction("Index");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    TempData["Message"] = "Échec de la suppression de l'employé, veuillez réessayer.";
+                    return RedirectToAction("Index");
+                }
+            }
+            TempData["Message"] = "Échec de la suppression de l'employé, veuillez réessayer.";
+            return RedirectToAction("Index");
+
         }
 
         [HttpGet]

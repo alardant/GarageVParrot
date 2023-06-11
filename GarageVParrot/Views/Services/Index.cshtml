@@ -20,9 +20,10 @@
         <div><h4>Action</h4></div>
     </div>
 
-    <hr />
+
     @foreach (Service service in Model)
     {
+            <hr />
         <div class="d-grid service-grid-body">
             <div class="service-grid-title">
                 @Html.DisplayFor(modelItem => service.Title)
@@ -38,7 +39,6 @@
                 <button type="button" class="delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-review-id="@service.Id" onclick="setItemIdToDelete('@service.Id')">Supprimer</button>
             </div>
         </div>
-        <hr />
     }
 </div>
 @await Html.PartialAsync("_DeleteModal")

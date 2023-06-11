@@ -102,7 +102,7 @@ namespace GarageVParrot.Controllers
                     if (carViewModel.CoverImage != null)
                     {
                         string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageCover");
-                        string fileName = Guid.NewGuid().ToString() + " - " + carViewModel.CoverImage.FileName;
+                        string fileName = Guid.NewGuid().ToString() + "-" + carViewModel.CoverImage.FileName;
                         string filePath = Path.Combine(uploadsFolder, fileName);
                         await carViewModel.CoverImage.CopyToAsync(new FileStream(filePath, FileMode.Create));
 
@@ -114,7 +114,7 @@ namespace GarageVParrot.Controllers
                         string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
                         foreach (IFormFile imageFile in carViewModel.ImageListCar)
                         {
-                            string fileName = Guid.NewGuid().ToString() + " - " + imageFile.FileName;
+                            string fileName = Guid.NewGuid().ToString() + "-" + imageFile.FileName;
                             string filePath = Path.Combine(uploadsFolder, fileName);
                             await imageFile.CopyToAsync(new FileStream(filePath, FileMode.Create));
 
@@ -163,11 +163,11 @@ namespace GarageVParrot.Controllers
                     return RedirectToAction("CarManagement");
                 } catch (Exception ex) {
                     TempData["Message"] = "Échec de la création du véhicule, veuillez réessayer.";
-                    return RedirectToAction("CarManagement");
+                    return View(carViewModel);
                 }
             }
             TempData["Message"] = "Échec de la création du véhicule, veuillez réessayer.";
-            return RedirectToAction("CarManagement");
+            return View(carViewModel);
         }
 
         [HttpGet]
@@ -233,7 +233,7 @@ namespace GarageVParrot.Controllers
                 if (file != null)
                 {
                     string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageCover");
-                    string fileName = Guid.NewGuid().ToString() + " - " + file.FileName;
+                    string fileName = Guid.NewGuid().ToString() + "-" + file.FileName;
                     string filePath = Path.Combine(uploadDir, fileName);
                     await file.CopyToAsync(new FileStream(filePath, FileMode.Create));
 
@@ -258,7 +258,7 @@ namespace GarageVParrot.Controllers
                     string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
                     foreach (IFormFile imageFile in files)
                     {
-                        string fileName = Guid.NewGuid().ToString() + " - " + imageFile.FileName;
+                        string fileName = Guid.NewGuid().ToString() + "-" + imageFile.FileName;
                         string filePath = Path.Combine(uploadsFolder, fileName);
                         await imageFile.CopyToAsync(new FileStream(filePath, FileMode.Create));
 
@@ -340,23 +340,6 @@ namespace GarageVParrot.Controllers
             return RedirectToAction(nameof(CarManagement));
         }
 
-/*        [HttpGet]
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Cars == null)
-            {
-                return NotFound();
-            }
-
-            var car = await _context.Cars.FirstOrDefaultAsync(i => i.Id == id);
-            if (car == null)
-            {
-                return NotFound();
-            }
-
-            return View(car);
-        }*/
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -367,47 +350,52 @@ namespace GarageVParrot.Controllers
             }
 
             var car = await _context.Cars.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
-
-            try
+            if (ModelState.IsValid)
             {
-                if (car.CoverImage != null)
+                try
                 {
-                    string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageCover");
-                    string oldFilePath = Path.Combine(uploadDir, car.CoverImage);
-                    if (System.IO.File.Exists(oldFilePath))
+                    if (car.CoverImage != null)
                     {
-                        System.IO.File.Delete(oldFilePath);
-                    }
-                }
-
-                if (ImagesListCarExists(id))
-                {
-                    var imageList = await _context.ImagesListCar.Where(image => image.CarId == id).ToListAsync();
-                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
-                    foreach (var imageFile in imageList)
-                    {
-                        string oldFilePath = Path.Combine(uploadsFolder, imageFile.ImagePath);
+                        string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageCover");
+                        string oldFilePath = Path.Combine(uploadDir, car.CoverImage);
                         if (System.IO.File.Exists(oldFilePath))
                         {
                             System.IO.File.Delete(oldFilePath);
                         }
-                        _context.Remove(imageFile);
                     }
-                }
 
-                if (car != null)
+                    if (ImagesListCarExists(id))
+                    {
+                        var imageList = await _context.ImagesListCar.Where(image => image.CarId == id).ToListAsync();
+                        string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
+                        foreach (var imageFile in imageList)
+                        {
+                            string oldFilePath = Path.Combine(uploadsFolder, imageFile.ImagePath);
+                            if (System.IO.File.Exists(oldFilePath))
+                            {
+                                System.IO.File.Delete(oldFilePath);
+                            }
+                            _context.Remove(imageFile);
+                        }
+                    }
+
+                    if (car != null)
+                    {
+                        _context.Cars.Remove(car);
+                    }
+
+                    await _context.SaveChangesAsync();
+                    TempData["Message"] = "Le véhicule a bien été supprimé.";
+                    return RedirectToAction(nameof(CarManagement));
+                }
+                catch (Exception ex)
                 {
-                    _context.Cars.Remove(car);
+                    TempData["Message"] = "Échec de la suppression du véhicule, veuillez réessayer.";
+                    return RedirectToAction(nameof(CarManagement));
                 }
-
-                await _context.SaveChangesAsync();
-                TempData["Message"] = "Le véhicule a bien été supprimé.";
-                return RedirectToAction(nameof(CarManagement));
-            } catch (Exception ex )
-            {
-                TempData["Message"] = "Échec de la suppression du véhicule, veuillez réessayer.";
-                return RedirectToAction(nameof(CarManagement));
             }
+            TempData["Message"] = "Échec de la suppression du véhicule, veuillez réessayer.";
+            return RedirectToAction(nameof(CarManagement));
         }
 
         private bool CarExists(int id)

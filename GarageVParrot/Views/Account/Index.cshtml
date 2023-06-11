@@ -1,9 +1,9 @@
-﻿@*@model IEnumerable<GarageVParrot.Models.User>
+﻿@model IEnumerable<GarageVParrot.Models.User>
 
 
-<h2>Liste des accès employés</h2>
+<h2>Liste des employés</h2>
 
-<a class="return-index" asp-action="Create">Ajouter un employé</a>
+<a class="return-index" asp-action="Register">Ajouter un employé</a>
 
 @if (TempData["Message"] != null)
 {
@@ -12,36 +12,36 @@
     </div>
 }
 
-<div class="car-grid">
-    <div class="review-grid-header d-grid">
-        <div><h4>Adresse email</h4></div>
-        <div><h4>Accès administrateur </h4></div>
+<div class="account-grid">
+    <div class="account-grid-header d-grid">
+        <div><h4>Email</h4></div>
+        <div><h4>Accès employé</h4></div>
         <div><h4>Action</h4></div>
     </div>
 
-    <hr />
+
     @foreach (User user in Model)
     {
-
-        <form asp-action="Validate" method="post">
-            <div class="d-grid review-grid-body">
-                <div class="user-list-email">
-                    @Html.DisplayFor(modelItem => user.Email)
-                </div>
-                <div class="user-list-role">
-                    <input type="checkbox" id="Accepted" name="Accepted" asp-for="@review.Accepted" value="true" />
-                </div>
-                <div class="car-management-image">
-                    <img class="service-image" src="~/Uploads/CarImageCover/@car.CoverImage" alt="Image de la voiture" />
-                </div>
-                <div class="review-validate-buttons">
-                    <a asp-action="Edit" asp-route-id="@car.Id">Edit</a>
-                    <button type="button" class="delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-review-id="@car.Id" onclick="setItemIdToDelete('@car.Id')">Supprimer</button>
-                </div>
+        <hr />
+        <div class="d-grid account-grid-body">
+            <div class="account-grid-email">
+                @Html.DisplayFor(modelItem => user.Email)
             </div>
-            <hr />
-        </form>
-
+            <div class="account-grid-access">
+                @if (user.Role == "admin")
+                {
+                    <input type="checkbox" id="Admin" checked value="true" disabled/>
+                }
+                else
+                {
+                    <input type="checkbox" id="Admin" value="false" disabled />
+                }
+            </div>
+            <div class="account-validate-buttons">
+                <button class="send"><a asp-action="Edit" asp-route-id="@user.Id">Modifier</a></button>
+                <button type="button" class="delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-review-id="@user.Id" onclick="setItemIdToDelete('@user.Id')">Supprimer</button>
+            </div>
+        </div>
     }
 </div>
 @await Html.PartialAsync("_DeleteModal")
@@ -52,4 +52,4 @@
             document.getElementById('ItemToDeleteId').value = itemId;
         }
     </script>
-    }*@
+    }

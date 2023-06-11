@@ -69,11 +69,13 @@ namespace GarageVParrot.Controllers
             if (ModelState.IsValid)
             {
                 try { 
+
                 string imageFileName = null;
+
                 if (serviceVM.Image != null)
                 {
                     string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
-                    string fileName = Guid.NewGuid().ToString() + " - " + serviceVM.Image.FileName;
+                    string fileName = Guid.NewGuid().ToString() + "-" + serviceVM.Image.FileName;
                     string filePath = Path.Combine(uploadsFolder, fileName);
                     await serviceVM.Image.CopyToAsync(new FileStream(filePath, FileMode.Create));
 
@@ -94,11 +96,11 @@ namespace GarageVParrot.Controllers
 
                 } catch(Exception ex) {
                     TempData["Message"] = "Échec de la création du service, veuillez réessayer.";
-                    return RedirectToAction("Index");
+                    return View(serviceVM);
                 }
             }
             TempData["Message"] = "Échec de la création du service, veuillez réessayer.";
-            return RedirectToAction("Index");
+            return View(serviceVM);
         }
 
         [HttpGet]
@@ -141,7 +143,7 @@ namespace GarageVParrot.Controllers
                 if (file != null)
                 {
                     string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
-                    string fileName = Guid.NewGuid().ToString() + " - " + file.FileName;
+                    string fileName = Guid.NewGuid().ToString() + "-" + file.FileName;
                     string filePath = Path.Combine(uploadDir, fileName);
                     await file.CopyToAsync(new FileStream(filePath, FileMode.Create));
 
@@ -190,10 +192,10 @@ namespace GarageVParrot.Controllers
                     }
                 }
                 TempData["Message"] = "Le service a bien été modifié.";
-                return RedirectToAction(nameof(Index));
+                return View(serviceVM);
             }
             TempData["Message"] = "Échec de la modification du service, veuillez réessayer.";
-            return RedirectToAction(nameof(Index));
+            return View(serviceVM);
         }
 
 /*        [HttpGet]
@@ -221,31 +223,36 @@ namespace GarageVParrot.Controllers
             }
 
             var service = await _context.Services.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
-
-            try { 
-            if (service.Image != null)
+            if (ModelState.IsValid)
             {
-                string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
-                string oldFilePath = Path.Combine(uploadDir, service.Image);
-                if (System.IO.File.Exists(oldFilePath))
+                try
                 {
-                    System.IO.File.Delete(oldFilePath);
+                    if (service.Image != null)
+                    {
+                        string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
+                        string oldFilePath = Path.Combine(uploadDir, service.Image);
+                        if (System.IO.File.Exists(oldFilePath))
+                        {
+                            System.IO.File.Delete(oldFilePath);
+                        }
+                    }
+                    if (service != null)
+                    {
+                        _context.Services.Remove(service);
+                    }
+
+                    await _context.SaveChangesAsync();
+                    TempData["Message"] = "Le service a bien été supprimé.";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    TempData["Message"] = "Échec de la service du véhicule, veuillez réessayer.";
+                    return RedirectToAction(nameof(Index));
                 }
             }
-            if (service != null)
-            {
-                _context.Services.Remove(service);
-            }
-
-                await _context.SaveChangesAsync();
-                TempData["Message"] = "Le service a bien été supprimé.";
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                TempData["Message"] = "Échec de la service du véhicule, veuillez réessayer.";
-                return RedirectToAction(nameof(Index));
-            }
+            TempData["Message"] = "Échec de la service du véhicule, veuillez réessayer.";
+            return RedirectToAction(nameof(Index));
         }
         private bool ServiceExists(int id)
         {

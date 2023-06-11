@@ -28,9 +28,9 @@
         <div><h4>Action</h4></div>
     </div>
 
-    <hr />
     @foreach (Car car in Model)
     {
+        <hr />
             <div class="d-grid car-grid-body">
                 <div class="car-list-brand">
                     @Html.DisplayFor(modelItem => car.Brand) - @Html.DisplayFor(modelItem => car.Model)
@@ -49,7 +49,7 @@
                     <button type="button" class="delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-review-id="@car.Id" onclick="setItemIdToDelete('@car.Id')">Supprimer</button>
                 </div>
             </div>
-            <hr />
+ 
     }
 </div>
 @await Html.PartialAsync("_DeleteModal")

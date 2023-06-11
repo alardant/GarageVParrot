@@ -7,5 +7,6 @@ namespace GarageVParrot.Models
         public ICollection<Car> Cars { get; set; }
         public ICollection<Review> Reviews { get; set; }
         public ICollection<Service> Services { get; set; }
+        public string Role { get; set; }
     }
 }

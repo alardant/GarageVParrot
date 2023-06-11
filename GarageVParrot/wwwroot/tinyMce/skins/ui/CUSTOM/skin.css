@@ -3043,3 +3043,7 @@ body.tox-dialog__disable-scroll {
 .tox .tox-image-tools__sidebar {
   height: 60px;
 }
+
+.tox-edit-area:hover {
+    cursor: text !important;
+}
