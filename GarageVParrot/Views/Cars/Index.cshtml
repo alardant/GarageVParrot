@@ -1,40 +1,58 @@
 ﻿@model IEnumerable<GarageVParrot.Models.Car>
 
-<h2>Nos Véhicules en vente</h2>
+<h2>Nos véhicules d'occasion</h2>
+<section class="car-cards-list">
 
-<p>
-    <a asp-action="Create">Ajouter un véhicule</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Marque et modèle
-            </th>
-            <th>
-                Année et kilométrage
-            </th>
-            <th>
-                Action
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                    @Html.DisplayFor(modelItem => item.Brand) - @Html.DisplayFor(modelItem => item.Model)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.Year) // @Html.DisplayFor(modelItem => item.Kilometers) km
-            </td>
-            
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+<aside class="filters">
+
+    <h2 class="filter">Filtrer</h2>
+        <div class="brand-filter">
+            <div class="filter-category d-flex align-items-center justify-content-between">
+                <h3>MARQUE</h3>
+                <i class="bi bi-chevron-down" onclick="showFilter()"></i>
+                <i class="bi bi-chevron-up" onclick="hideFilter()"></i>
+            </div>
+            <div class="filter-box-open">
+                @foreach (Car item in Model.DistinctBy(i => i.Brand).OrderBy(i => i.Brand))
+                {
+                    <div class="filter-box-item">
+                        <input class="form-check-input" type="checkbox" id="@item.Brand" name="car-brand" />
+                        <label for="car-brand" class="control-label">@item.Brand</label>
+                    </div>
+                }
+            </div>
+        </div>
+</aside>
+
+<div class="cars-cards">
+    @foreach(Car car in Model) {
+    <div class="car-card card">
+        <div class="car-image-container">
+            <img src="~/Uploads/CarImageCover/@car.CoverImage" class="card-img-top" alt="Image de couverture de la voiture">
+        </div>
+            <div class="car-card-body card-body d-block d-flex">
+            <h3 class="card-text car-card-brand">@Html.DisplayFor(modelItem => car.Brand)</h3>
+            <h4 class="card-text car-card-model">@Html.DisplayFor(modelItem => car.Model)</h4>
+            <p class="card-text car-card-year-km">@Html.DisplayFor(modelItem => car.Year) - @Html.DisplayFor(modelItem => car.Kilometers) km</p>
+            <p class="card-text car-card-price">@Html.DisplayFor(modelItem => car.Price) €</p>
+            <a class="see-more"  asp-action="Details" asp-route-id="@car.Id">Voir l'annonce +</a>
+        </div>
+    </div>
+    }
+</div>
+</section>
+
+
+@{
+    var contactModel = new GarageVParrot.ViewModels.ContactViewModel
+            {
+                ReturnUrl = Context.Request.Path
+            };
 }
-    </tbody>
-</table>
+
+@await Html.PartialAsync("_contactForm", contactModel)
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/form.js"></script>
+    <script type="text/javascript" src="~/js/filter.js"></script>
+}

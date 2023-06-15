@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using System.Configuration;
+using MySqlConnector;
 
 var builder = WebApplication.CreateBuilder(args);
 var mvcBuilder = builder.Services.AddRazorPages();
@@ -18,8 +21,10 @@ builder.Services.AddScoped<Seed>();
 //MySQL DB Connection
 string _GetConnStringName = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddDbContextPool<ApplicationDbContext>(options => 
+builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
     options.UseMySql(_GetConnStringName, ServerVersion.AutoDetect(_GetConnStringName)));
+
+
 
 //IdentityService
 builder.Services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)

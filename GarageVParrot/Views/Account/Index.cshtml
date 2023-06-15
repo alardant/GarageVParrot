@@ -15,12 +15,12 @@
 <div class="account-grid">
     <div class="account-grid-header d-grid">
         <div><h4>Email</h4></div>
-        <div><h4>Accès employé</h4></div>
+        <div><h4>Accès administrateur</h4></div>
         <div><h4>Action</h4></div>
     </div>
 
 
-    @foreach (User user in Model)
+    @foreach (User user in Model.OrderBy(i => i.Role))
     {
         <hr />
         <div class="d-grid account-grid-body">
