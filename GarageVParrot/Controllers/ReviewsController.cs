@@ -127,6 +127,7 @@ namespace GarageVParrot.Controllers
                 
             }
             TempData["Message"] = "Échec de la création de votre témoignage, veuillez réessayer.";
+            ModelState.Clear();
             return View(reviewVM);
         }
 

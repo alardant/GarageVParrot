@@ -3,56 +3,244 @@
 <h2>Nos véhicules d'occasion</h2>
 <section class="car-cards-list">
 
-<aside class="filters">
-
-    <h2 class="filter">Filtrer</h2>
-        <div class="brand-filter">
-            <div class="filter-category d-flex align-items-center justify-content-between">
-                <h3>MARQUE</h3>
-                <i class="bi bi-chevron-down" onclick="showFilter()"></i>
-                <i class="bi bi-chevron-up" onclick="hideFilter()"></i>
+    <aside class="filters">
+        <div class="filter-filter">
+            <div class="d-flex align-items-center justify-content-between main-filter-buttons">
+                <h3 class="filter">Filtres</h3>
+                <i class="bi bi-chevron-down" onclick="showFilter('filter')"></i>
+                <i class="bi bi-chevron-up" onclick="hideFilter('filter')"></i>
             </div>
-            <div class="filter-box-open">
-                @foreach (Car item in Model.DistinctBy(i => i.Brand).OrderBy(i => i.Brand))
-                {
-                    <div class="filter-box-item">
-                        <input class="form-check-input" type="checkbox" id="@item.Brand" name="car-brand" />
-                        <label for="car-brand" class="control-label">@item.Brand</label>
+
+            <div class="filter-box-open" id="filter-filter-box">
+
+                <div class="brand-filter box-filter">
+                    <div class="filter-category d-flex align-items-center justify-content-between">
+                        <h4>MARQUE</h4>
+                        <i class="bi bi-chevron-down" onclick="showFilter('brand')"></i>
+                        <i class="bi bi-chevron-up" onclick="hideFilter('brand')"></i>
                     </div>
-                }
+                    <div class="filter-box-close" id="brand-filter-box">
+                        @foreach (Car item in Model.DistinctBy(i => i.Brand).OrderBy(i => i.Brand))
+                        {
+                            var uniqueId = "brand-" + item.Id;
+                            <div class="filter-box-item">
+                                <input class="form-check-input" type="checkbox" id="@uniqueId" name="car-brand" value="@item.Brand" />
+                                <label for="car-brand" class="control-label">@item.Brand</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="category-filter box-filter">
+                    <div class="filter-category d-flex align-items-center justify-content-between">
+                        <h4>CATEGORY</h4>
+                        <i class="bi bi-chevron-down" onclick="showFilter('category')"></i>
+                        <i class="bi bi-chevron-up" onclick="hideFilter('category')"></i>
+                    </div>
+                    <div class="filter-box-close" id="category-filter-box">
+                        @foreach (Car item in Model.DistinctBy(i => i.Category).OrderBy(i => i.Category))
+                        {
+                            var uniqueId = "category-" + item.Id;
+                            <div class="filter-box-item">
+                                <input class="form-check-input" type="checkbox" id="@uniqueId" name="car-category" value="@item.Category" />
+                                <label for="car-category" class="control-label">@item.Category</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+
+                <div class="model-filter box-filter">
+                    <div class="filter-category d-flex align-items-center justify-content-between">
+                        <h4>MODELE</h4>
+                        <i class="bi bi-chevron-down" onclick="showFilter('model')"></i>
+                        <i class="bi bi-chevron-up" onclick="hideFilter('model')"></i>
+                    </div>
+                    <div class="filter-box-close" id="model-filter-box">
+                        @foreach (Car item in Model.DistinctBy(i => i.Model).OrderBy(i => i.Model))
+                        {
+                            var uniqueId = "model-" + item.Id;
+                            <div class="filter-box-item">
+                                <input class="form-check-input" type="checkbox" id="@uniqueId" name="car-model" value="@item.Model" />
+                                <label for="car-model" class="control-label">@item.Model</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="year-filter box-filter">
+                    <div class="filter-category d-flex align-items-center justify-content-between">
+                        <h4>CATEGORY</h4>
+                        <i class="bi bi-chevron-down" onclick="showFilter('year')"></i>
+                        <i class="bi bi-chevron-up" onclick="hideFilter('year')"></i>
+                    </div>
+                    <div class="filter-box-close" id="year-filter-box">
+                        <div class="filter-box-item">
+                            <input type="number" class="form-control" type="checkbox" id="minYear" name="car-year" value="" placeholder="année min" />
+                            <input type="number" class="form-control" type="checkbox" id="maxYear" name="car-year" value="" placeholder="année max" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="price-filter box-filter">
+                    <div class="filter-category d-flex align-items-center justify-content-between">
+                        <h4>PRIX</h4>
+                        <i class="bi bi-chevron-down" onclick="showFilter('price')"></i>
+                        <i class="bi bi-chevron-up" onclick="hideFilter('price')"></i>
+                    </div>
+                    <div class="filter-box-close" id="price-filter-box">
+                        <div class="filter-box-item">
+                            <input type="number" class="form-control" type="checkbox" id="minPrice" name="car-price" value="" placeholder="prix min" />
+                            <input type="number" class="form-control" type="checkbox" id="maxPrice" name="car-price" value="" placeholder="prix max" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="km-filter box-filter">
+                    <div class="filter-category d-flex align-items-center justify-content-between">
+                        <h4>KILOMETRAGE</h4>
+                        <i class="bi bi-chevron-down" onclick="showFilter('km')"></i>
+                        <i class="bi bi-chevron-up" onclick="hideFilter('km')"></i>
+                    </div>
+                    <div class="filter-box-close" id="km-filter-box">
+                        <div class="filter-box-item">
+                            <input type="number" class="form-control" type="checkbox" id="minKm" name="car-km" value="" placeholder="km min" />
+                            <input type="number" class="form-control" type="checkbox" id="maxKm" name="car-km" value="" placeholder="km max" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="energy-filter box-filter">
+                    <div class="filter-category d-flex align-items-center justify-content-between">
+                        <h4>ENERGIE</h4>
+                        <i class="bi bi-chevron-down" onclick="showFilter('energy')"></i>
+                        <i class="bi bi-chevron-up" onclick="hideFilter('energy')"></i>
+                    </div>
+                    <div class="filter-box-close" id="energy-filter-box">
+                        @foreach (Car item in Model.DistinctBy(i => i.Energy).OrderBy(i => i.Energy))
+                        {
+                            var uniqueId = "energy-" + item.Id;
+                            <div class="filter-box-item">
+                                <input class="form-check-input" type="checkbox" id="@uniqueId" name="car-energy" value="@item.Energy" />
+                                <label for="car-energy" class="control-label">@item.Energy</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="gear-filter box-filter">
+                    <div class="filter-category d-flex align-items-center justify-content-between">
+                        <h4>BOITE DE VITESSE</h4>
+                        <i class="bi bi-chevron-down" onclick="showFilter('gear')"></i>
+                        <i class="bi bi-chevron-up" onclick="hideFilter('gear')"></i>
+                    </div>
+                    <div class="filter-box-close" id="gear-filter-box">
+                        @foreach (Car item in Model.DistinctBy(i => i.GearType).OrderBy(i => i.GearType))
+                        {
+                            var uniqueId = "gear-" + item.Id;
+                            <div class="filter-box-item">
+                                <input class="form-check-input" type="checkbox" id="@uniqueId" name="car-gear" value="@item.GearType" />
+                                <label for="car-gear" class="control-label">@item.GearType</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="critair-filter box-filter">
+                    <div class="filter-category d-flex align-items-center justify-content-between">
+                        <h4>CRIT'AIR'</h4>
+                        <i class="bi bi-chevron-down" onclick="showFilter('critair')"></i>
+                        <i class="bi bi-chevron-up" onclick="hideFilter('critair')"></i>
+                    </div>
+                    <div class="filter-box-close" id="critair-filter-box">
+                        <div class="filter-box-item">
+                            <input class="form-check-input" type="checkbox" id="1" name="car-critair-1" value="1" />
+                            <label for="car-critair" class="control-label">1</label>
+                        </div>
+                        <div class="filter-box-item">
+                            <input class="form-check-input" type="checkbox" id="car-critair-2" name="car-critair-2" value="2" />
+                            <label for="car-critair-2" class="control-label">2</label>
+                        </div>
+                        <div class="filter-box-item">
+                            <input class="form-check-input" type="checkbox" id="car-critair-3" name="car-critair-3" value="3" />
+                            <label for="car-critair-3" class="control-label">3</label>
+                        </div>
+                        <div class="filter-box-item">
+                            <input class="form-check-input" type="checkbox" id="car-critair-4" name="car-critair-4" value="4" />
+                            <label for="car-critair-4" class="control-label">4</label>
+                        </div>
+                        <div class="filter-box-item">
+                            <input class="form-check-input" type="checkbox" id="car-critair-5" name="car-critair-5" value="5" />
+                            <label for="car-critair-5" class="control-label">5</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="options-filter box-filter">
+                    <div class="filter-category d-flex align-items-center justify-content-between">
+                        <h4>EQUIPEMENTS</h4>
+                        <i class="bi bi-chevron-down" onclick="showFilter('options')"></i>
+                        <i class="bi bi-chevron-up" onclick="hideFilter('options')"></i>
+                    </div>
+                    <div class="filter-box-close" id="options-filter-box">
+                        <div class="filter-box-item">
+                            <input class="form-check-input" type="checkbox" id="AirConditionner" name="AirConditionner" value="true" />
+                            <label for="AirConditionner" class="control-label">Climatisation</label>
+                        </div>
+                        <div class="filter-box-item">
+                            <input class="form-check-input" type="checkbox" id="Bluetooth" name="Bluetooth" value="true" />
+                            <label for="Bluetooth" class="control-label">Blutetooth</label>
+                        </div>
+                        <div class="filter-box-item">
+                            <input class="form-check-input" type="checkbox" id="ReversingRadar" name="ReversingRadar" value="true" />
+                            <label for="ReversingRadar" class="control-label">Radar de recul</label>
+                        </div>
+                        <div class="filter-box-item">
+                            <input class="form-check-input" type="checkbox" id="Gps" name="Gps" value="true" />
+                            <label for="Gps" class="control-label">GPS</label>
+                        </div>
+                        <div class="filter-box-item">
+                            <input class="form-check-input" type="checkbox" id="SpeedRegulator" name="SpeedRegulator" value="true" />
+                            <label for="SpeedRegulator" class="control-label">Régulateur de vitesse</label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-</aside>
+    </aside>
 
-<div class="cars-cards">
-    @foreach(Car car in Model) {
-    <div class="car-card card">
-        <div class="car-image-container">
-            <img src="~/Uploads/CarImageCover/@car.CoverImage" class="card-img-top" alt="Image de couverture de la voiture">
-        </div>
-            <div class="car-card-body card-body d-block d-flex">
-            <h3 class="card-text car-card-brand">@Html.DisplayFor(modelItem => car.Brand)</h3>
-            <h4 class="card-text car-card-model">@Html.DisplayFor(modelItem => car.Model)</h4>
-            <p class="card-text car-card-year-km">@Html.DisplayFor(modelItem => car.Year) - @Html.DisplayFor(modelItem => car.Kilometers) km</p>
-            <p class="card-text car-card-price">@Html.DisplayFor(modelItem => car.Price) €</p>
-            <a class="see-more"  asp-action="Details" asp-route-id="@car.Id">Voir l'annonce +</a>
-        </div>
+    <div class="cars-cards">
+        @foreach (Car car in Model)
+        {
+            <div class="car-card card">
+                <div class="car-image-container">
+                    <img src="~/Uploads/CarImageCover/@car.CoverImage" class="card-img-top" alt="Image de couverture de la voiture">
+                </div>
+                <div class="car-card-body card-body d-block d-flex">
+                    <h3 class="card-text car-card-brand">@Html.DisplayFor(modelItem => car.Brand)</h3>
+                    <h4 class="card-text car-card-model">@Html.DisplayFor(modelItem => car.Model)</h4>
+                    <p class="card-text car-card-year-km">@Html.DisplayFor(modelItem => car.Year) - @Html.DisplayFor(modelItem => car.Kilometers) km</p>
+                    <p class="card-text car-card-price">@Html.DisplayFor(modelItem => car.Price) €</p>
+                    <a class="see-more" asp-action="Details" asp-route-id="@car.Id">Voir l'annonce +</a>
+                </div>
+            </div>
+        }
     </div>
-    }
-</div>
+
 </section>
 
-
-@{
-    var contactModel = new GarageVParrot.ViewModels.ContactViewModel
+<div class="list-car-contactform">
+    @{
+        var contactModel = new GarageVParrot.ViewModels.ContactViewModel
             {
                 ReturnUrl = Context.Request.Path
             };
-}
+    }
 
-@await Html.PartialAsync("_contactForm", contactModel)
-
+    @await Html.PartialAsync("_contactForm", contactModel)
+</div>
 @section Scripts {
+
     <script type="text/javascript" src="~/js/form.js"></script>
     <script type="text/javascript" src="~/js/filter.js"></script>
-}
+    }

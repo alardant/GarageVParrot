@@ -27,10 +27,14 @@ body {
     flex-direction: column !important;
     height:100%;
 }
+
 main {
     position: relative;
 }
 
+.main-container{
+    max-width:95%!important;
+}
 
 section {
     padding: 10px;
@@ -90,8 +94,8 @@ input, select, textarea {
     border: 1px solid #1175A7 !important;
 }
 
-.form-check-input:hover{
-    cursor:pointer;
+.form-check-input:hover {
+    cursor: pointer;
 }
 
 .form-check-input:checked {
@@ -961,7 +965,7 @@ footer h3{
 
 .car-image-container {
     width: 100%;
-    height: 120px;
+    height: 100px;
 }
 
 .car-card img {
@@ -984,11 +988,20 @@ footer h3{
         margin-top:unset;
     }
 
-.car-card-price {
-    text-align: end;
-    color: #0D5B82;
-    font-size: 20px;
-}
+    .car-card-body h3{
+        font-size: 16px;
+        font-weight:600;
+    }
+
+    .car-card-body h4 {
+        font-size: 14px;
+    }
+
+    .car-card-price {
+        text-align: end;
+        color: #0D5B82;
+        font-size: 20px;
+    }
 
 .see-more {
     color: #1175A7;
@@ -1015,27 +1028,47 @@ footer h3{
         height: 40%;
     }
 
+
 /* FILTER SECTION STYLE CSS*/
 
+aside {
+    border: 1px solid #0D5B82;
+    padding:10px;
+    float:left;
+    width:20%;
+}
+
 .filter:before {
-    all:unset;
+    all: unset;
 }
 
-.brand-filter h3 {
+.filters h3 {
     font-family: 'source serif pro';
-    font-size: 20px;
 }
 
-.brand-filter:before {
+.filters h4 {
+    margin-bottom:unset;
+    font-size:14px;
+}
+
+.box-filter:before {
     content: '';
     display: block;
     border: 1px solid #0D5B82 !important;
     width: 100%;
 }
 
+.box-filter{
+    margin-bottom:10px;
+}
+
 .filter-box-open {
     border: 1px solid #1D100B;
-    padding: 10px 5px;
+    padding: 5px;
+}
+
+.km-filter .filter-box-open, .price-filter .filter-box-open, .year-filter .filter-box-open {
+    border: none;
 }
 
 .filter-box-close {
@@ -1056,12 +1089,49 @@ footer h3{
         font-weight:normal;
     }
 
-.bi-chevron-down, .bi-chevron-up {
-    color: #1D100B;
-    font-size: 30px;
-    font-weight: bold;
+    .bi-chevron-down, .bi-chevron-up {
+        color: #1D100B;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+.bi-chevron-up{
+    display:none;
 }
 
-    .bi-chevron-down:hover, .bi-chevron-up:hover {
-        cursor: pointer;
+.bi-chevron-down:hover, .bi-chevron-up:hover {
+    cursor: pointer;
+}
+
+.filter-filter > .filter-box-open{
+    border:unset;
+    padding:unset;
+}
+
+.list-car-contactform{
+    clear:both;
+}
+
+.main-filter-buttons i {
+    display: none;
+}
+
+@media (max-width: 575px) {
+    .car-cards-list {
+        display:grid;
+        grid-template-columns:1fr;
     }
+
+    aside {
+        float: none;
+        width:100%;
+    }
+
+    .bi-chevron-down{
+        display:block;
+    }
+
+    .bi-chevron-up{
+        display:none;
+    }
+}
