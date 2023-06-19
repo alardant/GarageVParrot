@@ -71,13 +71,7 @@ namespace GarageVParrot.Controllers
             {
                 return NotFound();
             }
-            var editCarVM = new EditCarViewModel
-            {
-                UserId = car.UserId,
-
-            };
-
-            return View(editCarVM);
+            return View(car);
         }
 
         [HttpGet]

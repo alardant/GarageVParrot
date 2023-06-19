@@ -1,145 +1,100 @@
 ﻿@model GarageVParrot.Models.Car
 
+<a class="return-index" asp-action="Index">Retour à la liste</a>
+
+<section>
+	<h2>Détail du véhicule</h2>
+
+	<div class="car-detail-sum">
+		<div class="image-car-detail-container">
+			<img src="~/Uploads/CarImageCover/@Model.CoverImage" class="car-detail-img" alt="Images de la voiture">
+		</div>
+		<div class="details-text-sum">
+			<h3>@Model.Brand</h3>
+			<h4>@Model.Model</h4>
+			<div class="details-sum">
+				<div class="details-sum-1">
+					<p>Catégorie : @Model.Category</p>
+					<P>Année : @Model.Year</P>
+					<p>Kilométrage : @Model.Kilometers km</p>
+					<p>Carburant : @Model.Energy</p>
+				</div>
+				<div class="details-sum-2">
+					<p>Puissance : @Model.Power</p>
+					<P>Moteur : @Model.Motor</P>
+					<p>Boite de vitesse  : @Model.GearType</p>
+					<p>Crit'Air : @Model.CritAir</p>
+				</div>
+				</div>
+			<p class="price-detail-sum">@Model.Price €</p>
+		</div>
+	</div>
+</section>
+
+<section class="carateristics">
+	<h2>Caratéristiques détaillées</h2>
+	<div class="table-carac">
+		<div class="grid-column-car-details bordered-right">
+			<p>Marque :</p>
+			<p>Modèle :</p>
+			<p>Catégorie :</p>
+			<p>Année :</p>
+			<p>Moteur :</p>
+			<p>Puissance :</p>
+			<p>Kilomètrage :</p>
+			<p>Carburant :</p>
+			<p>Boite de vitesse :</p>
+			<p>Crit'Air' :</p>
+		</div>
+		<div class="grid-column-car-details bordered-right">
+			<p>@Model.Brand</p>
+			<p>@Model.Model</p>
+			<p>@Model.Category</p>
+			<p>@Model.Year</p>
+			<p>@Model.Motor</p>
+			<p>@Model.Power</p>
+			<p>@Model.Kilometers</p>
+			<p>@Model.Energy</p>
+			<p>@Model.GearType</p>
+			<p>@Model.CritAir</p>
+		</div>
+		<div class="grid-column-car-details bordered-right">
+			<p>Nombre de portes :</p>
+			<p>Nombre de sièges :</p>
+			<p>Airbags :</p>
+			<p>Climatisation :</p>
+			<p>Bluetooth :</p>
+			<p>GPS :</p>
+			<p>Régulateur de vitesse :</p>
+			<p>Radar de recul :</p>
+			<p>ABS :</p>
+			<p>Garantie :</p>
+		</div>
+		<div class="grid-column-car-details">
+			<p>@Model.NumberOfDoors</p>
+			<p>@Model.NumberOfSeats</p>
+			<p>@(Model.Airbags ? "Oui" : "Non")</p>
+			<p>@(Model.AirConditionner ? "Oui" : "Non")</p>
+			<p>@(Model.Bluetooth ? "Oui" : "Non")</p>
+			<p>@(Model.Gps ? "Oui" : "Non")</p>
+			<p>@(Model.SpeedRegulator ? "Oui" : "Non")</p>
+			<p>@(Model.ReversingRadar ? "Oui" : "Non")</p>
+			<p>@(Model.Abs ? "Oui" : "Non")</p>
+			<p>@Model.Warranty mois</p>
+		</div>
+	</div>
+</section>
+
 @{
-    ViewData["Title"] = "Details";
+	var contactModel = new GarageVParrot.ViewModels.ContactViewModel
+			{
+				ReturnUrl = Context.Request.Path,
+				Subject = Model.Brand + " - " + Model.Model + " - " + Model.Year + " - " + Model.Kilometers + "km"
+			};
 }
 
-<h1>Details</h1>
+@await Html.PartialAsync("_contactForm", contactModel)
 
-<div>
-    <h4>Car</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Year)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Year)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Kilometers)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Kilometers)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Brand)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Brand)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Model)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Model)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NumberOfDoors)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NumberOfDoors)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NumberOfSeats)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NumberOfSeats)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AirConditionner)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AirConditionner)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Power)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Power)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Motor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Motor)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Bluetooth)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Bluetooth)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Gps)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Gps)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SpeedRegulator)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SpeedRegulator)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Airbags)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Airbags)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReversingRadar)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ReversingRadar)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CritAir)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CritAir)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Warranty)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Warranty)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Abs)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Abs)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Energy)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Energy)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GearType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GearType)
-        </dd>
-
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts {
+	<script type="text/javascript" src="~/js/form.js"></script>
+}
