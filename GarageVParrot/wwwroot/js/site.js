@@ -1,40 +1,38 @@
-﻿/*var isAboveThreshold = false;
+﻿/*// reduce/expand the filter section if the screen if smaller/larger than 575 pixel
+
+//used to determined if the screen has crossed the line of 575pixel to call the fonction only if so.
+var isAboveThreshold = false;
+var firstLoading = true
 
 function handleFilterBoxVisibility() {
     var screenWidth = window.innerWidth;
 
-    if (screenWidth >= 576 && !isAboveThreshold) {
+    if (screenWidth > 575 && (firstLoading || !isAboveThreshold)) {
+        // screen is larger than 575 px
         isAboveThreshold = true;
+        firstLoading = false;
         var filterBoxes = document.querySelectorAll(".filter-box-close");
         filterBoxes.forEach(function (box) {
-            box.classList.remove("filter-box-close");
-            box.classList.add("filter-box-open");
+            box.classList.replace("filter-box-close", "filter-box-open");
+            var filterUpArrow = document.querySelector(".bi-chevron-up");
+            var filterDownArrow = document.querySelector(".bi-chevron-down");
+            filterUpArrow.style.display = "none";
+            filterDownArrow.style.display = "none";
         });
-        console.log("grand");
-    } else if (screenWidth < 576 && isAboveThreshold) {
-        isAboveThreshold = false;
-        var filterBoxes = document.querySelectorAll(".filter-box-open");
-        filterBoxes.forEach(function (box) {
-            box.classList.remove("filter-box-open");
-            box.classList.add("filter-box-close");
-        });
-        console.log("petit");
-    }
-}
 
-function checkScreenSize() {
-    if (window.innerWidth < 576) {
+    } else if (screenWidth <= 575 && (firstLoading || isAboveThreshold)) {
+        // screen is smaller than 575 px
         isAboveThreshold = false;
+        firstLoading = false;
         var filterBoxes = document.querySelectorAll(".filter-box-open");
         filterBoxes.forEach(function (box) {
-            box.classList.remove("filter-box-open");
-            box.classList.add("filter-box-close");
+            box.classList.replace("filter-box-open", "filter-box-close");
+            var filterDownArrow = document.querySelector(".bi-chevron-down");
+            filterDownArrow.style.display = "block";
         });
-        console.log("petit");
     }
 }
 
 window.addEventListener("resize", handleFilterBoxVisibility);
-window.addEventListener("DOMContentLoaded", checkScreenSize);
-
-handleFilterBoxVisibility();*/
+window.addEventListener("DOMContentLoaded", handleFilterBoxVisibility);// reduce/expand the filter section if the screen if smaller/larger than 575 pixel
+*/

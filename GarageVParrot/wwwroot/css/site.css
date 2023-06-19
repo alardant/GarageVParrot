@@ -726,9 +726,7 @@ footer h3{
     margin-right:10px;
 }
 
-
 /*CAR MANAGEMENT STYLE CSS*/
-
 .car-grid .d-grid {
     grid-template-columns: 1fr 0.5fr 0.5fr 0.5fr 1fr;
     text-align: center;
@@ -890,7 +888,7 @@ footer h3{
     color: #fcfcfc;
 }
 
-/* SERVICE CREATE UPDATE STYLE*/
+/* ACCOUNT INDEX CREATE UPDATE STYLE*/
 
 .account-grid .d-grid {
     grid-template-columns: 1fr 1fr 1fr;
@@ -942,6 +940,8 @@ footer h3{
     color: #fcfcfc;
 }
 
+/* ACCOUNT LOGIN CREATE UPDATE STYLE*/
+
 
 /*CAR INDEX STYLE CSS*/
 
@@ -965,7 +965,7 @@ footer h3{
 
 .car-image-container {
     width: 100%;
-    height: 100px;
+    height: 80px;
 }
 
 .car-card img {
@@ -1035,7 +1035,8 @@ aside {
     border: 1px solid #0D5B82;
     padding:10px;
     float:left;
-    width:20%;
+    width:25%;
+    margin-right:10px;
 }
 
 .filter:before {
@@ -1067,8 +1068,17 @@ aside {
     padding: 5px;
 }
 
+.limited-height {
+    max-height: 95px;
+    overflow-y: auto;
+}
+
 .km-filter .filter-box-open, .price-filter .filter-box-open, .year-filter .filter-box-open {
     border: none;
+}
+
+.filter-box-open {
+    display: block;
 }
 
 .filter-box-close {
@@ -1095,7 +1105,7 @@ aside {
         font-weight: bold;
     }
 
-.bi-chevron-up{
+.bi-chevron-down{
     display:none;
 }
 
@@ -1124,7 +1134,8 @@ aside {
 
     aside {
         float: none;
-        width:100%;
+        width: 100%;
+        margin-right: unset;
     }
 
     .bi-chevron-down{
@@ -1133,5 +1144,13 @@ aside {
 
     .bi-chevron-up{
         display:none;
+    }
+
+    .main-filter-buttons .bi-chevron-down {
+        display: block;
+    }
+
+    .filters {
+        margin-bottom:14px;
     }
 }

@@ -61,7 +61,7 @@ namespace GarageVParrot.ViewModels
         public bool ReversingRadar { get; set; }
         [Required(ErrorMessage = "La Crit'Air est obligatoire.")]
         [Display(Name = "Crit'air")]
-        [Range(1, 6, ErrorMessage = "Le Crit'Air doit être compris entre 1 et 6.")]
+        [Range(0, 6, ErrorMessage = "Le Crit'Air doit être compris entre 0 et 6.")]
         [RegularExpression("(^[0-9]+$)", ErrorMessage = "Veuillez entre un nombre valide")]
         public int CritAir { get; set; }
         [Display(Name = "Garantie")]

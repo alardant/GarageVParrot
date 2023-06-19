@@ -7,7 +7,7 @@
         <div class="filter-filter">
             <div class="d-flex align-items-center justify-content-between main-filter-buttons">
                 <h3 class="filter">Filtres</h3>
-                <i class="bi bi-chevron-down" onclick="showFilter('filter')"></i>
+                <i class="bi bi-chevron-down " onclick="showFilter('filter')"></i>
                 <i class="bi bi-chevron-up" onclick="hideFilter('filter')"></i>
             </div>
 
@@ -19,7 +19,7 @@
                         <i class="bi bi-chevron-down" onclick="showFilter('brand')"></i>
                         <i class="bi bi-chevron-up" onclick="hideFilter('brand')"></i>
                     </div>
-                    <div class="filter-box-close" id="brand-filter-box">
+                    <div class="filter-box-open limited-height" id="brand-filter-box">
                         @foreach (Car item in Model.DistinctBy(i => i.Brand).OrderBy(i => i.Brand))
                         {
                             var uniqueId = "brand-" + item.Id;
@@ -37,7 +37,7 @@
                         <i class="bi bi-chevron-down" onclick="showFilter('category')"></i>
                         <i class="bi bi-chevron-up" onclick="hideFilter('category')"></i>
                     </div>
-                    <div class="filter-box-close" id="category-filter-box">
+                    <div class="filter-box-open limited-height" id="category-filter-box">
                         @foreach (Car item in Model.DistinctBy(i => i.Category).OrderBy(i => i.Category))
                         {
                             var uniqueId = "category-" + item.Id;
@@ -56,7 +56,7 @@
                         <i class="bi bi-chevron-down" onclick="showFilter('model')"></i>
                         <i class="bi bi-chevron-up" onclick="hideFilter('model')"></i>
                     </div>
-                    <div class="filter-box-close" id="model-filter-box">
+                    <div class="filter-box-open limited-height" id="model-filter-box">
                         @foreach (Car item in Model.DistinctBy(i => i.Model).OrderBy(i => i.Model))
                         {
                             var uniqueId = "model-" + item.Id;
@@ -70,11 +70,11 @@
 
                 <div class="year-filter box-filter">
                     <div class="filter-category d-flex align-items-center justify-content-between">
-                        <h4>CATEGORY</h4>
+                        <h4>ANNEE</h4>
                         <i class="bi bi-chevron-down" onclick="showFilter('year')"></i>
                         <i class="bi bi-chevron-up" onclick="hideFilter('year')"></i>
                     </div>
-                    <div class="filter-box-close" id="year-filter-box">
+                    <div class="filter-box-open limited-height" id="year-filter-box">
                         <div class="filter-box-item">
                             <input type="number" class="form-control" type="checkbox" id="minYear" name="car-year" value="" placeholder="année min" />
                             <input type="number" class="form-control" type="checkbox" id="maxYear" name="car-year" value="" placeholder="année max" />
@@ -88,7 +88,7 @@
                         <i class="bi bi-chevron-down" onclick="showFilter('price')"></i>
                         <i class="bi bi-chevron-up" onclick="hideFilter('price')"></i>
                     </div>
-                    <div class="filter-box-close" id="price-filter-box">
+                    <div class="filter-box-open limited-height" id="price-filter-box">
                         <div class="filter-box-item">
                             <input type="number" class="form-control" type="checkbox" id="minPrice" name="car-price" value="" placeholder="prix min" />
                             <input type="number" class="form-control" type="checkbox" id="maxPrice" name="car-price" value="" placeholder="prix max" />
@@ -102,7 +102,7 @@
                         <i class="bi bi-chevron-down" onclick="showFilter('km')"></i>
                         <i class="bi bi-chevron-up" onclick="hideFilter('km')"></i>
                     </div>
-                    <div class="filter-box-close" id="km-filter-box">
+                    <div class="filter-box-open limited-height" id="km-filter-box">
                         <div class="filter-box-item">
                             <input type="number" class="form-control" type="checkbox" id="minKm" name="car-km" value="" placeholder="km min" />
                             <input type="number" class="form-control" type="checkbox" id="maxKm" name="car-km" value="" placeholder="km max" />
@@ -116,7 +116,7 @@
                         <i class="bi bi-chevron-down" onclick="showFilter('energy')"></i>
                         <i class="bi bi-chevron-up" onclick="hideFilter('energy')"></i>
                     </div>
-                    <div class="filter-box-close" id="energy-filter-box">
+                    <div class="filter-box-open limited-height" id="energy-filter-box">
                         @foreach (Car item in Model.DistinctBy(i => i.Energy).OrderBy(i => i.Energy))
                         {
                             var uniqueId = "energy-" + item.Id;
@@ -134,7 +134,7 @@
                         <i class="bi bi-chevron-down" onclick="showFilter('gear')"></i>
                         <i class="bi bi-chevron-up" onclick="hideFilter('gear')"></i>
                     </div>
-                    <div class="filter-box-close" id="gear-filter-box">
+                    <div class="filter-box-open limited-height" id="gear-filter-box">
                         @foreach (Car item in Model.DistinctBy(i => i.GearType).OrderBy(i => i.GearType))
                         {
                             var uniqueId = "gear-" + item.Id;
@@ -152,7 +152,11 @@
                         <i class="bi bi-chevron-down" onclick="showFilter('critair')"></i>
                         <i class="bi bi-chevron-up" onclick="hideFilter('critair')"></i>
                     </div>
-                    <div class="filter-box-close" id="critair-filter-box">
+                    <div class="filter-box-open limited-height" id="critair-filter-box">
+                        <div class="filter-box-item">
+                            <input class="form-check-input" type="checkbox" id="0" name="car-critair-0" value="0" />
+                            <label for="car-critair" class="control-label">0</label>
+                        </div>
                         <div class="filter-box-item">
                             <input class="form-check-input" type="checkbox" id="1" name="car-critair-1" value="1" />
                             <label for="car-critair" class="control-label">1</label>
@@ -182,7 +186,7 @@
                         <i class="bi bi-chevron-down" onclick="showFilter('options')"></i>
                         <i class="bi bi-chevron-up" onclick="hideFilter('options')"></i>
                     </div>
-                    <div class="filter-box-close" id="options-filter-box">
+                    <div class="filter-box-open limited-height" id="options-filter-box">
                         <div class="filter-box-item">
                             <input class="form-check-input" type="checkbox" id="AirConditionner" name="AirConditionner" value="true" />
                             <label for="AirConditionner" class="control-label">Climatisation</label>
@@ -240,7 +244,7 @@
     @await Html.PartialAsync("_contactForm", contactModel)
 </div>
 @section Scripts {
-
-    <script type="text/javascript" src="~/js/form.js"></script>
     <script type="text/javascript" src="~/js/filter.js"></script>
+    <script type="text/javascript" src="~/js/form.js"></script>
+
     }

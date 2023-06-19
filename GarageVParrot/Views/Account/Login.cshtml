@@ -1,35 +1,34 @@
 ﻿@model GarageVParrot.ViewModels.LoginViewModel;
 
+<h2>Se connecter</h2>
 
-<h2>Se Connecter</h2>
-<a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">Retour à l'acceuil</a>
+<a class="return-index" asp-area="" asp-controller="Home" asp-action="Index">Retour à l'acceuil</a>
+
+@if (TempData["Message"] != null)
+{
+    <div class="tempdata-form" style="color: @(TempData["Message"].ToString().Contains("Échec") ? "#BE0C0C" : "#0D5B82")">
+        @TempData["Message"]
+    </div>
+}
+
+
 <div class="row">
     <div class="col-12">
-        @if (TempData["Error"] != null)
-        {
-            <div class="col-md-12 alert alert-danger">
-                <span>@TempData["Error"]</span>
+        <form asp-action="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="EmailAddress" class="control-label"></label>
+                <input asp-for="EmailAddress" class="form-control">
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>
             </div>
-        }
-        <div class="row">
-            <div class="col-md-8 offset-2">
-                <form asp-action="Login">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="EmailAddress" class="control-label"></label>
-                        <input asp-for="EmailAddress" class="form-control">
-                        <span asp-validation-for="EmailAddress" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Password" class="control-label"></label>
-                        <input asp-for="Password" class="form-control" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <input class="btn" type="submit" value="Se Connecter" />
-                    </div>
-                </form>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-        </div>
+            <div class="form-group">
+                <button type="submit" class="send" value="Envoyer">Se Connecter</button>
+            </div>
+        </form>
     </div>
 </div>
