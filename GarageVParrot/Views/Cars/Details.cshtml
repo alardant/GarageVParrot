@@ -1,4 +1,4 @@
-﻿@model GarageVParrot.Models.Car
+﻿@model GarageVParrot.ViewModels.DetailCarViewModel
 
 <a class="return-index" asp-action="Index">Retour à la liste</a>
 
@@ -6,27 +6,58 @@
 	<h2>Détail du véhicule</h2>
 
 	<div class="car-detail-sum">
-		<div class="image-car-detail-container">
-			<img src="~/Uploads/CarImageCover/@Model.CoverImage" class="car-detail-img" alt="Images de la voiture">
-		</div>
+		@if (Model.ImageListCar.Count() > 0)
+		{
+			<div class="image-car-detail-container">
+				<div id="carouselExampleControls" class="carousel slide" data-bs-interval="false" data-bs-ride="carousel">
+					<div class="carousel-inner">
+						<div class="carousel-item active image-car-detail-container">
+							<img src="~/Uploads/CarImageCover/@Model.Car.CoverImage" class="d-block w-100 car-detail-img" alt="Images de la voiture">
+						</div>
+
+						@foreach (ImageListCar image in Model.ImageListCar)
+						{
+							<div class="carousel-item image-car-detail-container">
+								<img src="~/Uploads/CarImageList/@image.ImagePath" class="d-block w-100 car-detail-img" alt="Images de la voiture">
+							</div>
+						}
+
+					</div>
+					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+					<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Next</span>
+					</button>
+				</div>
+			</div>
+		
+		} else
+		{
+			<div class="image-car-detail-container">
+				<img src="~/Uploads/CarImageCover/@Model.Car.CoverImage" class="d-block w-100 car-detail-img" alt="Images de la voiture">
+			</div>
+		}
 		<div class="details-text-sum">
-			<h3>@Model.Brand</h3>
-			<h4>@Model.Model</h4>
+			<h3>@Model.Car.Brand</h3>
+			<h4>@Model.Car.Model</h4>
 			<div class="details-sum">
 				<div class="details-sum-1">
-					<p>Catégorie : @Model.Category</p>
-					<P>Année : @Model.Year</P>
-					<p>Kilométrage : @Model.Kilometers km</p>
-					<p>Carburant : @Model.Energy</p>
+					<p>Catégorie : @Model.Car.Category</p>
+					<P>Année : @Model.Car.Year</P>
+					<p>Kilométrage : @Model.Car.Kilometers km</p>
+					<p>Carburant : @Model.Car.Energy</p>
 				</div>
 				<div class="details-sum-2">
-					<p>Puissance : @Model.Power</p>
-					<P>Moteur : @Model.Motor</P>
-					<p>Boite de vitesse  : @Model.GearType</p>
-					<p>Crit'Air : @Model.CritAir</p>
+					<p>Puissance : @Model.Car.Power</p>
+					<P>Moteur : @Model.Car.Motor</P>
+					<p>Boite de vitesse  : @Model.Car.GearType</p>
+					<p>Crit'Air : @Model.Car.CritAir</p>
 				</div>
 				</div>
-			<p class="price-detail-sum">@Model.Price €</p>
+			<p class="price-detail-sum">@Model.Car.Price €</p>
 		</div>
 	</div>
 </section>
@@ -47,16 +78,16 @@
 			<p>Crit'Air' :</p>
 		</div>
 		<div class="grid-column-car-details bordered-right">
-			<p>@Model.Brand</p>
-			<p>@Model.Model</p>
-			<p>@Model.Category</p>
-			<p>@Model.Year</p>
-			<p>@Model.Motor</p>
-			<p>@Model.Power</p>
-			<p>@Model.Kilometers</p>
-			<p>@Model.Energy</p>
-			<p>@Model.GearType</p>
-			<p>@Model.CritAir</p>
+			<p>@Model.Car.Brand</p>
+			<p>@Model.Car.Model</p>
+			<p>@Model.Car.Category</p>
+			<p>@Model.Car.Year</p>
+			<p>@Model.Car.Motor</p>
+			<p>@Model.Car.Power</p>
+			<p>@Model.Car.Kilometers</p>
+			<p>@Model.Car.Energy</p>
+			<p>@Model.Car.GearType</p>
+			<p>@Model.Car.CritAir</p>
 		</div>
 		<div class="grid-column-car-details bordered-right">
 			<p>Nombre de portes :</p>
@@ -71,16 +102,16 @@
 			<p>Garantie :</p>
 		</div>
 		<div class="grid-column-car-details">
-			<p>@Model.NumberOfDoors</p>
-			<p>@Model.NumberOfSeats</p>
-			<p>@(Model.Airbags ? "Oui" : "Non")</p>
-			<p>@(Model.AirConditionner ? "Oui" : "Non")</p>
-			<p>@(Model.Bluetooth ? "Oui" : "Non")</p>
-			<p>@(Model.Gps ? "Oui" : "Non")</p>
-			<p>@(Model.SpeedRegulator ? "Oui" : "Non")</p>
-			<p>@(Model.ReversingRadar ? "Oui" : "Non")</p>
-			<p>@(Model.Abs ? "Oui" : "Non")</p>
-			<p>@Model.Warranty mois</p>
+			<p>@Model.Car.NumberOfDoors</p>
+			<p>@Model.Car.NumberOfSeats</p>
+			<p>@(Model.Car.Airbags ? "Oui" : "Non")</p>
+			<p>@(Model.Car.AirConditionner ? "Oui" : "Non")</p>
+			<p>@(Model.Car.Bluetooth ? "Oui" : "Non")</p>
+			<p>@(Model.Car.Gps ? "Oui" : "Non")</p>
+			<p>@(Model.Car.SpeedRegulator ? "Oui" : "Non")</p>
+			<p>@(Model.Car.ReversingRadar ? "Oui" : "Non")</p>
+			<p>@(Model.Car.Abs ? "Oui" : "Non")</p>
+			<p>@Model.Car.Warranty mois</p>
 		</div>
 	</div>
 </section>
@@ -89,7 +120,7 @@
 	var contactModel = new GarageVParrot.ViewModels.ContactViewModel
 			{
 				ReturnUrl = Context.Request.Path,
-				Subject = Model.Brand + " - " + Model.Model + " - " + Model.Year + " - " + Model.Kilometers + "km"
+				Subject = Model.Car.Brand + " - " + Model.Car.Model + " - " + Model.Car.Year + " - " + Model.Car.Kilometers + "km"
 			};
 }
 

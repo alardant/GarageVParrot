@@ -67,11 +67,19 @@ namespace GarageVParrot.Controllers
             }
 
             var car = await _context.Cars.FirstOrDefaultAsync(i => i.Id == id);
+            var imageListCar = await _context.ImagesListCar.Where(i => i.CarId == id).ToListAsync();
+
+            var carVM = new DetailCarViewModel
+            {
+                Car = car,
+				ImageListCar = imageListCar
+			};
+
             if (car == null)
             {
                 return NotFound();
             }
-            return View(car);
+            return View(carVM);
         }
 
         [HttpGet]
