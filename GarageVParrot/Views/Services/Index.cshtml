@@ -2,9 +2,9 @@
 
 
 <h2>Liste des services</h2>
-
+<div class="return-index-div">
 <a class="return-index" asp-action="Create">Ajouter un Service</a>
-
+</div>
 @if (TempData["Message"] != null)
 {
     <div class="tempdata-form" style="color: @(TempData["Message"].ToString().Contains("Échec") ? "#BE0C0C" : "#0D5B82")">

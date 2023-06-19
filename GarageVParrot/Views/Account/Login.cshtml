@@ -1,9 +1,9 @@
 ﻿@model GarageVParrot.ViewModels.LoginViewModel;
 
 <h2>Se connecter</h2>
-
+<div class="return-index-div">
 <a class="return-index" asp-area="" asp-controller="Home" asp-action="Index">Retour à l'acceuil</a>
-
+</div>
 @if (TempData["Message"] != null)
 {
     <div class="tempdata-form" style="color: @(TempData["Message"].ToString().Contains("Échec") ? "#BE0C0C" : "#0D5B82")">

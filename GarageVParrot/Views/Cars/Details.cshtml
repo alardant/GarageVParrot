@@ -1,6 +1,8 @@
 ﻿@model GarageVParrot.ViewModels.DetailCarViewModel
 
-<a class="return-index" asp-action="Index">Retour à la liste</a>
+<div class="return-index-div">
+	<a class="return-index" asp-action="Index">Retour à la liste</a>
+</div>
 
 <section>
 	<h2>Détail du véhicule</h2>
@@ -65,52 +67,84 @@
 <section class="carateristics">
 	<h2>Caratéristiques détaillées</h2>
 	<div class="table-carac">
-		<div class="grid-column-car-details bordered-right">
+		<div class="grid-column-car-details bordered-right order-first">
 			<p>Marque :</p>
-			<p>Modèle :</p>
-			<p>Catégorie :</p>
-			<p>Année :</p>
-			<p>Moteur :</p>
-			<p>Puissance :</p>
-			<p>Kilomètrage :</p>
-			<p>Carburant :</p>
-			<p>Boite de vitesse :</p>
-			<p>Crit'Air' :</p>
-		</div>
-		<div class="grid-column-car-details bordered-right">
 			<p>@Model.Car.Brand</p>
-			<p>@Model.Car.Model</p>
-			<p>@Model.Car.Category</p>
-			<p>@Model.Car.Year</p>
-			<p>@Model.Car.Motor</p>
-			<p>@Model.Car.Power</p>
-			<p>@Model.Car.Kilometers</p>
-			<p>@Model.Car.Energy</p>
-			<p>@Model.Car.GearType</p>
-			<p>@Model.Car.CritAir</p>
 		</div>
 		<div class="grid-column-car-details bordered-right">
 			<p>Nombre de portes :</p>
-			<p>Nombre de sièges :</p>
-			<p>Airbags :</p>
-			<p>Climatisation :</p>
-			<p>Bluetooth :</p>
-			<p>GPS :</p>
-			<p>Régulateur de vitesse :</p>
-			<p>Radar de recul :</p>
-			<p>ABS :</p>
-			<p>Garantie :</p>
-		</div>
-		<div class="grid-column-car-details">
 			<p>@Model.Car.NumberOfDoors</p>
+		</div>
+		<div class="grid-column-car-details bordered-right order-first">
+			<p>Modèle :</p>
+			<p>@Model.Car.Model</p>
+		</div>
+		<div class="grid-column-car-details bordered-right">
+			<p>Nombre de sièges :</p>
 			<p>@Model.Car.NumberOfSeats</p>
+		</div>
+		<div class="grid-column-car-details bordered-right order-first">
+			<p>Catégorie :</p>
+			<p>@Model.Car.Category</p>
+		</div>
+		<div class="grid-column-car-details bordered-right">
+			<p>Airbags :</p>
 			<p>@(Model.Car.Airbags ? "Oui" : "Non")</p>
+		</div>
+		<div class="grid-column-car-details bordered-right order-first">
+			<p>Année :</p>
+			<p>@Model.Car.Year</p>
+		</div>
+		<div class="grid-column-car-details bordered-right">
+			<p>Climatisation :</p>
 			<p>@(Model.Car.AirConditionner ? "Oui" : "Non")</p>
+		</div>
+		<div class="grid-column-car-details bordered-right order-first">
+			<p>Moteur :</p>
+			<p>@Model.Car.Motor</p>
+		</div>
+		<div class="grid-column-car-details bordered-right">
+			<p>Bluetooth :</p>
 			<p>@(Model.Car.Bluetooth ? "Oui" : "Non")</p>
+		</div>
+		<div class="grid-column-car-details bordered-right order-first">
+			<p>Puissance :</p>
+			<p>@Model.Car.Power</p>
+		</div>
+		<div class="grid-column-car-details bordered-right">
+			<p>GPS :</p>
 			<p>@(Model.Car.Gps ? "Oui" : "Non")</p>
+		</div>
+		<div class="grid-column-car-details bordered-right order-first">
+			<p>Kilomètrage :</p>
+			<p>@Model.Car.Kilometers</p>
+		</div>
+		<div class="grid-column-car-details bordered-right">
+			<p>Régulateur de vitesse :</p>
 			<p>@(Model.Car.SpeedRegulator ? "Oui" : "Non")</p>
+		</div>
+		<div class="grid-column-car-details bordered-right order-first">
+			<p>Carburant :</p>
+			<p>@Model.Car.Energy</p>
+		</div>
+		<div class="grid-column-car-details bordered-right">
+			<p>Radar de recul :</p>
 			<p>@(Model.Car.ReversingRadar ? "Oui" : "Non")</p>
+		</div>
+		<div class="grid-column-car-details bordered-right order-first">
+			<p>Boite de vitesse :</p>
+			<p>@Model.Car.GearType</p>
+		</div>
+		<div class="grid-column-car-details bordered-right">
+			<p>ABS :</p>
 			<p>@(Model.Car.Abs ? "Oui" : "Non")</p>
+		</div>
+		<div class="grid-column-car-details bordered-right order-first">
+			<p>Crit'Air' :</p>
+			<p>@Model.Car.CritAir</p>
+		</div>
+		<div class="grid-column-car-details bordered-right">
+			<p>Garantie :</p>
 			<p>@Model.Car.Warranty mois</p>
 		</div>
 	</div>

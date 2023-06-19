@@ -1223,23 +1223,96 @@ aside {
     height: 40%;
 }
 
-.table-carac {
-    display: grid;
-    grid-template-columns: 2fr 3fr 2fr 3fr;
-    text-align:center;
-}
-
-.bordered-right {
-    border-right: 1px solid #1D100B;
-}
-
-.grid-column-car-details p{
-    margin-bottom:unset;
-    padding:5px;
-}
-
-.grid-column-car-details p:nth-child(odd) {
+.table-carac div:nth-child(1),
+.table-carac div:nth-child(3),
+.table-carac div:nth-child(6),
+.table-carac div:nth-child(8),
+.table-carac div:nth-child(9),
+.table-carac div:nth-child(11),
+.table-carac div:nth-child(14),
+.table-carac div:nth-child(16),
+.table-carac div:nth-child(17),
+.table-carac div:nth-child(19) {
     background-color: #0D5B82;
     color: #fcfcfc;
 }
 
+.bordered-right * {
+    border-right: 1px solid #1D100B;
+}
+
+.table-carac{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.grid-column-car-details {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    text-align: center;
+}
+
+.grid-column-car-details p {
+    margin-bottom: unset;
+    margin-bottom: unset;
+    padding: 5px;
+}
+
+/*@media (min-width: 576px) {
+    .car-detail-return-index {
+        position:absolute!important;
+    }*/
+
+
+    @media (max-width: 575px) {
+        .car-detail-sum {
+            grid-template-columns: 1fr;
+        }
+
+        .table-carac {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+        }
+
+        .grid-column-car-details {
+            width: 100%;
+        }
+
+        .price-detail-sum {
+            text-align: end;
+            padding-right: 20px;
+        }
+
+        .order-first {
+            order: -1;
+        }
+
+        .table-carac div:nth-child(1),
+        .table-carac div:nth-child(3),
+        .table-carac div:nth-child(6),
+        .table-carac div:nth-child(8),
+        .table-carac div:nth-child(9),
+        .table-carac div:nth-child(11),
+        .table-carac div:nth-child(14),
+        .table-carac div:nth-child(16),
+        .table-carac div:nth-child(17),
+        .table-carac div:nth-child(19) {
+            background-color: inherit;
+            color: inherit;
+        }
+
+        .table-carac div:nth-child(1),
+        .table-carac div:nth-child(2),
+        .table-carac div:nth-child(5),
+        .table-carac div:nth-child(6),
+        .table-carac div:nth-child(9),
+        .table-carac div:nth-child(10),
+        .table-carac div:nth-child(13),
+        .table-carac div:nth-child(14),
+        .table-carac div:nth-child(17),
+        .table-carac div:nth-child(18) {
+            background-color: #0D5B82;
+            color: #fcfcfc;
+        }
+    }
