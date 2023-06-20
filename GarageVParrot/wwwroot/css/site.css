@@ -940,11 +940,17 @@ footer h3{
     color: #fcfcfc;
 }
 
-/* ACCOUNT LOGIN CREATE UPDATE STYLE*/
+/* ACCOUNT EDIT STYLE*/
 
+.password-modify{
+    margin-bottom:unset;
+}
+
+.password-modify-line {
+    color: #1D100B 
+}
 
 /*CAR INDEX STYLE CSS*/
-
 .cars-cards {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -1257,12 +1263,6 @@ aside {
     margin-bottom: unset;
     padding: 5px;
 }
-
-/*@media (min-width: 576px) {
-    .car-detail-return-index {
-        position:absolute!important;
-    }*/
-
 
     @media (max-width: 575px) {
         .car-detail-sum {

@@ -42,7 +42,10 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireUppercase = true;
     options.Password.RequiredLength = 10;
     options.Password.RequiredUniqueChars = 1;
-
+    // SignIn settings.
+    options.SignIn.RequireConfirmedAccount = false;
+    options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
 });
 
 var app = builder.Build();

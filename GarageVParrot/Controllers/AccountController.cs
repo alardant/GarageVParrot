@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using GarageVParrot.Models;
 using GarageVParrot.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace GarageVParrot.Controllers
 {
@@ -51,50 +52,53 @@ namespace GarageVParrot.Controllers
                     }
                 }
                 //Password is incorrect
-                TempData["Error"] = "Échec de identification, veuillez réessayer.";
+                TempData["Message"] = "Échec de identification, veuillez réessayer.";
                 return View(loginViewModel);
             }
             //User not found
-            TempData["Error"] = "Échec de l'identification, veuillez réessayer.";
+            TempData["Message"] = "Échec de l'identification, veuillez réessayer.";
             return View(loginViewModel);
         }
 
         [HttpGet]
         public IActionResult Register()
         {
-            var response = new RegisterViewModel();
+            var response = new AccountViewModel();
             return View(response);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
+        public async Task<IActionResult> Register(AccountViewModel accountViewModel)
         {
-            if (ModelState.IsValid) 
-            { 
-                try
-                {
-                    var user = await _userManager.FindByEmailAsync(registerViewModel.EmailAddress);
+            if (!ModelState.IsValid) 
+            {
+                TempData["Message"] = "Échec de la création de l'employé, veuillez réessayer.";
+                return View(accountViewModel);
+            }
+
+            try
+            {
+                    var user = await _userManager.FindByEmailAsync(accountViewModel.EmailAddress);
                     if (user != null)
                     {
                         TempData["Message"] = "Échec de la création de l'employé, cette adresse email est déjà utilisée.";
-                        return View(registerViewModel);
+                        return View(accountViewModel);
                     }
 
-                    bool isAdmin = registerViewModel.Role;
+                    bool isAdmin = accountViewModel.Role;
                     string role = isAdmin ? UserRoles.Admin : UserRoles.User;
 
                     var newUser = new User()
                     {
-                        Email = registerViewModel.EmailAddress,
-                        UserName = registerViewModel.EmailAddress,
+                        Email = accountViewModel.EmailAddress,
+                        UserName = accountViewModel.EmailAddress,
                         Role = role
                     };
-                    var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
+                    var newUserResponse = await _userManager.CreateAsync(newUser, accountViewModel.Password);
 
                     if (newUserResponse.Succeeded)
                     {
-                        string userRole = isAdmin ? UserRoles.Admin : UserRoles.User;
-                        await _userManager.AddToRoleAsync(newUser, userRole);
+                        await _userManager.AddToRoleAsync(newUser, role);
                     }
                     TempData["Message"] = "L'employé a bien été crée.";
 
@@ -102,11 +106,8 @@ namespace GarageVParrot.Controllers
                 } catch (Exception ex)
                 {
                     TempData["Message"] = "Échec de la création de l'employé, veuillez réessayer.";
-                    return View(registerViewModel);
+                    return View(accountViewModel);
                 }
-            }
-            TempData["Message"] = "Échec de la création de l'employé, veuillez réessayer.";
-            return View(registerViewModel);
         }
 
         [HttpGet]
@@ -168,15 +169,85 @@ namespace GarageVParrot.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(string? id)
         {
-            return View();
+            var account = await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+            if (id == null || account == null)
+            {
+                return NotFound();
+            }
+
+            var accountVM = new EditAccountViewModel
+            {
+                EmailAddress = account.Email,
+                CurrentPassword = account.PasswordHash,
+                Role = account.Role == "admin" ? true : false
+            };
+            return View(accountVM);
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, User user)
+        public async Task<IActionResult> Edit(string? id, EditAccountViewModel editaccountVM)
         {
-            return View();
+            var account = await _userManager.Users.FirstOrDefaultAsync(i => i.Id == id);
+
+            if (id != account.Id ||account == null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    var passwordCheck = await _userManager.CheckPasswordAsync(account, editaccountVM.CurrentPassword);
+                    if (!passwordCheck)
+                    {
+                        TempData["Message"] = "Échec de la modification, veuillez réessayer.";
+                        return View(editaccountVM);
+                    }
+
+                    var oldRole = account.Role;
+                    bool isAdmin = editaccountVM.Role;
+                    string role = isAdmin ? UserRoles.Admin : UserRoles.User;
+
+                    if (editaccountVM.NewPassword != null) 
+                    { 
+                        var newUserResponse = await _userManager.ChangePasswordAsync(account, editaccountVM.CurrentPassword, editaccountVM.NewPassword);
+
+                        if (newUserResponse.Succeeded)
+                        {
+                            account.Email = editaccountVM.EmailAddress;
+                            account.UserName = editaccountVM.EmailAddress;
+                            account.Role = role;
+
+                            await _userManager.UpdateAsync(account);
+                            await _userManager.RemoveFromRoleAsync(account, oldRole);
+                            await _userManager.AddToRoleAsync(account, role);
+                        }
+                    } else
+                    {
+                        account.Email = editaccountVM.EmailAddress;
+                        account.UserName = editaccountVM.EmailAddress;
+                        account.Role = role;
+
+                        await _userManager.UpdateAsync(account);
+                        await _userManager.RemoveFromRoleAsync(account, oldRole);
+                        await _userManager.AddToRoleAsync(account, role);
+                    }
+                    
+                    TempData["Message"] = "L'employé a bien été modifié.";
+                    return RedirectToAction("Index");
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    TempData["Message"] = "Échec de la modification du compte, veuillez réessayer.";
+                    return View(editaccountVM);
+                }
+            }
+            TempData["Message"] = "Échec de la modification du compte, veuillez réessayer.";
+            return View(editaccountVM);
         }
     }
 }

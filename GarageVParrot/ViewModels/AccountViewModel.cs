@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 namespace GarageVParrot.ViewModels
 {
-    public class RegisterViewModel
+    public class AccountViewModel
     {
         [Display(Name = "Adresse email")]
         [Required(ErrorMessage = "L'adresse email est obligatoire.")]

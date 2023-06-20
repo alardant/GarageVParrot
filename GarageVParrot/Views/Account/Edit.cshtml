@@ -1,6 +1,6 @@
-﻿@model GarageVParrot.ViewModels.AccountViewModel
+﻿@model GarageVParrot.ViewModels.EditAccountViewModel
 
-<h2>Ajouter un véhicule</h2>
+<h2>Modifier un compte employé</h2>
 <div class="return-index-div">
     <a class="return-index" asp-action="Index">Retour à la liste</a>
 </div>
@@ -14,7 +14,7 @@
 
 <div class="row">
     <div class="col-12">
-        <form asp-action="Register">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="EmailAddress" class="control-label"></label>
@@ -22,9 +22,17 @@
                 <span asp-validation-for="EmailAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+                <label asp-for="CurrentPassword" class="control-label"></label>
+                <input asp-for="CurrentPassword" class="form-control" />
+                <span asp-validation-for="CurrentPassword" class="text-danger"></span>
+            </div>
+            <hr class="password-modify-line" />
+            <p class="password-modify">Champs à remplir si vous souhaitez modifier le mot de passe</p>
+
+            <div class="form-group">
+                <label asp-for="NewPassword" class="control-label"></label>
+                <input asp-for="NewPassword" class="form-control" />
+                <span asp-validation-for="NewPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ConfirmPassword" class="control-label"></label>
@@ -33,11 +41,11 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Role"/> @Html.DisplayNameFor(model => model.Role)
+                    <input class="form-check-input" asp-for="Role" /> @Html.DisplayNameFor(model => model.Role)
                 </label>
             </div>
             <div class="form-group">
-                <button type="submit" class="send" value="Ajouter">Ajouter</button>
+                <button type="submit" class="send" value="Ajouter">Modifier</button>
             </div>
         </form>
     </div>
