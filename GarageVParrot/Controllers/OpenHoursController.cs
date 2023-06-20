@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GarageVParrot.Data;
 using GarageVParrot.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace GarageVParrot.Controllers
 {
@@ -29,6 +31,7 @@ namespace GarageVParrot.Controllers
             return View(openHours);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public async Task<IActionResult> Edit()
         
@@ -41,6 +44,7 @@ namespace GarageVParrot.Controllers
             return View(openHours);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(OpenHours openHours)
@@ -49,16 +53,20 @@ namespace GarageVParrot.Controllers
             {
                 return NotFound();
             }
+            //get the existing open Hours
+            //BEWARE : only one isntance of open hours must be create WITH THE ID 1 // THIS IS MANDATORY SO THE CODE IS FUNCTIONNAL
             openHours.Id = 1;
-            if (ModelState.IsValid) 
+
+            if (!ModelState.IsValid)
             {
-                _context.OpenHours.Update(openHours);
-                await _context.SaveChangesAsync();
-                TempData["Message"] = "Les horaires ont bien été modifiées.";
+                TempData["Message"] = "Échec de la modification des horaires, veuillez réessayer.";
                 return View(openHours);
             }
-            TempData["Message"] = "Échec de la modification des horaires, veuillez réessayer.";
+
+            _context.OpenHours.Update(openHours);
+            await _context.SaveChangesAsync();
+            TempData["Message"] = "Les horaires ont bien été modifiées.";
             return View(openHours);
-        }
+            }
     }
 }

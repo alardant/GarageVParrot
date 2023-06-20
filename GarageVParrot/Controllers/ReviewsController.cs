@@ -9,6 +9,8 @@ using GarageVParrot.Data;
 using GarageVParrot.Models;
 using GarageVParrot.ViewModels;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace GarageVParrot.Controllers
 {
@@ -28,14 +30,15 @@ namespace GarageVParrot.Controllers
             return View(reviewList);
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Validate(string searchString)
         {
             var listReviews = _context.Reviews.Where(i => i.Accepted == false).AsQueryable();
 
+            //display only the requested item form the search bar input
             if (!String.IsNullOrEmpty(searchString))
             {
-
                 listReviews = listReviews.Where(i => i.Name.Contains(searchString) || i.Description.Contains(searchString));
 
             }
@@ -44,52 +47,52 @@ namespace GarageVParrot.Controllers
             return View(result);
         }
 
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Validate(int id, ReviewViewModel reviewVM)
         {
+            // get all the reviews
             var reviewList = await _context.Reviews.Where(i => i.Accepted == false).ToListAsync();
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    var reviewToUpdate = await _context.Reviews.FirstOrDefaultAsync(i => i.Id == id);
-                    if (reviewToUpdate == null)
-                    {
-                        return NotFound();
-                    }
-                    reviewToUpdate.Accepted = reviewVM.Accepted;
-                    reviewToUpdate.UserId = reviewVM.UserId;
-
-                    _context.Update(reviewToUpdate);
-                    await _context.SaveChangesAsync();
-                    TempData["Message"] = "Le témoignage a bien été modifié.";
-                    var reviewListUpadted = await _context.Reviews.AsNoTracking().Where(i => i.Accepted == false).ToListAsync();
-                    return View(reviewListUpadted);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!(_context.Reviews?.AsNoTracking().Any(e => e.Id == id)).GetValueOrDefault())
-                    {
-                        TempData["Message"] = "Échec de la modification du témoignage, veuillez réessayer.";
-                        return View(reviewList);
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                TempData["Message"] = "Échec de la modification du témoignage, veuillez réessayer.";
+                return View(reviewList);
             }
-            TempData["Message"] = "Échec de la modification du témoignage, veuillez réessayer.";
-            return View(reviewList);
+
+            try
+            {
+                var reviewToUpdate = await _context.Reviews.FirstOrDefaultAsync(i => i.Id == id);
+                if (reviewToUpdate == null)
+                {
+                    return NotFound();
+                }
+                reviewToUpdate.Accepted = reviewVM.Accepted;
+                reviewToUpdate.UserId = reviewVM.UserId;
+
+                _context.Update(reviewToUpdate);
+                await _context.SaveChangesAsync();
+                TempData["Message"] = "Le témoignage a bien été modifié.";
+
+                //get a list of all the reviews updated
+                var reviewListUpadted = await _context.Reviews.AsNoTracking().Where(i => i.Accepted == false).ToListAsync();
+                return View(reviewListUpadted);
+            }
+            catch (Exception)
+            {
+                TempData["Message"] = "Échec de la modification du témoignage, veuillez réessayer.";
+                return View(reviewList);
+            }
         }
+
 
         [HttpGet]
         public IActionResult Create()
 
         {
             var reviewViewModel = new ReviewViewModel();
+
+            //If user is connected, add his user id to the review
             reviewViewModel.UserId = User.Identity.IsAuthenticated ? HttpContext.User.GetUserId() : null;
             reviewViewModel.datePublished = DateTime.Now;
             return View(reviewViewModel);
@@ -101,140 +104,70 @@ namespace GarageVParrot.Controllers
         public async Task<IActionResult> Create(ReviewViewModel reviewVM)
         {
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    var review = new Review
-                    {
-                        UserId = reviewVM.UserId,
-                        Name = reviewVM.Name,
-                        Description = reviewVM.Description,
-                        Rating = reviewVM.Rating,
-                        Accepted = reviewVM.Accepted,
-                    };
-
-                    await _context.AddAsync(review);
-                    await _context.SaveChangesAsync();
-                    TempData["Message"] = "Votre témoignage a été soumis avec succès.";
-                }
-                catch (Exception ex)
-                {
-                    TempData["Message"] = "Échec de la création de votre témoignage, veuillez réessayer.";
-                }
-                ModelState.Clear();
+                TempData["Message"] = "Échec de la création de votre témoignage, veuillez réessayer.";
                 return View(reviewVM);
-                
-            }
-            TempData["Message"] = "Échec de la création de votre témoignage, veuillez réessayer.";
-            ModelState.Clear();
-            return View(reviewVM);
-        }
-
-/*        [HttpGet]
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Reviews == null)
-            {
-                return NotFound();
             }
 
-            var review = await _context.Reviews.FirstOrDefaultAsync(i => i.Id == id);
-            if (review == null)
+            try
+            //create review
             {
-                return NotFound();
-            }
-            var reviewVM = new ReviewViewModel
-            {
-                UserId = review.UserId,
-                Name = review.Name,
-                Description = review.Description,
-                Rating = review.Rating,
-                Accepted = review.Accepted,
-            };
-            return View(reviewVM);
-        }
-
-        // POST: Reviews/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, ReviewViewModel reviewViewModel)
-        {
-            if (id != reviewViewModel.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                var review = new Review
                 {
-                    var reviewToUpdate = new Review
-                    {
-                        Id = id,
-                        UserId = reviewViewModel.UserId,
-                        Name = reviewViewModel.Name,
-                        Description = reviewViewModel.Description,
-                        Rating = reviewViewModel.Rating,
-                        Accepted = reviewViewModel.Accepted,
-                    };
-                    _context.Update(reviewToUpdate);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!(_context.Reviews?.Any(e => e.Id == id)).GetValueOrDefault())
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                    UserId = reviewVM.UserId,
+                    Name = reviewVM.Name,
+                    Description = reviewVM.Description,
+                    Rating = reviewVM.Rating,
+                    Accepted = reviewVM.Accepted,
+                };
+
+                await _context.AddAsync(review);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                TempData["Message"] = "Votre témoignage a été soumis avec succès.";
+                ModelState.Clear();
             }
-            return View(reviewViewModel);
-        }*/
+            catch (Exception ex)
+            {
+                TempData["Message"] = "Échec de la création de votre témoignage, veuillez réessayer.";
+            }
 
+            return View(reviewVM);
+        }
+
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            if (_context.Reviews == null)
+            if (_context.Reviews == null || !ModelState.IsValid)
+            {
+                TempData["Message"] = "Échec de la suppression du témoignage, veuillez réessayer.";
+                return RedirectToAction("Validate");
+            }
+
+            try
+            // delete review
+            {
+                var review = await _context.Reviews.FirstOrDefaultAsync(i => i.Id == id);
+                if (review != null)
+                {
+                    _context.Reviews.Remove(review);
+                    await _context.SaveChangesAsync();
+                    TempData["Message"] = "Le témoignage a bien été supprimé.";
+                }
+                else
+                {
+                    TempData["Message"] = "Échec de la suppression du témoignage, veuillez réessayer.";
+                }
+            }
+            catch (Exception ex)
             {
                 TempData["Message"] = "Échec de la suppression du témoignage, veuillez réessayer.";
             }
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var review = await _context.Reviews.FirstOrDefaultAsync(i => i.Id == id);
-                    if (review != null)
-                    {
-                        _context.Reviews.Remove(review);
-                        await _context.SaveChangesAsync();
-                        TempData["Message"] = "Le témoignage a bien été supprimé.";
-                        return RedirectToAction("Validate");
-                    }
-                    else
-                    {
-                        TempData["Message"] = "Échec de la suppression du témoignage, veuillez réessayer.";
-                        return RedirectToAction("Validate");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    TempData["Message"] = "Échec de la suppression du témoignage, veuillez réessayer.";
-                    return RedirectToAction("Validate");
-                }
-            }
-            TempData["Message"] = "Échec de la suppression du témoignage, veuillez réessayer.";
             return RedirectToAction("Validate");
-                
         }
+
 
         private bool ReviewExists(int id)
         {

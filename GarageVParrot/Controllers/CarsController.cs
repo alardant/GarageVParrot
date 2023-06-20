@@ -47,11 +47,12 @@ namespace GarageVParrot.Controllers
             //display only the requested item form the search bar input
             if (!String.IsNullOrEmpty(searchString))
             {
+                //search if the input is an int - convert the input in int if possible
                 if (int.TryParse(searchString, out int searchNumber))
                 {
                     listCar = listCar.Where(i => i.Brand.Contains(searchString) || i.Model.Contains(searchString) || i.Year == searchNumber || (int)i.Kilometers == searchNumber);
                 }
-                //display all the items if the search bar is empty
+                //search if the input is a string or if conversion fails
                 else
                 {
                     listCar = listCar.Where(i => i.Brand.Contains(searchString) || i.Model.Contains(searchString));
@@ -367,11 +368,7 @@ namespace GarageVParrot.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            if (_context.Cars == null)
-            {
-                TempData["Message"] = "Échec de la suppression du véhicule, veuillez réessayer.";
-            }
-            if (!ModelState.IsValid)
+            if (_context.Cars == null || !ModelState.IsValid)
             {
                 TempData["Message"] = "Échec de la suppression du véhicule, veuillez réessayer.";
                 return RedirectToAction(nameof(CarManagement));

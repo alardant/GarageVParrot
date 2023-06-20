@@ -145,12 +145,7 @@ namespace GarageVParrot.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(string id)
         {
-            if (_context.Reviews == null)
-            {
-                TempData["Message"] = "Échec de la suppression de l'employé, veuillez réessayer.";
-            }
-
-            if (!ModelState.IsValid)
+            if (_context.Reviews == null || !ModelState.IsValid)
             {
                 TempData["Message"] = "Échec de la suppression de l'employé, veuillez réessayer.";
                 return RedirectToAction("Index");
