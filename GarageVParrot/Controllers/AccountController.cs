@@ -5,6 +5,7 @@ using GarageVParrot.Models;
 using GarageVParrot.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GarageVParrot.Controllers
 {
@@ -60,6 +61,7 @@ namespace GarageVParrot.Controllers
             return View(loginViewModel);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public IActionResult Register()
         {
@@ -67,6 +69,7 @@ namespace GarageVParrot.Controllers
             return View(response);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> Register(AccountViewModel accountViewModel)
         {
@@ -78,38 +81,43 @@ namespace GarageVParrot.Controllers
 
             try
             {
-                    var user = await _userManager.FindByEmailAsync(accountViewModel.EmailAddress);
-                    if (user != null)
-                    {
-                        TempData["Message"] = "Échec de la création de l'employé, cette adresse email est déjà utilisée.";
-                        return View(accountViewModel);
-                    }
-
-                    bool isAdmin = accountViewModel.Role;
-                    string role = isAdmin ? UserRoles.Admin : UserRoles.User;
-
-                    var newUser = new User()
-                    {
-                        Email = accountViewModel.EmailAddress,
-                        UserName = accountViewModel.EmailAddress,
-                        Role = role
-                    };
-                    var newUserResponse = await _userManager.CreateAsync(newUser, accountViewModel.Password);
-
-                    if (newUserResponse.Succeeded)
-                    {
-                        await _userManager.AddToRoleAsync(newUser, role);
-                    }
-                    TempData["Message"] = "L'employé a bien été crée.";
-
-                    return RedirectToAction("Index");
-                } catch (Exception ex)
+                var user = await _userManager.FindByEmailAsync(accountViewModel.EmailAddress);
+                if (user != null)
                 {
-                    TempData["Message"] = "Échec de la création de l'employé, veuillez réessayer.";
+                    TempData["Message"] = "Échec de la création de l'employé, cette adresse email est déjà utilisée.";
                     return View(accountViewModel);
                 }
-        }
 
+                // set user's role
+                bool isAdmin = accountViewModel.Role;
+                string role = isAdmin ? UserRoles.Admin : UserRoles.User;
+
+                //create the new user
+                var newUser = new User()
+                {
+                    Email = accountViewModel.EmailAddress,
+                    UserName = accountViewModel.EmailAddress,
+                    Role = role
+                };
+                var newUserResponse = await _userManager.CreateAsync(newUser, accountViewModel.Password);
+
+                //add user's role
+                if (newUserResponse.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(newUser, role);
+                }
+
+                TempData["Message"] = "L'employé a bien été crée.";
+                return RedirectToAction("Index");
+
+            } catch (Exception ex)
+            {
+                TempData["Message"] = "Échec de la création de l'employé, veuillez réessayer.";
+                return View(accountViewModel);
+            }
+    }
+
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
@@ -117,6 +125,7 @@ namespace GarageVParrot.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -131,6 +140,7 @@ namespace GarageVParrot.Controllers
             return View(users);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(string id)
@@ -139,35 +149,38 @@ namespace GarageVParrot.Controllers
             {
                 TempData["Message"] = "Échec de la suppression de l'employé, veuillez réessayer.";
             }
-            if (ModelState.IsValid)
+
+            if (!ModelState.IsValid)
             {
-                try
+                TempData["Message"] = "Échec de la suppression de l'employé, veuillez réessayer.";
+                return RedirectToAction("Index");
+            }
+
+            try
+            {
+                var user = await _context.Users.FirstOrDefaultAsync(i => i.Id == id);
+                //delete user
+                if (user != null)
                 {
-                    var user = await _context.Users.FirstOrDefaultAsync(i => i.Id == id);
-                    if (user != null)
-                    {
-                        _context.Users.Remove(user);
-                        await _context.SaveChangesAsync();
-                        TempData["Message"] = "L'employé a bien été supprimé.";
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        TempData["Message"] = "Échec de la suppression de l'employé, veuillez réessayer.";
-                        return RedirectToAction("Index");
-                    }
+                    _context.Users.Remove(user);
+                    await _context.SaveChangesAsync();
+                    TempData["Message"] = "L'employé a bien été supprimé.";
+                    return RedirectToAction("Index");
                 }
-                catch (Exception ex)
+                else
                 {
                     TempData["Message"] = "Échec de la suppression de l'employé, veuillez réessayer.";
                     return RedirectToAction("Index");
                 }
             }
-            TempData["Message"] = "Échec de la suppression de l'employé, veuillez réessayer.";
-            return RedirectToAction("Index");
-
+            catch (Exception ex)
+            {
+                TempData["Message"] = "Échec de la suppression de l'employé, veuillez réessayer.";
+                return RedirectToAction("Index");
+            }
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public async Task<IActionResult> Edit(string? id)
         {
@@ -186,6 +199,7 @@ namespace GarageVParrot.Controllers
             return View(accountVM);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> Edit(string? id, EditAccountViewModel editaccountVM)
         {
@@ -196,37 +210,34 @@ namespace GarageVParrot.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
+            TempData["Message"] = "Échec de la modification du compte, veuillez réessayer.";
+            return View(editaccountVM);
+            }
+
+            try
+            {
+                //check if the current password is true
+                var passwordCheck = await _userManager.CheckPasswordAsync(account, editaccountVM.CurrentPassword);
+                if (!passwordCheck)
                 {
+                    TempData["Message"] = "Échec de la modification, veuillez réessayer.";
+                    return View(editaccountVM);
+                }
 
-                    var passwordCheck = await _userManager.CheckPasswordAsync(account, editaccountVM.CurrentPassword);
-                    if (!passwordCheck)
-                    {
-                        TempData["Message"] = "Échec de la modification, veuillez réessayer.";
-                        return View(editaccountVM);
-                    }
+                //set the new role and get the old role
+                var oldRole = account.Role;
+                bool isAdmin = editaccountVM.Role;
+                string role = isAdmin ? UserRoles.Admin : UserRoles.User;
 
-                    var oldRole = account.Role;
-                    bool isAdmin = editaccountVM.Role;
-                    string role = isAdmin ? UserRoles.Admin : UserRoles.User;
+                // if a new password is set, update with the new information
+                if (editaccountVM.NewPassword != null) 
+                { 
+                    //update the new password new password
+                    var newUserResponse = await _userManager.ChangePasswordAsync(account, editaccountVM.CurrentPassword, editaccountVM.NewPassword);
 
-                    if (editaccountVM.NewPassword != null) 
-                    { 
-                        var newUserResponse = await _userManager.ChangePasswordAsync(account, editaccountVM.CurrentPassword, editaccountVM.NewPassword);
-
-                        if (newUserResponse.Succeeded)
-                        {
-                            account.Email = editaccountVM.EmailAddress;
-                            account.UserName = editaccountVM.EmailAddress;
-                            account.Role = role;
-
-                            await _userManager.UpdateAsync(account);
-                            await _userManager.RemoveFromRoleAsync(account, oldRole);
-                            await _userManager.AddToRoleAsync(account, role);
-                        }
-                    } else
+                    if (newUserResponse.Succeeded)
                     {
                         account.Email = editaccountVM.EmailAddress;
                         account.UserName = editaccountVM.EmailAddress;
@@ -236,18 +247,26 @@ namespace GarageVParrot.Controllers
                         await _userManager.RemoveFromRoleAsync(account, oldRole);
                         await _userManager.AddToRoleAsync(account, role);
                     }
-                    
-                    TempData["Message"] = "L'employé a bien été modifié.";
-                    return RedirectToAction("Index");
-                }
-                catch (DbUpdateConcurrencyException)
+                } else
+                //if no new password is set, update with the new information
                 {
-                    TempData["Message"] = "Échec de la modification du compte, veuillez réessayer.";
-                    return View(editaccountVM);
+                    account.Email = editaccountVM.EmailAddress;
+                    account.UserName = editaccountVM.EmailAddress;
+                    account.Role = role;
+
+                    await _userManager.UpdateAsync(account);
+                    await _userManager.RemoveFromRoleAsync(account, oldRole);
+                    await _userManager.AddToRoleAsync(account, role);
                 }
+                    
+                TempData["Message"] = "L'employé a bien été modifié.";
+                return RedirectToAction("Index");
             }
-            TempData["Message"] = "Échec de la modification du compte, veuillez réessayer.";
-            return View(editaccountVM);
+            catch (DbUpdateConcurrencyException)
+            {
+                TempData["Message"] = "Échec de la modification du compte, veuillez réessayer.";
+                return View(editaccountVM);
+            }
         }
     }
 }
