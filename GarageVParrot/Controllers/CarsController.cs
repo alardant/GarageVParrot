@@ -14,6 +14,8 @@ using Microsoft.Extensions.Hosting.Internal;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace GarageVParrot.Controllers
 {
@@ -36,17 +38,20 @@ namespace GarageVParrot.Controllers
             return View(listCar);
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> CarManagement(string searchString)
         {
             var listCar = _context.Cars.AsQueryable();
 
+            //display only the requested item form the search bar input
             if (!String.IsNullOrEmpty(searchString))
             {
                 if (int.TryParse(searchString, out int searchNumber))
                 {
                     listCar = listCar.Where(i => i.Brand.Contains(searchString) || i.Model.Contains(searchString) || i.Year == searchNumber || (int)i.Kilometers == searchNumber);
                 }
+                //display all the items if the search bar is empty
                 else
                 {
                     listCar = listCar.Where(i => i.Brand.Contains(searchString) || i.Model.Contains(searchString));
@@ -82,6 +87,7 @@ namespace GarageVParrot.Controllers
             return View(carVM);
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult Create()
         {
@@ -91,87 +97,94 @@ namespace GarageVParrot.Controllers
             return View(carVM);
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CarViewModel carViewModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try { 
-                    string coverImageFileName = null;
-                    List<ImageListCar> listImageFileName = new List<ImageListCar>();
-
-                    if (carViewModel.CoverImage != null)
-                    {
-                        string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageCover");
-                        string fileName = Guid.NewGuid().ToString() + "-" + carViewModel.CoverImage.FileName;
-                        string filePath = Path.Combine(uploadsFolder, fileName);
-                        await carViewModel.CoverImage.CopyToAsync(new FileStream(filePath, FileMode.Create));
-
-                        coverImageFileName = fileName;
-                    }
-
-                    if (carViewModel.ImageListCar != null && carViewModel.ImageListCar.Count > 0)
-                    {
-                        string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
-                        foreach (IFormFile imageFile in carViewModel.ImageListCar)
-                        {
-                            string fileName = Guid.NewGuid().ToString() + "-" + imageFile.FileName;
-                            string filePath = Path.Combine(uploadsFolder, fileName);
-                            await imageFile.CopyToAsync(new FileStream(filePath, FileMode.Create));
-
-                            ImageListCar image = new ImageListCar
-                            {
-                                ImageName = imageFile.FileName,
-                                ImagePath = fileName,
-                                CarId = carViewModel.Id
-                            };
-
-                            listImageFileName.Add(image);
-                        }
-                    }
-
-                    var car = new Car
-                    {
-                        Price = carViewModel.Price,
-                        CoverImage = coverImageFileName,
-                        ImageListCar = listImageFileName,
-                        Year = carViewModel.Year,
-                        Kilometers = carViewModel.Kilometers,
-                        Brand = carViewModel.Brand,
-                        Model = carViewModel.Model,
-                        NumberOfDoors = carViewModel.NumberOfDoors,
-                        NumberOfSeats = carViewModel.NumberOfSeats,
-                        AirConditionner = carViewModel.AirConditionner,
-                        Power = carViewModel.Power,
-                        Motor = carViewModel.Motor,
-                        Bluetooth = carViewModel.Bluetooth,
-                        Gps = carViewModel.Gps,
-                        SpeedRegulator = carViewModel.SpeedRegulator,
-                        Airbags = carViewModel.Airbags,
-                        ReversingRadar = carViewModel.ReversingRadar,
-                        CritAir = carViewModel.CritAir,
-                        Warranty = carViewModel.Warranty,
-                        Abs = carViewModel.Abs,
-                        Energy = carViewModel.Energy,
-                        Category = carViewModel.Category,
-                        GearType = carViewModel.GearType,
-                        UserId = carViewModel.UserId,
-                    };
-
-                    await _context.AddAsync(car);
-                    await _context.SaveChangesAsync();
-                    TempData["Message"] = "Le véhicule a bien été crée.";
-                    return RedirectToAction("CarManagement");
-                } catch (Exception ex) {
-                    TempData["Message"] = "Échec de la création du véhicule, veuillez réessayer.";
-                    return View(carViewModel);
-                }
+                TempData["Message"] = "Échec de la création du véhicule, veuillez réessayer.";
+                return View(carViewModel);
             }
-            TempData["Message"] = "Échec de la création du véhicule, veuillez réessayer.";
-            return View(carViewModel);
+
+            try { 
+                string coverImageFileName = null;
+                List<ImageListCar> listImageFileName = new List<ImageListCar>();
+
+                //upload car's cover image
+                if (carViewModel.CoverImage != null)
+                {
+                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageCover");
+                    //create a unique name
+                    string fileName = Guid.NewGuid().ToString() + "-" + carViewModel.CoverImage.FileName;
+                    string filePath = Path.Combine(uploadsFolder, fileName);
+                    await carViewModel.CoverImage.CopyToAsync(new FileStream(filePath, FileMode.Create));
+
+                    coverImageFileName = fileName;
+                }
+
+                //upload car's other images
+                if (carViewModel.ImageListCar != null && carViewModel.ImageListCar.Count > 0)
+                {
+                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
+                    foreach (IFormFile imageFile in carViewModel.ImageListCar)
+                    {
+                        string fileName = Guid.NewGuid().ToString() + "-" + imageFile.FileName;
+                        string filePath = Path.Combine(uploadsFolder, fileName);
+                        await imageFile.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                        ImageListCar image = new ImageListCar
+                        {
+                            ImageName = imageFile.FileName,
+                            ImagePath = fileName,
+                            CarId = carViewModel.Id
+                        };
+
+                        listImageFileName.Add(image);
+                    }
+                }
+
+                //set a new car
+                var car = new Car
+                {
+                    Price = carViewModel.Price,
+                    CoverImage = coverImageFileName,
+                    ImageListCar = listImageFileName,
+                    Year = carViewModel.Year,
+                    Kilometers = carViewModel.Kilometers,
+                    Brand = carViewModel.Brand,
+                    Model = carViewModel.Model,
+                    NumberOfDoors = carViewModel.NumberOfDoors,
+                    NumberOfSeats = carViewModel.NumberOfSeats,
+                    AirConditionner = carViewModel.AirConditionner,
+                    Power = carViewModel.Power,
+                    Motor = carViewModel.Motor,
+                    Bluetooth = carViewModel.Bluetooth,
+                    Gps = carViewModel.Gps,
+                    SpeedRegulator = carViewModel.SpeedRegulator,
+                    Airbags = carViewModel.Airbags,
+                    ReversingRadar = carViewModel.ReversingRadar,
+                    CritAir = carViewModel.CritAir,
+                    Warranty = carViewModel.Warranty,
+                    Abs = carViewModel.Abs,
+                    Energy = carViewModel.Energy,
+                    Category = carViewModel.Category,
+                    GearType = carViewModel.GearType,
+                    UserId = carViewModel.UserId,
+                };
+
+                await _context.AddAsync(car);
+                await _context.SaveChangesAsync();
+                TempData["Message"] = "Le véhicule a bien été crée.";
+                return RedirectToAction("CarManagement");
+            } catch (Exception ex) {
+                TempData["Message"] = "Échec de la création du véhicule, veuillez réessayer.";
+                return View(carViewModel);
+            }
         }
 
+
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -217,6 +230,7 @@ namespace GarageVParrot.Controllers
             return View(editCarViewModel);
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EditCarViewModel carVM, IFormFile? file, IFormFileCollection files)
@@ -226,123 +240,130 @@ namespace GarageVParrot.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var car = await _context.Cars.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
-                string coverImageFileName = null;
-                List<ImageListCar> listImageFileName = new List<ImageListCar>();
-                
-                if (file != null)
+                TempData["Message"] = "Échec de la modification du véhicule, veuillez réessayer.";
+                return RedirectToAction(nameof(CarManagement));
+            }
+
+            //set car to update with its images
+            var car = await _context.Cars.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+            string coverImageFileName = null;
+            List<ImageListCar> listImageFileName = new List<ImageListCar>();
+            
+            //cover image management if a new is set
+            if (file != null)
+            {
+                //upload new cover image
+                string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageCover");
+                string fileName = Guid.NewGuid().ToString() + "-" + file.FileName;
+                string filePath = Path.Combine(uploadDir, fileName);
+                await file.CopyToAsync(new FileStream(filePath, FileMode.Create));
+
+                coverImageFileName = fileName;
+
+                //delete old cover image if exists
+                if (car.CoverImage != null)
                 {
-                    string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageCover");
-                    string fileName = Guid.NewGuid().ToString() + "-" + file.FileName;
-                    string filePath = Path.Combine(uploadDir, fileName);
-                    await file.CopyToAsync(new FileStream(filePath, FileMode.Create));
-
-                    coverImageFileName = fileName;
-
-                    if (car.CoverImage != null)
+                    string oldFilePath = Path.Combine(uploadDir, car.CoverImage);
+                    if (System.IO.File.Exists(oldFilePath))
                     {
-                        string dir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageCover");
-                        string oldFilePath = Path.Combine(dir, car.CoverImage);
+                        System.IO.File.Delete(oldFilePath);
+                    }
+                }
+            }
+            else
+            //if no new cover image keep the old cover image
+            {
+                coverImageFileName = car.CoverImage;
+            }
+
+            //other images management if a new list is set
+            if (files != null && files.Count > 0)
+            {
+                string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
+                foreach (IFormFile imageFile in files)
+                {
+                    //upload new images
+                    string fileName = Guid.NewGuid().ToString() + "-" + imageFile.FileName;
+                    string filePath = Path.Combine(uploadsFolder, fileName);
+                    await imageFile.CopyToAsync(new FileStream(filePath, FileMode.Create));
+
+                    ImageListCar image = new ImageListCar
+                    {
+                        ImageName = imageFile.FileName,
+                        ImagePath = fileName,
+                        CarId = carVM.Id
+                    };
+
+                    listImageFileName.Add(image);
+                }
+                // delete old other images
+                if (ImagesListCarExists(id))
+                {
+                    string uploadsPath = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
+                    _context.ImagesListCar.RemoveRange(car.ImageListCar);
+                    foreach (var imageFile in car.ImageListCar)
+                    {
+                        string oldFilePath = Path.Combine(uploadsPath, imageFile.ImagePath);
                         if (System.IO.File.Exists(oldFilePath))
                         {
                             System.IO.File.Delete(oldFilePath);
                         }
                     }
                 }
+            }
+
+            //update the car
+            try
+            {
+                car.Price = carVM.Price;
+                car.CoverImage = coverImageFileName;
+                car.ImageListCar = listImageFileName;
+                car.Year = carVM.Year;
+                car.Kilometers = carVM.Kilometers;
+                car.Brand = carVM.Brand;
+                car.Model = carVM.Model;
+                car.NumberOfDoors = carVM.NumberOfDoors;
+                car.NumberOfSeats = carVM.NumberOfSeats;
+                car.AirConditionner = carVM.AirConditionner;
+                car.Power = carVM.Power;
+                car.Motor = carVM.Motor;
+                car.Bluetooth = carVM.Bluetooth;
+                car.Gps = carVM.Gps;
+                car.SpeedRegulator = carVM.SpeedRegulator;
+                car.Airbags = carVM.Airbags;
+                car.ReversingRadar = carVM.ReversingRadar;
+                car.CritAir = carVM.CritAir;
+                car.Warranty = carVM.Warranty;
+                car.Abs = carVM.Abs;
+                car.Energy = carVM.Energy;
+                car.Category = carVM.Category;
+                car.GearType = carVM.GearType;
+                car.UserId = carVM.UserId;
+
+                _context.Update(car);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CarExists(car.Id))
+                {
+                    return NotFound();
+                }
                 else
                 {
-                    coverImageFileName = car.CoverImage;
+                    TempData["Message"] = "Échec de la modification du véhicule, veuillez réessayer.";
+                    return RedirectToAction(nameof(CarManagement));
                 }
-                if (files != null && files.Count > 0)
-                {
-                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
-                    foreach (IFormFile imageFile in files)
-                    {
-                        string fileName = Guid.NewGuid().ToString() + "-" + imageFile.FileName;
-                        string filePath = Path.Combine(uploadsFolder, fileName);
-                        await imageFile.CopyToAsync(new FileStream(filePath, FileMode.Create));
-
-                        ImageListCar image = new ImageListCar
-                        {
-                            ImageName = imageFile.FileName,
-                            ImagePath = fileName,
-                            CarId = carVM.Id
-                        };
-
-                        listImageFileName.Add(image);
-                    }
-                    if (ImagesListCarExists(id))
-                    {
-                        var imageListCar = await _context.ImagesListCar.AsNoTracking().Where(image => image.CarId == id).ToListAsync();
-                        string uploadsPath = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
-                        foreach (var imageFile in imageListCar)
-                        {
-                            string oldFilePath = Path.Combine(uploadsPath, imageFile.ImagePath);
-                            if (System.IO.File.Exists(oldFilePath))
-                            {
-                                System.IO.File.Delete(oldFilePath);
-                          
-                            }
-                                _context.Remove(imageFile);
-                        }
-                    }
-                } 
-
-                try
-                {
-                    var CarToUpdate = new Car
-                    {
-                        Id = id,
-                        Price = carVM.Price,
-                        CoverImage = coverImageFileName,
-                        ImageListCar = listImageFileName,
-                        Year = carVM.Year,
-                        Kilometers = carVM.Kilometers,
-                        Brand = carVM.Brand,
-                        Model = carVM.Model,
-                        NumberOfDoors = carVM.NumberOfDoors,
-                        NumberOfSeats = carVM.NumberOfSeats,
-                        AirConditionner = carVM.AirConditionner,
-                        Power = carVM.Power,
-                        Motor = carVM.Motor,
-                        Bluetooth = carVM.Bluetooth,
-                        Gps = carVM.Gps,
-                        SpeedRegulator = carVM.SpeedRegulator,
-                        Airbags = carVM.Airbags,
-                        ReversingRadar = carVM.ReversingRadar,
-                        CritAir = carVM.CritAir,
-                        Warranty = carVM.Warranty,
-                        Abs = carVM.Abs,
-                        Energy = carVM.Energy,
-                        Category = carVM.Category,
-                        GearType = carVM.GearType,
-                        UserId = carVM.UserId,
-                    };
-                    _context.Update(CarToUpdate);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CarExists(car.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        TempData["Message"] = "Échec de la modification du véhicule, veuillez réessayer.";
-                        return RedirectToAction(nameof(CarManagement));
-                    }
-                }
-                TempData["Message"] = "Le véhicule a bien été modifié.";
-                return RedirectToAction(nameof(CarManagement));
             }
-            TempData["Message"] = "Échec de la modification du véhicule, veuillez réessayer.";
+            TempData["Message"] = "Le véhicule a bien été modifié.";
             return RedirectToAction(nameof(CarManagement));
         }
 
-        [HttpPost, ActionName("Delete")]
+
+        [Authorize]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
@@ -350,55 +371,59 @@ namespace GarageVParrot.Controllers
             {
                 TempData["Message"] = "Échec de la suppression du véhicule, veuillez réessayer.";
             }
-
-            var car = await _context.Cars.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
+                TempData["Message"] = "Échec de la suppression du véhicule, veuillez réessayer.";
+                return RedirectToAction(nameof(CarManagement));
+            }
+
+            try
+            {
+            var car = await _context.Cars.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+
+                // delete cover image from upload and database if exists
+                if (car.CoverImage != null)
                 {
-                    if (car.CoverImage != null)
+                    string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageCover");
+                    string oldFilePath = Path.Combine(uploadDir, car.CoverImage);
+                    if (System.IO.File.Exists(oldFilePath))
                     {
-                        string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageCover");
-                        string oldFilePath = Path.Combine(uploadDir, car.CoverImage);
+                        System.IO.File.Delete(oldFilePath);
+                    }
+                }
+                // delete ohter images from upload and database if exists
+                if (ImagesListCarExists(id))
+                {
+                    var imageList = await _context.ImagesListCar.Where(image => image.CarId == id).ToListAsync();
+                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
+                    foreach (var imageFile in imageList)
+                    {
+                        string oldFilePath = Path.Combine(uploadsFolder, imageFile.ImagePath);
                         if (System.IO.File.Exists(oldFilePath))
                         {
                             System.IO.File.Delete(oldFilePath);
                         }
+                        _context.Remove(imageFile);
                     }
-
-                    if (ImagesListCarExists(id))
-                    {
-                        var imageList = await _context.ImagesListCar.Where(image => image.CarId == id).ToListAsync();
-                        string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
-                        foreach (var imageFile in imageList)
-                        {
-                            string oldFilePath = Path.Combine(uploadsFolder, imageFile.ImagePath);
-                            if (System.IO.File.Exists(oldFilePath))
-                            {
-                                System.IO.File.Delete(oldFilePath);
-                            }
-                            _context.Remove(imageFile);
-                        }
-                    }
-
-                    if (car != null)
-                    {
-                        _context.Cars.Remove(car);
-                    }
-
-                    await _context.SaveChangesAsync();
-                    TempData["Message"] = "Le véhicule a bien été supprimé.";
-                    return RedirectToAction(nameof(CarManagement));
                 }
-                catch (Exception ex)
+
+                //delete car
+                if (car != null)
                 {
-                    TempData["Message"] = "Échec de la suppression du véhicule, veuillez réessayer.";
-                    return RedirectToAction(nameof(CarManagement));
+                    _context.Cars.Remove(car);
                 }
+
+                await _context.SaveChangesAsync();
+                TempData["Message"] = "Le véhicule a bien été supprimé.";
+                return RedirectToAction(nameof(CarManagement));
             }
-            TempData["Message"] = "Échec de la suppression du véhicule, veuillez réessayer.";
-            return RedirectToAction(nameof(CarManagement));
+            catch (Exception ex)
+            {
+                TempData["Message"] = "Échec de la suppression du véhicule, veuillez réessayer.";
+                return RedirectToAction(nameof(CarManagement));
+            }
         }
+
 
         private bool CarExists(int id)
         {
