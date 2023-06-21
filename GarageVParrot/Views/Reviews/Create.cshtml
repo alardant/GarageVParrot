@@ -8,10 +8,11 @@
 
 @if (TempData["Message"] != null)
 {
-    <div class="tempdata-form">
+    <div class="tempdata-form" style="color: @(TempData["Message"].ToString().Contains("Échec") ? "#BE0C0C" : "#0D5B82")">
         @TempData["Message"]
     </div>
 }
+
 <div class="row">
     <div class="col-12">
         <form asp-action="Create" onsubmit="return VerifyRating()">
@@ -28,7 +29,7 @@
                 </div>
                 <div onmouseout="CRateSelected" class="review-rating">
                     <label asp-for="Rating" class="control-label">Notes</label>
-                    <div class="d-flex gap-2">
+                    <div class="d-flex gap-2 stars">
                         <i id="i1" onmouseout="CRateOut(1)" onmouseover="CRateOver(1)" onclick="CRateClick(1)" class="bi bi-star"></i>
                         <i id="i2" onmouseout="CRateOut(2)" onmouseover="CRateOver(2)" onclick="CRateClick(2)" class="bi bi-star"></i>
                         <i id="i3" onmouseout="CRateOut(3)" onmouseover="CRateOver(3)" onclick="CRateClick(3)" class="bi bi-star"></i>

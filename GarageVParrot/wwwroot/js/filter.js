@@ -1,64 +1,55 @@
-﻿// reduce/expand the filter section if the screen if smaller/larger than 575 pixel
+﻿// reduce/expand the filter section if the screen is smaller/larger than 575 pixels
 
-//used to determined if the screen has crossed the line of 575pixel to call the fonction only if so.
+// Variables to track the screen size threshold and initial loading
 var isAboveThreshold = false;
-var firstLoading = true
+var firstLoading = true;
 
+// Function to handle the visibility of the filter boxes based on screen size
 function handleFilterBoxVisibility() {
     var screenWidth = window.innerWidth;
-
+    // Screen is larger than 575px
     if (screenWidth > 575 && (firstLoading || !isAboveThreshold)) {
-        // screen is larger than 575 px
         isAboveThreshold = true;
         firstLoading = false;
         var filterBoxes = document.querySelectorAll(".filter-box-close");
         filterBoxes.forEach(function (box) {
-            box.classList.replace("filter-box-close", "filter-box-open");
-            var filterUpArrow = document.querySelector(".bi-chevron-up");
-            var filterDownArrow = document.querySelector(".bi-chevron-down");
-            filterUpArrow.style.display = "none";
-            filterDownArrow.style.display = "none";
+            toggleFilterBox(box, true);
         });
-
+        // Screen is smaller than or equal to 575px
     } else if (screenWidth <= 575 && (firstLoading || isAboveThreshold)) {
-        // screen is smaller than 575 px
         isAboveThreshold = false;
         firstLoading = false;
         var filterBoxes = document.querySelectorAll(".filter-box-open");
         filterBoxes.forEach(function (box) {
-            box.classList.replace("filter-box-open", "filter-box-close");
-            var filterDownArrow = document.querySelector(".bi-chevron-down");
-            filterDownArrow.style.display = "block";
+            toggleFilterBox(box, false);
         });
     }
 }
 
-window.addEventListener("resize", handleFilterBoxVisibility);
-window.addEventListener("DOMContentLoaded", handleFilterBoxVisibility);// reduce/expand the filter section if the screen if smaller/larger than 575 pixel
-
-
 // Hide and show each filter's category on button click
 
+// Function to hide a filter box
 function hideFilter(filterName) {
-    var hideBox = document.querySelector("#" + filterName + "-filter-box");
-    hideBox.classList.add("filter-box-close");
-    hideBox.classList.remove("filter-box-open");
-
-
-    var downArrow = document.querySelector("." + filterName + "-filter").querySelector(".bi-chevron-down");
-    var upArrow = document.querySelector("." + filterName + "-filter").querySelector(".bi-chevron-up");
-    downArrow.style.display = "block";
-    upArrow.style.display = "none";
+    var filterBox = document.querySelector("#" + filterName + "-filter-box");
+    toggleFilterBox(filterBox, false);
 }
 
+// Function to show a filter box
 function showFilter(filterName) {
-    var showBox = document.querySelector("#" + filterName + "-filter-box");
-    showBox.classList.add("filter-box-open");
-    showBox.classList.remove("filter-box-close");
-
-    var downArrow = document.querySelector("." + filterName + "-filter").querySelector(".bi-chevron-down");
-    var upArrow = document.querySelector("." + filterName + "-filter").querySelector(".bi-chevron-up");
-    downArrow.style.display = "none";
-    upArrow.style.display = "block";
+    var filterBox = document.querySelector("#" + filterName + "-filter-box");
+    toggleFilterBox(filterBox, true);
 }
 
+// Function to toggle the visibility of a filter box
+function toggleFilterBox(box, open) {
+    box.classList.toggle("filter-box-close", !open);
+    box.classList.toggle("filter-box-open", open);
+    var filterUpArrow = box.querySelector(".bi-chevron-up");
+    var filterDownArrow = box.querySelector(".bi-chevron-down");
+    filterUpArrow.style.display = open ? "block" : "none";
+    filterDownArrow.style.display = open ? "none" : "block";
+}
+
+// Event listeners to handle filter box visibility on resize and DOM load
+window.addEventListener("resize", handleFilterBoxVisibility);
+window.addEventListener("DOMContentLoaded", handleFilterBoxVisibility);
