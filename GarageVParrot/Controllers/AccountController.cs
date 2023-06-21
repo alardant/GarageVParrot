@@ -23,12 +23,11 @@ namespace GarageVParrot.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string? message)
         {
-            //handle the error message if user tries to access a page without the required authorizations 
-            if (HttpContext.Request.Query.ContainsKey("accessdenied")) 
-            { 
-                TempData["ErrorMessage"] = "Vous ne pouvez pas accéder à cette page, veuillez vous connecter à un compte avec les autrozisations .";
+            if (!string.IsNullOrEmpty(message))
+            {
+                TempData["ErrorMessage"] = "Page inaccessible, veuillez vous connecter à un compte ayant les autorisations nécessaires.";
             }
 
             var response = new LoginViewModel();
