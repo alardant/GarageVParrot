@@ -11,6 +11,13 @@
     </div>
 }
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="tempdata-form" style="color: #BE0C0C" >
+        @TempData["ErrorMessage"]
+    </div>
+}
+
 
 <div class="row">
     <div class="col-12">

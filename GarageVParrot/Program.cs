@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System.Configuration;
 using MySqlConnector;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 var mvcBuilder = builder.Services.AddRazorPages();
@@ -23,8 +24,6 @@ string _GetConnStringName = builder.Configuration.GetConnectionString("DefaultCo
 
 builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
     options.UseMySql(_GetConnStringName, ServerVersion.AutoDetect(_GetConnStringName)));
-
-
 
 //IdentityService
 builder.Services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -46,6 +45,13 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.SignIn.RequireConfirmedAccount = false;
     options.SignIn.RequireConfirmedEmail = false;
     options.SignIn.RequireConfirmedPhoneNumber = false;
+});
+
+//Map Login page and redirect unauthorized
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/Login";
 });
 
 var app = builder.Build();

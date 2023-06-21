@@ -31,7 +31,6 @@ namespace GarageVParrot.Controllers
             _hostingEnvironment = hostingEnvironment;
         }
 
-
         [HttpGet]
         public async Task<IActionResult> Index()
         {

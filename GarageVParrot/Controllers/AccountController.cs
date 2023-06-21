@@ -25,6 +25,9 @@ namespace GarageVParrot.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            //handle the error message if user tries to access a page without the required authorizations 
+            TempData["ErrorMessage"] = "Vous ne pouvez pas accéder à cette page, veuillez vous connecter à un compte avec les autrozisations .";
+
             var response = new LoginViewModel();
             return View(response);
         }
