@@ -1,16 +1,11 @@
 ﻿@model IEnumerable<GarageVParrot.Models.Review>
 
 
-<h2>Liste des témoignages à valider</h2>
+<h2>Liste des témoignages</h2>
+
 <div class="return-index-div">
-<a class="return-index" asp-action="Create">Ajouter un témoignage</a>
+    <a class="return-index" asp-action="Create">Ajouter un témoignage</a>
 </div>
-<form asp-controller="Reviews" asp-action="Validate" method="get">
-    <div class="search-bar d-flex gap-2 align-items-center mb-3 form-group ">
-        <input class="form-control search-input" type="text" placeholder="Filtrer" name="SearchString">
-        <button class="search-btn send control-label" type="submit">Rechercher</button>
-    </div>
-</form>
 
 @if (TempData["Message"] != null)
 {
@@ -18,6 +13,73 @@
         @TempData["Message"]
     </div>
 }
+
+<form asp-controller="Reviews" asp-action="Validate" method="get">
+    <div class="search-bar d-flex gap-2 align-items-center mb-3 form-group ">
+        <input class="form-control search-input" type="text" placeholder="Filtrer" name="SearchString">
+        <button class="search-btn send control-label" type="submit">Rechercher</button>
+    </div>
+</form>
+
+@if (Model.Where(i => i.Accepted == false).Count() > 0)
+{
+    <div class="d-flex gap-1 align-items-center">
+        <h3 class="review-subtitle">Témoignages à valider</h3>
+        <span class="number-review-to-accept mb-2">@Model.Where(i => i.Accepted == false).Count()</span>
+    </div>
+    
+
+    <div class="reviews-grid">
+        <div class="review-grid-header d-grid">
+            <div><h4>Nom</h4></div>
+            <div><h4>Description</h4></div>
+            <div><h4>Note</h4></div>
+            <div><h4>Valider le témoignage</h4></div>
+            <div><h4>Action</h4></div>
+        </div>
+
+        @foreach (Review review in Model.Where(i => i.Accepted == false))
+        {
+            <hr />
+
+            <form  asp-action="Validate" method="post">
+                <div class="d-grid review-grid-body">
+                    <input type="hidden" id="Id" name="Id" asp-for="@review.Id" />
+                    <input type="hidden" id="Name" name="Name" asp-for="@review.Name" />
+                    <input type="hidden" id="Description" name="Description" asp-for="@review.Description" />
+                    <input type="hidden" id="Rating" name="Rating" asp-for="@review.Rating" />
+                    <input type="hidden" id="UserId" name="UserId" asp-for="@review.UserId" />
+                    <div class="review-validate-name">
+                        @Html.DisplayFor(modelItem => review.Name)
+                    </div>
+                    <div class="review-validate-description">
+                        @Html.DisplayFor(modelItem => review.Description)
+                    </div>
+                    <div class="review-validate-rating">
+                        @for (int r = 0; r < review.Rating; r++)
+                        {
+                            <i class="bi bi-star-fill"></i>
+                        }
+                        @for (int r = review.Rating; r < 5; r++)
+                        {
+                            <i class="bi bi-star"></i>
+                        }
+                    </div>
+
+                    <div class="review-validate-checkbox">
+                        <input class="form-check-input" type="checkbox" id="Accepted" name="Accepted" asp-for="@review.Accepted" value="true" />
+                    </div>
+                    <div class="review-validate-buttons">
+                        <button type="submit" value="Valider" class="send">Valider</button>
+                        <button type="button" class="delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-review-id="@review.Id" onclick="setItemIdToDelete('@review.Id')">Supprimer</button>
+                    </div>
+                </div>
+            </form>
+        }
+    </div>
+}
+
+<h3 class="review-subtitle pt-3">Témoignages validés</h3>
 
 <div class="reviews-grid">
     <div class="review-grid-header d-grid">
@@ -28,11 +90,11 @@
         <div><h4>Action</h4></div>
     </div>
 
-    @foreach (Review review in Model)
+    @foreach (Review review in Model.Where(i =>i.Accepted == true))
     {
-        
-    <hr />
-        <form  asp-action="Validate" method="post">
+
+        <hr />
+        <form asp-action="Validate" method="post">
             <div class="d-grid review-grid-body">
                 <input type="hidden" id="Id" name="Id" asp-for="@review.Id" />
                 <input type="hidden" id="Name" name="Name" asp-for="@review.Name" />
@@ -40,34 +102,32 @@
                 <input type="hidden" id="Rating" name="Rating" asp-for="@review.Rating" />
                 <input type="hidden" id="UserId" name="UserId" asp-for="@review.UserId" />
                 <div class="review-validate-name">
-                        @Html.DisplayFor(modelItem => review.Name)
+                    @Html.DisplayFor(modelItem => review.Name)
                 </div>
                 <div class="review-validate-description">
-                        @Html.DisplayFor(modelItem => review.Description)
+                    @Html.DisplayFor(modelItem => review.Description)
                 </div>
-                    <div class="review-validate-rating">
-                        @for (int r = 0; r < review.Rating; r++)
-                        {
+                <div class="review-validate-rating">
+                    @for (int r = 0; r < review.Rating; r++)
+                    {
                         <i class="bi bi-star-fill"></i>
-                        }
-                        @for (int r = review.Rating; r < 5; r++)
-                        {
+                    }
+                    @for (int r = review.Rating; r < 5; r++)
+                    {
                         <i class="bi bi-star"></i>
-                        }
+                    }
                 </div>
 
                 <div class="review-validate-checkbox">
-                    <input class="form-check-input" type="checkbox" id="Accepted" name="Accepted" asp-for="@review.Accepted" value="true" />
+                    <input class="form-check-input" type="checkbox" id="Accepted" disabled name="Accepted" asp-for="@review.Accepted" value="true" />
                 </div>
                 <div class="review-validate-buttons">
-                    <button type="submit" value="Valider" class="send">Valider</button>
                     <button type="button" class="delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-review-id="@review.Id" onclick="setItemIdToDelete('@review.Id')">Supprimer</button>
                 </div>
             </div>
         </form>
     }
 </div>
-
 
 @await Html.PartialAsync("_DeleteModal")
 

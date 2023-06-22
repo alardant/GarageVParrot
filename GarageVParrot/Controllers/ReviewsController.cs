@@ -34,7 +34,7 @@ namespace GarageVParrot.Controllers
         [HttpGet]
         public async Task<IActionResult> Validate(string searchString)
         {
-            var listReviews = _context.Reviews.Where(i => i.Accepted == false).AsQueryable();
+            var listReviews = _context.Reviews.AsQueryable();
 
             //display only the requested item form the search bar input
             if (!String.IsNullOrEmpty(searchString))

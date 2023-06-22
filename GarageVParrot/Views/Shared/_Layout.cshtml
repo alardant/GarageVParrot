@@ -18,6 +18,13 @@
     <link rel="stylesheet" href="~/tinyMce/skins/ui/CUSTOM/skin.css" asp-append-version="true" />
 </head>
 <body class="h-100">
+
+    @{
+        var dbContextView = Context.RequestServices.GetService<ApplicationDbContext>();
+        var openHours = dbContextView.OpenHours.FirstOrDefault(i => i.Id == 1);
+        var reviewsToValidate = dbContextView.Reviews.Where(i => i.Accepted == false).ToList();
+    }
+
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm mb-3">
             <div class="container-fluid">
@@ -48,13 +55,23 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <h3>Espace employé</h3>
+                                    
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li>
                                         <a class="dropdown-item" id="login" asp-area="" asp-controller="Cars" asp-action="CarManagement"><h4>Gestion des véhicules</h4></a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" id="login" asp-area="" asp-controller="Reviews" asp-action="Validate"><h4>Gestion des témoignages</h4></a>
+                                        <a class="dropdown-item" id="login" asp-area="" asp-controller="Reviews" asp-action="Validate">
+                                            <h4 class="d-flex gap-1">
+                                                Gestion des témoignages 
+                                                @if (@reviewsToValidate.Count() > 0)
+                                                {
+                                                    <span class="number-review-to-accept">@reviewsToValidate.Count()</span>
+                                                }
+                                            </h4>
+                                        </a>
+
                                     </li>
                                     @if (this.User.IsInRole("admin"))
                                     {
@@ -100,11 +117,6 @@
             <div class="hours-footer text-center mx-1">
                 <h3>Horaires d'ouverture</h3>
                 <p class="mb-0">
-                    @{
-                        var dbContext = Context.RequestServices.GetService<ApplicationDbContext>();
-                        var openHours = dbContext.OpenHours.FirstOrDefault(i => i.Id == 1);
-                    }
-
                     @await Html.PartialAsync("_OpenHours", openHours)
             </div>
             <div class="garage-footer text-center mx-1">

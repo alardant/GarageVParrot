@@ -228,10 +228,20 @@ navbar {
     object-fit: cover
 }
 
-/*FOOTER STYLE CSS*/
+.number-review-to-accept {
+    background-color: rgba(192, 12, 12, .60);
+    color: #fcfcfc;
+    margin: unset;
+    border-radius: 50%;
+    width: 20px !important;
+    height: 20px !important;
+    text-align: center;
+    vertical-align:middle
+}
 
+/*FOOTER STYLE CSS*/
 footer {
-    margin-top:auto;
+    margin-top: auto;
     width: 100%;
     background-color: rgba(13, 91, 130, 0.1);
 }
@@ -446,6 +456,7 @@ footer h3{
     height: 40px;
     position: absolute;
     top: 30%;
+    opacity: 0.5
 }
 
 .owl-nav button {
@@ -675,8 +686,14 @@ footer h3{
 
 /*VALIDATE REVIEW STYLE CSS*/
 
-.review-validate-checkbox input:hover{
-    cursor:pointer;
+.review-subtitle{
+    text-decoration: underline;
+    text-indent: 1rem;
+    color: #0D5B82;
+}
+
+.review-validate-checkbox input:hover {
+    cursor: pointer;
 }
 
 .review-grid-body div {
@@ -1129,10 +1146,10 @@ aside {
     display: none;
 }
 
-@media (max-width: 575px) {
+@media (max-width: 767px) {
     .car-cards-list {
-        display:grid;
-        grid-template-columns:1fr;
+        display: grid;
+        grid-template-columns: 1fr;
     }
 
     aside {
@@ -1141,12 +1158,12 @@ aside {
         margin-right: unset;
     }
 
-    .bi-chevron-down{
-        display:block;
+    .bi-chevron-down {
+        display: block;
     }
 
-    .bi-chevron-up{
-        display:none;
+    .bi-chevron-up {
+        display: none;
     }
 
     .main-filter-buttons .bi-chevron-down {
@@ -1154,7 +1171,7 @@ aside {
     }
 
     .filters {
-        margin-bottom:14px;
+        margin-bottom: 14px;
     }
 }
 
