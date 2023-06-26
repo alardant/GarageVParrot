@@ -23,13 +23,15 @@ namespace GarageVParrot.Controllers
         }
 
         [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            TempData["ErrorMessage"] = "Vous n'avez pas les autorisations nécessaires pour accéder à cette page.";
+            return RedirectToAction("Login");
+        }
+
+        [HttpGet]
         public IActionResult Login(string? message)
         {
-            if (!string.IsNullOrEmpty(message))
-            {
-                TempData["ErrorMessage"] = "Page inaccessible, veuillez vous connecter à un compte ayant les autorisations nécessaires.";
-            }
-
             var response = new LoginViewModel();
             return View(response);
         }

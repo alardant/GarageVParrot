@@ -8,13 +8,11 @@ function handleMainFilterBoxVisibility() {
     // Screen is larger than 767px
     if (screenWidth > 767 && (firstLoading || !isAboveThreshold)) {
             var mainFilterBox = document.querySelector("#filter-filter-box");
-            console.log(mainFilterBox)
             mainFilterBox.classList.add("filter-box-open");
             mainFilterBox.classList.remove("filter-box-close");
         // Screen is smaller than or equal to 767px
     } else if (screenWidth <= 767 && (firstLoading || isAboveThreshold)) {
             var mainFilterBox = document.querySelector("#filter-filter-box");
-            console.log(mainFilterBox)
             mainFilterBox.classList.add("filter-box-close");
             mainFilterBox.classList.remove("filter-box-open");
         };
@@ -24,7 +22,7 @@ function handleMainFilterBoxVisibility() {
 function handleFilterBoxVisibility() {
     var screenWidth = window.innerWidth;
     // Screen is larger than 767px
-    if (screenWidth > 767 && (firstLoading || !isAboveThreshold)) {
+  if (screenWidth > 767 && (firstLoading || !isAboveThreshold)) {
         handleMainFilterBoxVisibility()
         isAboveThreshold = true;
         firstLoading = false;

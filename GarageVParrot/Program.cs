@@ -51,22 +51,21 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
     options.Events = new CookieAuthenticationEvents
     {
         OnRedirectToLogin = context =>
         {
-            if (context.Request.Path.StartsWithSegments("/api"))
-            {
-                context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                return Task.CompletedTask;
-            }
-
             if (!context.Request.Path.StartsWithSegments("/Account"))
             {
-                context.Response.Redirect("/Account/Login?message=Unauthorized");
-                return Task.CompletedTask;
+                if (!context.HttpContext.User.IsInRole("admin"))
+                {
+                    context.Response.Redirect("/Account/AccessDenied");
+                    return Task.CompletedTask;
+                }
             }
 
+            context.Response.Redirect(options.AccessDeniedPath);
             return Task.CompletedTask;
         }
     };

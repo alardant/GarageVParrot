@@ -1085,11 +1085,11 @@ aside {
 
 .filter-box-open {
     border: 1px solid #1D100B;
-    padding: 5px;
+    padding: 4px;
 }
 
 .limited-height {
-    max-height: 95px;
+    max-height: 94px;
     overflow-y: auto;
 }
 
@@ -1204,16 +1204,16 @@ aside {
 }
 
 .carousel-control-prev-icon, .carousel-control-next-icon {
-    background-color: #0D5B82;
+    background-color: inherit;
     border-radius: 50%;
     font-size: 10px;
 }
-
     .carousel-control-prev-icon:hover, .carousel-control-next-icon:hover {
-        transition: color 0.2s;
-        transform: scale(1.05);
+        background-color: #0D5B82 !important;
+        color: #fcfcfc !important;
+        transition: 0.5s;
+        opacity: 0.8;
     }
-
 
     .car-detail-img {
         width: 100%;
