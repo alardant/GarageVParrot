@@ -19,7 +19,7 @@
                 <i class="bi bi-chevron-up" onclick="hideFilter('filter')"></i>
             </div>
 
-            <div class="filter-box-open" id="filter-filter-box">
+            <div class="filter-box-open filter-box-close" id="filter-filter-box">
 
                 <div class="brand-filter box-filter" id="brand">
                     <div class="filter-brand d-flex align-items-center justify-content-between">
@@ -27,7 +27,7 @@
                         <i class="bi bi-chevron-down" onclick="showFilter('brand')"></i>
                         <i class="bi bi-chevron-up" onclick="hideFilter('brand')"></i>
                     </div>
-                    <div class="filter-box-open limited-height" id="brand-filter-box">
+                    <div class="filter-box-open filter-box-close limited-height" id="brand-filter-box">
                         @foreach (Car item in Model.DistinctBy(i => i.Brand).OrderBy(i => i.Brand))
                         {
                             var uniqueId = "brand-" + item.Id;
@@ -45,7 +45,7 @@
                         <i class="bi bi-chevron-down" onclick="showFilter('model')"></i>
                         <i class="bi bi-chevron-up" onclick="hideFilter('model')"></i>
                     </div>
-                    <div class="filter-box-open limited-height" id="model-filter-box">
+                    <div class="filter-box-open filter-box-close limited-height" id="model-filter-box">
                         @foreach (Car item in Model.DistinctBy(i => i.Model).OrderBy(i => i.Model))
                         {
                             var uniqueId = "model-" + item.Id;
@@ -63,7 +63,7 @@
                         <i class="bi bi-chevron-down" onclick="showFilter('category')"></i>
                         <i class="bi bi-chevron-up" onclick="hideFilter('category')"></i>
                     </div>
-                    <div class="filter-box-open limited-height" id="category-filter-box">
+                    <div class="filter-box-open filter-box-close limited-height" id="category-filter-box">
                         @foreach (Car item in Model.DistinctBy(i => i.Category).OrderBy(i => i.Category))
                         {
                             var uniqueId = "category-" + item.Id;
@@ -81,7 +81,7 @@
                         <i class="bi bi-chevron-down" onclick="showFilter('year')"></i>
                         <i class="bi bi-chevron-up" onclick="hideFilter('year')"></i>
                     </div>
-                    <div class="filter-box-open limited-height" id="year-filter-box">
+                    <div class="filter-box-open filter-box-close limited-height" id="year-filter-box">
                         <div class="filter-box-item">
                             <input type="text" class="form-control" id="minYear" name="car-minyear" value="" placeholder="année min" />
                             <input type="text" class="form-control" id="maxYear" name="car-maxyear" value="" placeholder="année max" />
@@ -96,7 +96,7 @@
                         <i class="bi bi-chevron-down" onclick="showFilter('price')"></i>
                         <i class="bi bi-chevron-up" onclick="hideFilter('price')"></i>
                     </div>
-                    <div class="filter-box-open limited-height" id="price-filter-box">
+                    <div class="filter-box-open filter-box-close limited-height" id="price-filter-box">
                         <div class="filter-box-item">
                             <input type="text" class="form-control" id="minPrice" name="car-minprice" value="" placeholder="prix min" />
                             <input type="text" class="form-control" id="maxPrice" name="car-maxprice" value="" placeholder="prix max" />
@@ -111,7 +111,7 @@
                         <i class="bi bi-chevron-down" onclick="showFilter('km')"></i>
                         <i class="bi bi-chevron-up" onclick="hideFilter('km')"></i>
                     </div>
-                    <div class="filter-box-open limited-height" id="km-filter-box">
+                    <div class="filter-box-open filter-box-close limited-height" id="km-filter-box">
                         <div class="filter-box-item">
                             <input type="text" class="form-control" id="minKm" name="car-minkm" value="" placeholder="km min" />
                             <input type="text" class="form-control" id="maxKm" name="car-maxkm" value="" placeholder="km max" />
@@ -126,7 +126,7 @@
                         <i class="bi bi-chevron-down" onclick="showFilter('energy')"></i>
                         <i class="bi bi-chevron-up" onclick="hideFilter('energy')"></i>
                     </div>
-                    <div class="filter-box-open limited-height" id="energy-filter-box">
+                    <div class="filter-box-open filter-box-close limited-height" id="energy-filter-box">
                         @foreach (Car item in Model.DistinctBy(i => i.Energy).OrderBy(i => i.Energy))
                         {
                             var uniqueId = "energy-" + item.Id;
@@ -144,7 +144,7 @@
                         <i class="bi bi-chevron-down" onclick="showFilter('gear')"></i>
                         <i class="bi bi-chevron-up" onclick="hideFilter('gear')"></i>
                     </div>
-                    <div class="filter-box-open limited-height" id="gear-filter-box">
+                    <div class="filter-box-open filter-box-close limited-height" id="gear-filter-box">
                         @foreach (Car item in Model.DistinctBy(i => i.GearType).OrderBy(i => i.GearType))
                         {
                             var uniqueId = "gear-" + item.Id;
@@ -162,7 +162,7 @@
                         <i class="bi bi-chevron-down" onclick="showFilter('critair')"></i>
                         <i class="bi bi-chevron-up" onclick="hideFilter('critair')"></i>
                     </div>
-                    <div class="filter-box-open limited-height" id="critair-filter-box">
+                    <div class="filter-box-open filter-box-close limited-height" id="critair-filter-box">
                         <div class="filter-box-item">
                             <input class="form-check-input" type="checkbox" id="0" name="car-critair" value="0" />
                             <label for="car-critair" class="control-label">0</label>
@@ -196,7 +196,7 @@
                         <i class="bi bi-chevron-down" onclick="showFilter('options')"></i>
                         <i class="bi bi-chevron-up" onclick="hideFilter('options')"></i>
                     </div>
-                    <div class="filter-box-open limited-height" id="options-filter-box">
+                    <div class="filter-box-open filter-box-close limited-height" id="options-filter-box">
                         <div class="filter-box-item">
                             <input class="form-check-input" type="checkbox" id="AirConditionner" name="AirConditionner" value="true" />
                             <label for="AirConditionner" class="control-label">Climatisation</label>
@@ -257,116 +257,8 @@
 
     @await Html.PartialAsync("_contactForm", contactModel)
 </div>
+
 @section Scripts {
     <script type="text/javascript" src="~/js/filter.js"></script>
     <script type="text/javascript" src="~/js/form.js"></script>
-    <script>
-        //handle the input change event
-        $('input').on('change', function () {
-            var selectedBrands = $('input[type="checkbox"][name="car-brand"]:checked').map(function () {
-                return $(this).val();
-            }).get();
-
-            var selectedCategories = $('input[type="checkbox"][name="car-category"]:checked').map(function () {
-                return $(this).val();
-            }).get();
-
-            var selectedModels = $('input[type="checkbox"][name="car-model"]:checked').map(function () {
-                return $(this).val();
-            }).get();
-
-            var selectedEnergies = $('input[type="checkbox"][name="car-energy"]:checked').map(function () {
-                return $(this).val();
-            }).get();
-
-            var selectedGears = $('input[type="checkbox"][name="car-gear"]:checked').map(function () {
-                return $(this).val();
-            }).get();
-
-            var selectedCritair = $('input[type="checkbox"][name="car-critair"]:checked').map(function () {
-                return $(this).val();
-            }).get();
-
-            var hasAircon = $('input[type="checkbox"][name="AirConditionner"]:checked').map(function () {
-                return $(this).val();
-            }).get()
-
-            var hasBt = $('input[type="checkbox"][name="Bluetooth"]:checked').map(function () {
-                return $(this).val();
-            }).get()
-
-            var hasRevRad = $('input[type="checkbox"][name="ReversingRadar"]:checked').map(function () {
-                return $(this).val();
-            }).get()
-
-            var hasGps = $('input[type="checkbox"][name="Gps"]:checked').map(function () {
-                return $(this).val();
-            }).get()
-
-            var hasSpeedReg = $('input[type="checkbox"][name="SpeedRegulator"]:checked').map(function () {
-                return $(this).val();
-            }).get()
-
-            var hasAbs = $('input[type="checkbox"][name="Abs"]:checked').map(function () {
-                return $(this).val();
-            }).get()
-
-            var minYear = $('input[type="text"][name="car-minyear"]').map(function () {
-                return $(this).val();
-            }).get()
-
-            var maxYear = $('input[type="text"][name="car-maxyear"]').map(function () {
-                return $(this).val();
-            }).get()
-
-            var minPrice = $('input[type="text"][name="car-minprice"]').map(function () {
-                return $(this).val();
-            }).get()
-
-            var maxPrice = $('input[type="text"][name="car-maxprice"]').map(function () {
-                return $(this).val();
-            }).get()
-
-            var minKm = $('input[type="text"][name="car-minkm"]').map(function () {
-                return $(this).val();
-            }).get()
-
-            var maxKm = $('input[type="text"][name="car-maxkm"]').map(function () {
-                return $(this).val();
-            }).get()
-
-            //send AJAX request to retrieve filtered product data
-            $.ajax({
-                url: '@Url.Action("GetFilteredCars", "Cars")',
-                type: 'POST',
-                dataType: 'html',
-                data: {
-                    brandList: selectedBrands,
-                    categoryList: selectedCategories,
-                    modelList: selectedModels,
-                    energyList: selectedEnergies,
-                    gearList: selectedGears,
-                    critairList: selectedCritair,
-                    hasAirConditionner: hasAircon,
-                    hasBluetooth: hasBt,
-                    hasReversingRadar: hasRevRad,
-                    hasGPS: hasGps,
-                    hasSpeedRegulator: hasSpeedReg,
-                    hasABS: hasAbs,
-                    MinYear: minYear,
-                    MaxYear: maxYear,
-                    MinPrice: minPrice,
-                    MaxPrice: maxPrice,
-                    MinKm: minKm,
-                    MaxKm: maxKm
-                },
-                success: function (result) {
-                    $('.cars-cards').html(result);
-                },
-                error: function () {
-                    console.log('An error occured');
-                }
-            });
-        });
-    </script>
-    }
+}
