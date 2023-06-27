@@ -6,6 +6,13 @@
     <a class="return-index" asp-action="Index">Retour à la liste</a>
 </div>
 
+@if (TempData["Message"] != null)
+{
+    <div class="tempdata-form" style="color: @(TempData["Message"].ToString().Contains("Échec") ? "#BE0C0C" : "#0D5B82")">
+        @TempData["Message"]
+    </div>
+}
+
 
 <div class="row">
     <div class="col-12">
@@ -21,6 +28,12 @@
                 <label asp-for="Image" class="control-label"></label>
                 <input asp-for="Image" type="file" class="form-control" name="Image" placeholder="Image" />
                 <span asp-validation-for="Image" class="text-danger"></span>
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <p class="tempdata-form mb-0" style="color: #BE0C0C">
+                        @TempData["ErrorMessage"]
+                    </p>
+                }
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label">Description</label>

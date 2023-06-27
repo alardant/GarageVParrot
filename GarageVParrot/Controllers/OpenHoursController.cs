@@ -36,7 +36,7 @@ namespace GarageVParrot.Controllers
         public async Task<IActionResult> Edit()
         
         {
-            var openHours = await _context.OpenHours.FirstOrDefaultAsync(i => i.Id == 1);
+            var openHours = await _context.OpenHours.FirstOrDefaultAsync();
             if (openHours == null)
             {
                 return NotFound();
@@ -47,15 +47,12 @@ namespace GarageVParrot.Controllers
         [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(OpenHours openHours)
+        public async Task<IActionResult> Edit(OpenHours openHours, int? id)
         {
             if (openHours == null || _context.OpenHours == null)
             {
                 return NotFound();
             }
-            //get the existing open Hours
-            //BEWARE : only one isntance of open hours must be create WITH THE ID 1 // THIS IS MANDATORY SO THE CODE IS FUNCTIONNAL
-            openHours.Id = 1;
 
             if (!ModelState.IsValid)
             {

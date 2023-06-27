@@ -154,6 +154,21 @@ namespace GarageVParrot.Controllers
                 //upload car's cover image
                 if (carViewModel.CoverImage != null)
                 {
+                    // check if image size is below 500ko
+                    if (carViewModel.CoverImage.Length > 500 * 1024)
+                    {
+                        TempData["ErrorMessage"] = "La taille de l'image ne doit pas dépasser 500 Ko.";
+                        return View(carViewModel);
+                    }
+                    // cehck extension
+                    string fileExtension = Path.GetExtension(carViewModel.CoverImage.FileName).ToLower();
+                    bool isImageExtensionAccepted = fileExtension == ".jpg" || fileExtension == ".jpeg" || fileExtension == ".png";
+                    // if the extension is invalid redirect
+                    if (!isImageExtensionAccepted)
+                    {
+                        TempData["ErrorMessage"] = "Échec du téléchargement de l'image. Les fichiers supportés sont .jpg, .jpeg, .png ou .pdf.";
+                        return View(carViewModel);
+                    }
                     string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageCover");
                     //create a unique name
                     string fileName = Guid.NewGuid().ToString() + "-" + carViewModel.CoverImage.FileName;
@@ -169,6 +184,21 @@ namespace GarageVParrot.Controllers
                     string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageList");
                     foreach (IFormFile imageFile in carViewModel.ImageListCar)
                     {
+                        // check if image size is below 500ko
+                        if (imageFile.Length > 500 * 1024)
+                        {
+                            TempData["ErrorMessage"] = "La taille de l'image ne doit pas dépasser 500 Ko.";
+                            return View(carViewModel);
+                        }
+                        // check extension
+                        string fileExtension = Path.GetExtension(imageFile.FileName).ToLower();
+                        bool isImageExtensionAccepted = fileExtension == ".jpg" || fileExtension == ".jpeg" || fileExtension == ".png";
+                        // The extension is invalid, redirect
+                        if (!isImageExtensionAccepted)
+                        {
+                            TempData["ErrorMessage"] = "Échec du téléchargement de l'image. Les fichiers supportés sont .jpg, .jpeg, .png ou .pdf.";
+                            return View(carViewModel);
+                        }
                         string fileName = Guid.NewGuid().ToString() + "-" + imageFile.FileName;
                         string filePath = Path.Combine(uploadsFolder, fileName);
                         await imageFile.CopyToAsync(new FileStream(filePath, FileMode.Create));

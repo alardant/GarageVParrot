@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Hosting;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Microsoft.CodeAnalysis;
+using NuGet.Common;
 
 namespace GarageVParrot.Controllers
 {
@@ -24,6 +26,7 @@ namespace GarageVParrot.Controllers
     {
         private readonly ApplicationDbContext _context;
         private IWebHostEnvironment _hostingEnvironment;
+        private string[] _permittedExtensions = { "jpg", "jpeg", "png" };
 
         public ServicesController(ApplicationDbContext context, IWebHostEnvironment hostingEnvironment)
         {
@@ -63,6 +66,20 @@ namespace GarageVParrot.Controllers
                 // upload image if exists
                 if (serviceVM.Image != null)
                 {
+                    // check if image size is below 500ko
+                    if (serviceVM.Image.Length > 500 * 1024)
+                    {
+                        TempData["ErrorMessage"] = "La taille de l'image ne doit pas dépasser 500 Ko.";
+                        return View(serviceVM);
+                    }
+                    string fileExtension = Path.GetExtension(serviceVM.Image.FileName).ToLower();
+                    bool isImageExtensionAccepted = fileExtension == ".jpg" || fileExtension == ".jpeg" || fileExtension == ".png";
+                    // The extension is invalid
+                    if (!isImageExtensionAccepted)
+                    {
+                        TempData["ErrorMessage"] = "Échec du téléchargement de l'image. Les fichiers supportés sont .jpg, .jpeg, .png ou .pdf.";
+                        return View(serviceVM);
+                    }
                     string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
                     // create unique name
                     string fileName = Guid.NewGuid().ToString() + "-" + serviceVM.Image.FileName;
