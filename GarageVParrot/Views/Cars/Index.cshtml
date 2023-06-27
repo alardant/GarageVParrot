@@ -1,6 +1,14 @@
 ﻿@model IEnumerable<GarageVParrot.Models.Car>
 
 <h2>Nos véhicules d'occasion</h2>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="tempdata-form" style="color: #BE0C0C">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
 <section class="car-cards-list">
 
     <aside class="filters">
@@ -31,24 +39,6 @@
                     </div>
                 </div>
 
-                <div class="category-filter box-filter" id="category">
-                    <div class="filter-category d-flex align-items-center justify-content-between">
-                        <h4>CATEGORY</h4>
-                        <i class="bi bi-chevron-down" onclick="showFilter('category')"></i>
-                        <i class="bi bi-chevron-up" onclick="hideFilter('category')"></i>
-                    </div>
-                    <div class="filter-box-open limited-height" id="category-filter-box">
-                        @foreach (Car item in Model.DistinctBy(i => i.Category).OrderBy(i => i.Category))
-                        {
-                            var uniqueId = "category-" + item.Id;
-                            <div class="filter-box-item">
-                                <input class="form-check-input" type="checkbox" id="@uniqueId" name="car-category" value="@item.Category" />
-                                <label for="@uniqueId" class="control-label">@item.Category</label>
-                            </div>
-                        }
-                    </div>
-                </div>
-
                 <div class="model-filter box-filter" id="model">
                     <div class="filter-model d-flex align-items-center justify-content-between">
                         <h4>MODELE</h4>
@@ -67,6 +57,24 @@
                     </div>
                 </div>
 
+                <div class="category-filter box-filter" id="category">
+                    <div class="filter-category d-flex align-items-center justify-content-between">
+                        <h4>CATEGORY</h4>
+                        <i class="bi bi-chevron-down" onclick="showFilter('category')"></i>
+                        <i class="bi bi-chevron-up" onclick="hideFilter('category')"></i>
+                    </div>
+                    <div class="filter-box-open limited-height" id="category-filter-box">
+                        @foreach (Car item in Model.DistinctBy(i => i.Category).OrderBy(i => i.Category))
+                        {
+                            var uniqueId = "category-" + item.Id;
+                            <div class="filter-box-item">
+                                <input class="form-check-input" type="checkbox" id="@uniqueId" name="car-category" value="@item.Category" />
+                                <label for="@uniqueId" class="control-label">@item.Category</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+
                 <div class="year-filter box-filter" id="year">
                     <div class="filter-year d-flex align-items-center justify-content-between">
                         <h4>ANNEE</h4>
@@ -75,9 +83,10 @@
                     </div>
                     <div class="filter-box-open limited-height" id="year-filter-box">
                         <div class="filter-box-item">
-                            <input type="number" class="form-control" id="minYear" name="car-year" value="" placeholder="année min" />
-                            <input type="number" class="form-control" id="maxYear" name="car-year" value="" placeholder="année max" />
+                            <input type="text" class="form-control" id="minYear" name="car-minyear" value="" placeholder="année min" />
+                            <input type="text" class="form-control" id="maxYear" name="car-maxyear" value="" placeholder="année max" />
                         </div>
+                        <p class="error" id="year-error"> Veuillez entrer un nombre entier </p>
                     </div>
                 </div>
 
@@ -89,9 +98,10 @@
                     </div>
                     <div class="filter-box-open limited-height" id="price-filter-box">
                         <div class="filter-box-item">
-                            <input type="number" class="form-control" id="minPrice" name="car-price" value="" placeholder="prix min" />
-                            <input type="number" class="form-control" id="maxPrice" name="car-price" value="" placeholder="prix max" />
+                            <input type="text" class="form-control" id="minPrice" name="car-minprice" value="" placeholder="prix min" />
+                            <input type="text" class="form-control" id="maxPrice" name="car-maxprice" value="" placeholder="prix max" />
                         </div>
+                        <p class="error" id="price-error"> Veuillez entrer un nombre entier </p>
                     </div>
                 </div>
 
@@ -103,9 +113,10 @@
                     </div>
                     <div class="filter-box-open limited-height" id="km-filter-box">
                         <div class="filter-box-item">
-                            <input type="number" class="form-control" id="minKm" name="car-km" value="" placeholder="km min" />
-                            <input type="number" class="form-control" id="maxKm" name="car-km" value="" placeholder="km max" />
+                            <input type="text" class="form-control" id="minKm" name="car-minkm" value="" placeholder="km min" />
+                            <input type="text" class="form-control" id="maxKm" name="car-maxkm" value="" placeholder="km max" />
                         </div>
+                        <p class="error" id="km-error"> Veuillez entrer un nombre entier </p>
                     </div>
                 </div>
 
@@ -206,6 +217,10 @@
                             <input class="form-check-input" type="checkbox" id="SpeedRegulator" name="SpeedRegulator" value="true" />
                             <label for="SpeedRegulator" class="control-label">Régulateur de vitesse</label>
                         </div>
+                        <div class="filter-box-item">
+                            <input class="form-check-input" type="checkbox" id="Abs" name="Abs" value="true" />
+                            <label for="Abs" class="control-label">ABS</label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -246,11 +261,79 @@
     <script type="text/javascript" src="~/js/filter.js"></script>
     <script type="text/javascript" src="~/js/form.js"></script>
     <script>
-        //handle checkbox change event
-        $('input[type="checkbox"][name="car-brand"]').on('change', function () {
+        //handle the input change event
+        $('input').on('change', function () {
             var selectedBrands = $('input[type="checkbox"][name="car-brand"]:checked').map(function () {
-                return $(this).val()
+                return $(this).val();
             }).get();
+
+            var selectedCategories = $('input[type="checkbox"][name="car-category"]:checked').map(function () {
+                return $(this).val();
+            }).get();
+
+            var selectedModels = $('input[type="checkbox"][name="car-model"]:checked').map(function () {
+                return $(this).val();
+            }).get();
+
+            var selectedEnergies = $('input[type="checkbox"][name="car-energy"]:checked').map(function () {
+                return $(this).val();
+            }).get();
+
+            var selectedGears = $('input[type="checkbox"][name="car-gear"]:checked').map(function () {
+                return $(this).val();
+            }).get();
+
+            var selectedCritair = $('input[type="checkbox"][name="car-critair"]:checked').map(function () {
+                return $(this).val();
+            }).get();
+
+            var hasAircon = $('input[type="checkbox"][name="AirConditionner"]:checked').map(function () {
+                return $(this).val();
+            }).get()
+
+            var hasBt = $('input[type="checkbox"][name="Bluetooth"]:checked').map(function () {
+                return $(this).val();
+            }).get()
+
+            var hasRevRad = $('input[type="checkbox"][name="ReversingRadar"]:checked').map(function () {
+                return $(this).val();
+            }).get()
+
+            var hasGps = $('input[type="checkbox"][name="Gps"]:checked').map(function () {
+                return $(this).val();
+            }).get()
+
+            var hasSpeedReg = $('input[type="checkbox"][name="SpeedRegulator"]:checked').map(function () {
+                return $(this).val();
+            }).get()
+
+            var hasAbs = $('input[type="checkbox"][name="Abs"]:checked').map(function () {
+                return $(this).val();
+            }).get()
+
+            var minYear = $('input[type="text"][name="car-minyear"]').map(function () {
+                return $(this).val();
+            }).get()
+
+            var maxYear = $('input[type="text"][name="car-maxyear"]').map(function () {
+                return $(this).val();
+            }).get()
+
+            var minPrice = $('input[type="text"][name="car-minprice"]').map(function () {
+                return $(this).val();
+            }).get()
+
+            var maxPrice = $('input[type="text"][name="car-maxprice"]').map(function () {
+                return $(this).val();
+            }).get()
+
+            var minKm = $('input[type="text"][name="car-minkm"]').map(function () {
+                return $(this).val();
+            }).get()
+
+            var maxKm = $('input[type="text"][name="car-maxkm"]').map(function () {
+                return $(this).val();
+            }).get()
 
             //send AJAX request to retrieve filtered product data
             $.ajax({
@@ -259,7 +342,23 @@
                 dataType: 'html',
                 data: {
                     brandList: selectedBrands,
-                    categoryList: selectedCategories
+                    categoryList: selectedCategories,
+                    modelList: selectedModels,
+                    energyList: selectedEnergies,
+                    gearList: selectedGears,
+                    critairList: selectedCritair,
+                    hasAirConditionner: hasAircon,
+                    hasBluetooth: hasBt,
+                    hasReversingRadar: hasRevRad,
+                    hasGPS: hasGps,
+                    hasSpeedRegulator: hasSpeedReg,
+                    hasABS: hasAbs,
+                    MinYear: minYear,
+                    MaxYear: maxYear,
+                    MinPrice: minPrice,
+                    MaxPrice: maxPrice,
+                    MinKm: minKm,
+                    MaxKm: maxKm
                 },
                 success: function (result) {
                     $('.cars-cards').html(result);

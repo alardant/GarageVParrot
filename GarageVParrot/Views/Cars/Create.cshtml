@@ -5,6 +5,13 @@
     <a class="return-index" asp-action="CarManagement">Retour à la liste</a>
 </div>
 
+@if (TempData["Message"] != null)
+{
+    <div class="tempdata-form" style="color: @(TempData["Message"].ToString().Contains("Échec") ? "#BE0C0C" : "#0D5B82")">
+        @TempData["Message"]
+    </div>
+}
+
 
 <div class="car-create-update">
     <form asp-action="Create" enctype="multipart/form-data">

@@ -1,5 +1,12 @@
 ﻿@model List<GarageVParrot.Models.Car>
 
+@if (TempData["Message"] != null)
+{
+    <div class="tempdata-form" style="color: #0D5B82">
+        @TempData["Message"]
+    </div>
+}
+
 @foreach (Car car in Model)
 {
     <div class="car-card card">

@@ -38,12 +38,40 @@ namespace GarageVParrot.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetFilteredCars(List<string> brandList)
+        public async Task<IActionResult> GetFilteredCars(List<string>? brandList, List<string>? modelList, List<Category>? categoryList, List<Energy>? energyList, List<GearType>? selectedGears, List<int>? critairList, bool hasAirConditionner, bool hasBluetooth, bool hasReversingRadar, bool hasGPS, bool hasSpeedRegulator, bool hasABS, int? MinYear, int? MaxYear, int? MinPrice, int? MaxPrice, int? MinKm, int? MaxKm)
         {
-            var cars = await _context.Cars.Where(i => brandList.Contains(i.Brand)).ToListAsync();
+
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Les filtres n'ont pas pu être appliqués, veuillez réessayer.";
+                var carsList = await _context.Cars.ToListAsync();
+                return PartialView("_CarList", carsList);
+            }
+
+            var cars = await _context.Cars.Where(i =>
+            (brandList.Count() != 0 ? brandList.Contains(i.Brand) : true) && 
+            (modelList.Count() != 0 ? modelList.Contains(i.Model) : true) &&
+            (categoryList.Count() != 0 ? categoryList.Contains(i.Category) : true) &&
+            (energyList.Count() != 0 ? energyList.Contains(i.Energy) : true) &&
+            (selectedGears.Count() != 0 ? selectedGears.Contains(i.GearType) : true) &&
+            (critairList.Count() != 0 ? critairList.Contains(i.CritAir) : true) && 
+            (hasAirConditionner ? i.AirConditionner : true ) &&
+            (hasBluetooth ? i.Bluetooth : true) &&
+            (hasReversingRadar ? i.ReversingRadar : true) &&
+            (hasGPS ? i.Gps : true) &&
+            (hasSpeedRegulator ? i.SpeedRegulator : true) &&
+            (hasABS ? i.Abs : true) &&
+            (MinYear != null ? i.Year >= MinYear : true) &&
+            (MaxYear != null ? i.Year <= MaxYear : true) &&
+            (MinPrice != null ? i.Price <= MinPrice : true) &&
+            (MaxPrice != null ? i.Price <= MaxPrice : true) &&
+            (MinKm != null ? i.Kilometers <= MinKm : true) &&
+            (MaxKm != null ? i.Kilometers <= MaxKm : true)
+            ).ToListAsync();
+
             if(cars.Count() == 0)
             {
-                cars = await _context.Cars.ToListAsync();
+                TempData["Message"] = "Aucun véhicule ne correspond à votre recherche.";
             }
             return PartialView("_CarList", cars);
         }
@@ -431,7 +459,6 @@ namespace GarageVParrot.Controllers
             }
         }
 
-
         private bool CarExists(int id)
         {
             return (_context.Cars?.Any(e => e.Id == id)).GetValueOrDefault();
@@ -439,9 +466,7 @@ namespace GarageVParrot.Controllers
 
         private bool ImagesListCarExists(int id)
         {
-
             return _context.ImagesListCar.Any(image => image.CarId == id);
         }
-
     }
 }

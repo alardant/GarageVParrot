@@ -1175,6 +1175,17 @@ aside {
     }
 }
 
+.error {
+    display: none;
+    margin-top: 5px;
+    margin-bottom: 0;
+    color: #BE0C0C;
+}
+
+.number:invalid > .error {
+    display: block;
+    color: #BE0C0C;
+}
 
 /* CAR DETAILS STYLE CSS*/
 

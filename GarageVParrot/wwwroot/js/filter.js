@@ -78,3 +78,41 @@ function hideFilter(filterName) {
 window.addEventListener("resize", handleFilterBoxVisibility);
 window.addEventListener("DOMContentLoaded", handleFilterBoxVisibility);
 
+
+$('input[type="text"]').keyup(function () {
+    var minYearInput = document.getElementById("minYear");
+    var maxYearInput = document.getElementById("maxYear");
+    var yearError = document.getElementById("year-error");
+    var minPriceInput = document.getElementById("minPrice");
+    var maxPriceInput = document.getElementById("maxPrice");
+    var priceError = document.getElementById("price-error");
+    var minKmInput = document.getElementById("minKm");
+    var maxKmInput = document.getElementById("maxKm");
+    var kmError = document.getElementById("km-error");
+    var regex = /^[0-9]+$/;
+
+
+    if (minYearInput.value && !minYearInput.value.match(regex) || maxYearInput.value && !maxYearInput.value.match(regex)) {
+        yearError.style.display = "block";
+        // prevent the form to be sent
+        return false;
+    } else {
+        yearError.style.display = "none";
+    }
+
+    if (minPriceInput.value && !minPriceInput.value.match(regex) || maxPriceInput.value && !maxPriceInput.value.match(regex)) {
+        priceError.style.display = "block";
+        return false;
+    } else {
+        priceError.style.display = "none";
+    }
+
+    if (minKmInput.value && !minKmInput.value.match(regex) || maxKmInput.value && !maxKmInput.value.match(regex)) {
+        kmError.style.display = "block";
+        return false;
+    } else {
+        kmError.style.display = "none";
+    }
+
+    return true
+})
