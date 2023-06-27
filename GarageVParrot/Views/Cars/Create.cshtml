@@ -126,12 +126,12 @@
                         <input asp-for="ImageListCar" type="file" class="form-control" name="ImageListCar" placeholderImageListCarImage" multiple/>
                     <span asp-validation-for="ImageListCar" class="text-danger"></span>
                 </div>
-                                    @if (TempData["ErrorMessage"] != null)
-                    {
-                        <p class="tempdata-form mb-0" style="color: #BE0C0C">
-                            @TempData["ErrorMessage"]
-                        </p>
-                    }
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <p class="tempdata-form mb-0" style="color: #BE0C0C">
+                        @TempData["ErrorMessage"]
+                    </p>
+                }
                 <h4>Options :</h4>
                 <div class="car-options d-grid">
                     <div>

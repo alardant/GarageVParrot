@@ -168,7 +168,6 @@ namespace GarageVParrot.Controllers
             return RedirectToAction("Validate");
         }
 
-
         private bool ReviewExists(int id)
         {
             return (_context.Reviews?.Any(e => e.Id == id)).GetValueOrDefault();

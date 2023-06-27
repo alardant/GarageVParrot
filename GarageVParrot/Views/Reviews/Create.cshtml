@@ -3,7 +3,7 @@
 
 <h2>Ajouter un témoignage</h2>
 <div class="return-index-div">
-    <a class="return-index" asp-action="Index">Retour à la liste</a>
+    <button class="return-index" onclick="goBack()">Retour à la liste</button>
 </div>
 
 @if (TempData["Message"] != null)
@@ -74,4 +74,9 @@
     <script type="text/javascript" src="~/js/starRating.js"></script>
     <script type="text/javascript" src="~/js/form.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function goBack() {
+            history.go(-1);
+        }
+    </script>
 }
