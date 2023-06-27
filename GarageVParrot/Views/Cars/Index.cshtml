@@ -25,7 +25,7 @@
                             var uniqueId = "brand-" + item.Id;
                             <div class="filter-box-item">
                                 <input class="form-check-input" type="checkbox" id="@uniqueId" name="car-brand" value="@item.Brand" />
-                                <label for="car-brand" class="control-label">@item.Brand</label>
+                                <label for="@uniqueId" class="control-label">@item.Brand</label>
                             </div>
                         }
                     </div>
@@ -43,12 +43,11 @@
                             var uniqueId = "category-" + item.Id;
                             <div class="filter-box-item">
                                 <input class="form-check-input" type="checkbox" id="@uniqueId" name="car-category" value="@item.Category" />
-                                <label for="car-category" class="control-label">@item.Category</label>
+                                <label for="@uniqueId" class="control-label">@item.Category</label>
                             </div>
                         }
                     </div>
                 </div>
-
 
                 <div class="model-filter box-filter" id="model">
                     <div class="filter-model d-flex align-items-center justify-content-between">
@@ -62,7 +61,7 @@
                             var uniqueId = "model-" + item.Id;
                             <div class="filter-box-item">
                                 <input class="form-check-input" type="checkbox" id="@uniqueId" name="car-model" value="@item.Model" />
-                                <label for="car-model" class="control-label">@item.Model</label>
+                                <label for="@uniqueId" class="control-label">@item.Model</label>
                             </div>
                         }
                     </div>
@@ -76,8 +75,8 @@
                     </div>
                     <div class="filter-box-open limited-height" id="year-filter-box">
                         <div class="filter-box-item">
-                            <input type="number" class="form-control" type="checkbox" id="minYear" name="car-year" value="" placeholder="année min" />
-                            <input type="number" class="form-control" type="checkbox" id="maxYear" name="car-year" value="" placeholder="année max" />
+                            <input type="number" class="form-control" id="minYear" name="car-year" value="" placeholder="année min" />
+                            <input type="number" class="form-control" id="maxYear" name="car-year" value="" placeholder="année max" />
                         </div>
                     </div>
                 </div>
@@ -90,8 +89,8 @@
                     </div>
                     <div class="filter-box-open limited-height" id="price-filter-box">
                         <div class="filter-box-item">
-                            <input type="number" class="form-control" type="checkbox" id="minPrice" name="car-price" value="" placeholder="prix min" />
-                            <input type="number" class="form-control" type="checkbox" id="maxPrice" name="car-price" value="" placeholder="prix max" />
+                            <input type="number" class="form-control" id="minPrice" name="car-price" value="" placeholder="prix min" />
+                            <input type="number" class="form-control" id="maxPrice" name="car-price" value="" placeholder="prix max" />
                         </div>
                     </div>
                 </div>
@@ -104,8 +103,8 @@
                     </div>
                     <div class="filter-box-open limited-height" id="km-filter-box">
                         <div class="filter-box-item">
-                            <input type="number" class="form-control" type="checkbox" id="minKm" name="car-km" value="" placeholder="km min" />
-                            <input type="number" class="form-control" type="checkbox" id="maxKm" name="car-km" value="" placeholder="km max" />
+                            <input type="number" class="form-control" id="minKm" name="car-km" value="" placeholder="km min" />
+                            <input type="number" class="form-control" id="maxKm" name="car-km" value="" placeholder="km max" />
                         </div>
                     </div>
                 </div>
@@ -122,7 +121,7 @@
                             var uniqueId = "energy-" + item.Id;
                             <div class="filter-box-item">
                                 <input class="form-check-input" type="checkbox" id="@uniqueId" name="car-energy" value="@item.Energy" />
-                                <label for="car-energy" class="control-label">@item.Energy</label>
+                                <label for="@uniqueId" class="control-label">@item.Energy</label>
                             </div>
                         }
                     </div>
@@ -140,7 +139,7 @@
                             var uniqueId = "gear-" + item.Id;
                             <div class="filter-box-item">
                                 <input class="form-check-input" type="checkbox" id="@uniqueId" name="car-gear" value="@item.GearType" />
-                                <label for="car-gear" class="control-label">@item.GearType</label>
+                                <label for="@uniqueId" class="control-label">@item.GearType</label>
                             </div>
                         }
                     </div>
@@ -154,27 +153,27 @@
                     </div>
                     <div class="filter-box-open limited-height" id="critair-filter-box">
                         <div class="filter-box-item">
-                            <input class="form-check-input" type="checkbox" id="0" name="car-critair-0" value="0" />
+                            <input class="form-check-input" type="checkbox" id="0" name="car-critair" value="0" />
                             <label for="car-critair" class="control-label">0</label>
                         </div>
                         <div class="filter-box-item">
-                            <input class="form-check-input" type="checkbox" id="1" name="car-critair-1" value="1" />
+                            <input class="form-check-input" type="checkbox" id="1" name="car-critair" value="1" />
                             <label for="car-critair" class="control-label">1</label>
                         </div>
                         <div class="filter-box-item">
-                            <input class="form-check-input" type="checkbox" id="car-critair-2" name="car-critair-2" value="2" />
+                            <input class="form-check-input" type="checkbox" id="car-critair-2" name="car-critair" value="2" />
                             <label for="car-critair-2" class="control-label">2</label>
                         </div>
                         <div class="filter-box-item">
-                            <input class="form-check-input" type="checkbox" id="car-critair-3" name="car-critair-3" value="3" />
+                            <input class="form-check-input" type="checkbox" id="car-critair-3" name="car-critair" value="3" />
                             <label for="car-critair-3" class="control-label">3</label>
                         </div>
                         <div class="filter-box-item">
-                            <input class="form-check-input" type="checkbox" id="car-critair-4" name="car-critair-4" value="4" />
+                            <input class="form-check-input" type="checkbox" id="car-critair-4" name="car-critair" value="4" />
                             <label for="car-critair-4" class="control-label">4</label>
                         </div>
                         <div class="filter-box-item">
-                            <input class="form-check-input" type="checkbox" id="car-critair-5" name="car-critair-5" value="5" />
+                            <input class="form-check-input" type="checkbox" id="car-critair-5" name="car-critair" value="5" />
                             <label for="car-critair-5" class="control-label">5</label>
                         </div>
                     </div>
@@ -246,5 +245,29 @@
 @section Scripts {
     <script type="text/javascript" src="~/js/filter.js"></script>
     <script type="text/javascript" src="~/js/form.js"></script>
+    <script>
+        //handle checkbox change event
+        $('input[type="checkbox"][name="car-brand"]').on('change', function () {
+            var selectedBrands = $('input[type="checkbox"][name="car-brand"]:checked').map(function () {
+                return $(this).val()
+            }).get();
 
+            //send AJAX request to retrieve filtered product data
+            $.ajax({
+                url: '@Url.Action("GetFilteredCars", "Cars")',
+                type: 'POST',
+                dataType: 'html',
+                data: {
+                    brandList: selectedBrands,
+                    categoryList: selectedCategories
+                },
+                success: function (result) {
+                    $('.cars-cards').html(result);
+                },
+                error: function () {
+                    console.log('An error occured');
+                }
+            });
+        });
+    </script>
     }

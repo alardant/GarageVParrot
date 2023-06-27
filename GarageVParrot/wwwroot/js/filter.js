@@ -77,3 +77,4 @@ function hideFilter(filterName) {
 
 window.addEventListener("resize", handleFilterBoxVisibility);
 window.addEventListener("DOMContentLoaded", handleFilterBoxVisibility);
+

@@ -37,6 +37,17 @@ namespace GarageVParrot.Controllers
             return View(listCar);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> GetFilteredCars(List<string> brandList)
+        {
+            var cars = await _context.Cars.Where(i => brandList.Contains(i.Brand)).ToListAsync();
+            if(cars.Count() == 0)
+            {
+                cars = await _context.Cars.ToListAsync();
+            }
+            return PartialView("_CarList", cars);
+        }
+
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> CarManagement(string searchString)

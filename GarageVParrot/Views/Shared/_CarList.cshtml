@@ -1,0 +1,17 @@
+﻿@model List<GarageVParrot.Models.Car>
+
+@foreach (Car car in Model)
+{
+    <div class="car-card card">
+        <div class="car-image-container">
+            <img src="~/Uploads/CarImageCover/@car.CoverImage" class="card-img-top" alt="Image de couverture de la voiture">
+        </div>
+        <div class="car-card-body card-body d-block d-flex">
+            <h3 class="card-text car-card-brand">@Html.DisplayFor(modelItem => car.Brand)</h3>
+            <h4 class="card-text car-card-model">@Html.DisplayFor(modelItem => car.Model)</h4>
+            <p class="card-text car-card-year-km">@Html.DisplayFor(modelItem => car.Year) - @Html.DisplayFor(modelItem => car.Kilometers) km</p>
+            <p class="card-text car-card-price">@Html.DisplayFor(modelItem => car.Price) €</p>
+            <a class="see-more" asp-action="Details" asp-route-id="@car.Id">Voir l'annonce +</a>
+        </div>
+    </div>
+}
