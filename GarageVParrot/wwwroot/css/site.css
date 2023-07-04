@@ -28,12 +28,17 @@ body {
     height: 100%;
 }
 
+
+.body *{
+    width:100%;
+}
+
 main {
     position: relative;
 }
 
 .main-container {
-    max-width: 95% !important;
+    min-width: 95% !important;
 }
 
 section {
@@ -304,11 +309,16 @@ footer h3 {
 
 .service-div {
     display: grid;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 2fr 3fr;
     grid-template-areas:
         "image text";
-    margin-bottom: 20px;
 }
+
+    .service-div:nth-child(odd) {
+        display: grid;
+        grid-template-columns: 3fr 2fr;
+        grid-template-areas: "text image";
+    }
 
 @media (max-width: 767px) {
     .service-div {
@@ -322,19 +332,21 @@ footer h3 {
         display: none;
     }
 
-    .service-div:nth-child(odd) .service-title {
-        text-align: end;
-    }
 }
 
 @media (max-width: 992px) {
     .service-div {
         display: grid;
-        grid-template-columns: 2fr 3fr;
+        grid-template-columns: 1fr 3fr;
         grid-template-areas:
             "image text";
-        margin-bottom: 20px;
     }
+
+        .service-div:nth-child(odd) {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            grid-template-areas: "text image";
+        }
 }
 
 .service-text {
@@ -369,12 +381,6 @@ footer h3 {
 
 .service-text > p {
     text-align: justify;
-}
-
-.service-div:nth-child(odd) {
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    grid-template-areas: "text image";
 }
 
     .service-div:nth-child(odd) .service-text:after {

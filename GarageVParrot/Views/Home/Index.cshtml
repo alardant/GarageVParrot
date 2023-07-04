@@ -2,18 +2,20 @@
 
 <section class="services">
     <h2>Nos Services</h2>
-	@foreach(Service service in @Model.Services)
-	{
-		<div class="service-div p-2 container">
-			<div class="image-service-container m-2">
-				<img class="service-image" src="~/Uploads/ServicesImage/@service.Image" alt="Image du service" />
-			</div>
-			<div class="service-text">
-				<h3 class="service-title mb-1">@Html.DisplayFor(modelItem => service.Title)</h3>
-				@Html.Raw(service.Description)
-			</div>
-		</div>
-	}
+    <div class="row">
+	    @foreach(Service service in @Model.Services)
+	    {
+		    <div class="service-div p-2 container">
+			    <div class="image-service-container m-2">
+				    <img class="service-image" src="~/Uploads/ServicesImage/@service.Image" alt="Image du service" />
+			    </div>
+			    <div class="service-text">
+				    <h3 class="service-title mb-1">@Html.DisplayFor(modelItem => service.Title)</h3>
+				    @Html.Raw(service.Description)
+			    </div>
+		    </div>
+	    }
+    </div>
 </section>
  
 <section class="reviews">
