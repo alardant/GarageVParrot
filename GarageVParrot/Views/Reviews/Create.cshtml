@@ -28,7 +28,7 @@
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div onmouseout="CRateSelected" class="review-rating">
-                    <label asp-for="Rating" class="control-label">Notes</label>
+                    <label asp-for="Rating" class="control-label">Note</label>
                     <div class="d-flex gap-2 stars">
                         <i id="i1" onmouseout="CRateOut(1)" onmouseover="CRateOver(1)" onclick="CRateClick(1)" class="bi bi-star"></i>
                         <i id="i2" onmouseout="CRateOut(2)" onmouseover="CRateOver(2)" onclick="CRateClick(2)" class="bi bi-star"></i>
@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+                <label asp-for="Description" class="control-label">Votre message</label>
                 <textarea asp-for="Description" rows="5" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>

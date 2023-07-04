@@ -13,7 +13,7 @@
 }
 
 <div class="account-grid">
-    <div class="account-grid-header d-grid">
+    <div class="account-grid-header">
         <div><h4>Email</h4></div>
         <div><h4>Accès administrateur</h4></div>
         <div><h4>Action</h4></div>
@@ -23,7 +23,7 @@
     @foreach (User user in Model.OrderBy(i => i.Role))
     {
         <hr />
-        <div class="d-grid account-grid-body">
+        <div class="account-grid-body">
             <div class="account-grid-email">
                 @Html.DisplayFor(modelItem => user.Email)
             </div>

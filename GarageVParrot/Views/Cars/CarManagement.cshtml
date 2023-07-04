@@ -21,7 +21,7 @@
 }
 
 <div class="car-grid">
-    <div class="car-grid-header d-grid">
+    <div class="car-grid-header">
         <div><h4>Marque et modèle</h4></div>
         <div><h4>Année</h4></div>
         <div><h4>Kilomètrage</h4></div>
@@ -32,14 +32,14 @@
     @foreach (Car car in Model)
     {
         <hr />
-            <div class="d-grid car-grid-body">
-                <div class="car-list-brand">
+            <div class="car-grid-body">
+            <div class="car-management-brand">
                     @Html.DisplayFor(modelItem => car.Brand) - @Html.DisplayFor(modelItem => car.Model)
                 </div>
                 <div class="car-management-year">
                     @Html.DisplayFor(modelItem => car.Year)
                 </div>
-            <div class="car-management-year">
+            <div class="car-management-km">
                 @Html.DisplayFor(modelItem => car.Kilometers) km
             </div>
                 <div class="car-management-image">

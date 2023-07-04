@@ -77,7 +77,7 @@ namespace GarageVParrot.Controllers
                     // The extension is invalid
                     if (!isImageExtensionAccepted)
                     {
-                        TempData["ErrorMessage"] = "Échec du téléchargement de l'image. Les fichiers supportés sont .jpg, .jpeg, .png ou .pdf.";
+                        TempData["ErrorMessage"] = "Échec du téléchargement de l'image. Les fichiers supportés sont .jpg, .jpeg ou .png.";
                         return View(serviceVM);
                     }
                     string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");

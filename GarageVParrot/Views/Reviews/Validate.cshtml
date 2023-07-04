@@ -30,7 +30,7 @@
     
 
     <div class="reviews-grid">
-        <div class="review-grid-header d-grid">
+        <div class="review-grid-header">
             <div><h4>Nom</h4></div>
             <div><h4>Description</h4></div>
             <div><h4>Note</h4></div>
@@ -38,12 +38,12 @@
             <div><h4>Action</h4></div>
         </div>
 
-        @foreach (Review review in Model.Where(i => i.Accepted == false))
+        @foreach (Review review in Model.Where(i => i.Accepted == false).OrderByDescending(i => i.datePublished))
         {
             <hr />
 
             <form  asp-action="Validate" method="post">
-                <div class="d-grid review-grid-body">
+                <div class="review-grid-body">
                     <input type="hidden" id="Id" name="Id" asp-for="@review.Id" />
                     <input type="hidden" id="Name" name="Name" asp-for="@review.Name" />
                     <input type="hidden" id="Description" name="Description" asp-for="@review.Description" />
@@ -53,7 +53,7 @@
                         @Html.DisplayFor(modelItem => review.Name)
                     </div>
                     <div class="review-validate-description">
-                        @Html.DisplayFor(modelItem => review.Description)
+                        "@Html.DisplayFor(modelItem => review.Description)"
                     </div>
                     <div class="review-validate-rating">
                         @for (int r = 0; r < review.Rating; r++)
@@ -82,20 +82,20 @@
 <h3 class="review-subtitle pt-3">Témoignages validés</h3>
 
 <div class="reviews-grid">
-    <div class="review-grid-header d-grid">
+    <div class="review-grid-header">
         <div><h4>Nom</h4></div>
         <div><h4>Description</h4></div>
         <div><h4>Note</h4></div>
-        <div><h4>Valider le témoignage</h4></div>
+        <div><h4>Témoignage validé</h4></div>
         <div><h4>Action</h4></div>
     </div>
 
-    @foreach (Review review in Model.Where(i =>i.Accepted == true))
+    @foreach (Review review in Model.Where(i => i.Accepted == true).OrderByDescending(i => i.datePublished))
     {
 
         <hr />
         <form asp-action="Validate" method="post">
-            <div class="d-grid review-grid-body">
+            <div class="review-grid-body">
                 <input type="hidden" id="Id" name="Id" asp-for="@review.Id" />
                 <input type="hidden" id="Name" name="Name" asp-for="@review.Name" />
                 <input type="hidden" id="Description" name="Description" asp-for="@review.Description" />
@@ -105,7 +105,7 @@
                     @Html.DisplayFor(modelItem => review.Name)
                 </div>
                 <div class="review-validate-description">
-                    @Html.DisplayFor(modelItem => review.Description)
+                    "@Html.DisplayFor(modelItem => review.Description)"
                 </div>
                 <div class="review-validate-rating">
                     @for (int r = 0; r < review.Rating; r++)

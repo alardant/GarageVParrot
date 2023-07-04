@@ -74,9 +74,9 @@ namespace GarageVParrot.Controllers
                 await _context.SaveChangesAsync();
                 TempData["Message"] = "Le témoignage a bien été modifié.";
 
-                //get a list of all the reviews updated
-                var reviewListUpadted = await _context.Reviews.AsNoTracking().Where(i => i.Accepted == false).ToListAsync();
-                return View(reviewListUpadted);
+                //get a list updated of all the reviews
+                var reviews = await _context.Reviews.AsNoTracking().ToListAsync();
+                return View(reviews);
             }
             catch (Exception)
             {

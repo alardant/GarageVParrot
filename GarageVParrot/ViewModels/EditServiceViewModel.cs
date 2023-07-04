@@ -12,7 +12,7 @@ namespace GarageVParrot.ViewModels
         public string Title { get; set; }
         [Required(ErrorMessage = "La description est obligatoire.")]
         public string Description { get; set; }
-        [Display(Name = "Modifier l'image.")]
+        [Display(Name = "Modifier l'image")]
         public string? Image { get; set; }
         public string? UserId { get; set; }
     }
