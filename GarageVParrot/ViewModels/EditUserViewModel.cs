@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace GarageVParrot.ViewModels
 {
-    public class EditAccountViewModel
+    public class EditUserViewModel
     {
         [Display(Name = "Adresse email")]
         [Required(ErrorMessage = "L'adresse email est obligatoire.")]

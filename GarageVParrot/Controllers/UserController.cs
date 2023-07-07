@@ -9,13 +9,13 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace GarageVParrot.Controllers
 {
-    public class AccountController : Controller
+    public class UserController : Controller
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ApplicationDbContext _context;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationDbContext context)
+        public UserController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationDbContext context)
         {
             _context = context;
             _signInManager = signInManager;
@@ -72,41 +72,41 @@ namespace GarageVParrot.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            var response = new AccountViewModel();
+            var response = new UserViewModel();
             return View(response);
         }
 
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public async Task<IActionResult> Register(AccountViewModel accountViewModel)
+        public async Task<IActionResult> Register(UserViewModel userViewModel)
         {
             if (!ModelState.IsValid) 
             {
                 TempData["Message"] = "Échec de la création de l'employé, veuillez réessayer.";
-                return View(accountViewModel);
+                return View(userViewModel);
             }
 
             try
             {
-                var user = await _userManager.FindByEmailAsync(accountViewModel.EmailAddress);
+                var user = await _userManager.FindByEmailAsync(userViewModel.EmailAddress);
                 if (user != null)
                 {
                     TempData["Message"] = "Échec de la création de l'employé, cette adresse email est déjà utilisée.";
-                    return View(accountViewModel);
+                    return View(userViewModel);
                 }
 
                 // set user's role
-                bool isAdmin = accountViewModel.Role;
+                bool isAdmin = userViewModel.Role;
                 string role = isAdmin ? UserRoles.Admin : UserRoles.User;
 
                 //create the new user
                 var newUser = new User()
                 {
-                    Email = accountViewModel.EmailAddress,
-                    UserName = accountViewModel.EmailAddress,
+                    Email = userViewModel.EmailAddress,
+                    UserName = userViewModel.EmailAddress,
                     Role = role
                 };
-                var newUserResponse = await _userManager.CreateAsync(newUser, accountViewModel.Password);
+                var newUserResponse = await _userManager.CreateAsync(newUser, userViewModel.Password);
 
                 //add user's role
                 if (newUserResponse.Succeeded)
@@ -120,7 +120,7 @@ namespace GarageVParrot.Controllers
             } catch (Exception ex)
             {
                 TempData["Message"] = "Échec de la création de l'employé, veuillez réessayer.";
-                return View(accountViewModel);
+                return View(userViewModel);
             }
     }
 
@@ -186,28 +186,28 @@ namespace GarageVParrot.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(string? id)
         {
-            var account = await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
-            if (id == null || account == null)
+            var user = await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+            if (id == null || user == null)
             {
                 return NotFound();
             }
 
-            var accountVM = new EditAccountViewModel
+            var userVM = new EditUserViewModel
             {
-                EmailAddress = account.Email,
-                CurrentPassword = account.PasswordHash,
-                Role = account.Role == "admin" ? true : false
+                EmailAddress = user.Email,
+                CurrentPassword = user.PasswordHash,
+                Role = user.Role == "admin" ? true : false
             };
-            return View(accountVM);
+            return View(userVM);
         }
 
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public async Task<IActionResult> Edit(string? id, EditAccountViewModel editaccountVM)
+        public async Task<IActionResult> Edit(string? id, EditUserViewModel edituserVM)
         {
-            var account = await _userManager.Users.FirstOrDefaultAsync(i => i.Id == id);
+            var user = await _userManager.Users.FirstOrDefaultAsync(i => i.Id == id);
 
-            if (id != account.Id ||account == null)
+            if (id != user.Id ||user == null)
             {
                 return NotFound();
             }
@@ -215,50 +215,50 @@ namespace GarageVParrot.Controllers
             if (!ModelState.IsValid)
             {
             TempData["Message"] = "Échec de la modification du compte, veuillez réessayer.";
-            return View(editaccountVM);
+            return View(edituserVM);
             }
 
             try
             {
                 //check if the current password is true
-                var passwordCheck = await _userManager.CheckPasswordAsync(account, editaccountVM.CurrentPassword);
+                var passwordCheck = await _userManager.CheckPasswordAsync(user, edituserVM.CurrentPassword);
                 if (!passwordCheck)
                 {
                     TempData["Message"] = "Échec de la modification, veuillez réessayer.";
-                    return View(editaccountVM);
+                    return View(edituserVM);
                 }
 
                 //set the new role and get the old role
-                var oldRole = account.Role;
-                bool isAdmin = editaccountVM.Role;
+                var oldRole = user.Role;
+                bool isAdmin = edituserVM.Role;
                 string role = isAdmin ? UserRoles.Admin : UserRoles.User;
 
                 // if a new password is set, update with the new information
-                if (editaccountVM.NewPassword != null) 
+                if (edituserVM.NewPassword != null) 
                 { 
                     //update the new password new password
-                    var newUserResponse = await _userManager.ChangePasswordAsync(account, editaccountVM.CurrentPassword, editaccountVM.NewPassword);
+                    var newUserResponse = await _userManager.ChangePasswordAsync(user, edituserVM.CurrentPassword, edituserVM.NewPassword);
 
                     if (newUserResponse.Succeeded)
                     {
-                        account.Email = editaccountVM.EmailAddress;
-                        account.UserName = editaccountVM.EmailAddress;
-                        account.Role = role;
+                        user.Email = edituserVM.EmailAddress;
+                        user.UserName = edituserVM.EmailAddress;
+                        user.Role = role;
 
-                        await _userManager.UpdateAsync(account);
-                        await _userManager.RemoveFromRoleAsync(account, oldRole);
-                        await _userManager.AddToRoleAsync(account, role);
+                        await _userManager.UpdateAsync(user);
+                        await _userManager.RemoveFromRoleAsync(user, oldRole);
+                        await _userManager.AddToRoleAsync(user, role);
                     }
                 } else
                 //if no new password is set, update with the new information
                 {
-                    account.Email = editaccountVM.EmailAddress;
-                    account.UserName = editaccountVM.EmailAddress;
-                    account.Role = role;
+                    user.Email = edituserVM.EmailAddress;
+                    user.UserName = edituserVM.EmailAddress;
+                    user.Role = role;
 
-                    await _userManager.UpdateAsync(account);
-                    await _userManager.RemoveFromRoleAsync(account, oldRole);
-                    await _userManager.AddToRoleAsync(account, role);
+                    await _userManager.UpdateAsync(user);
+                    await _userManager.RemoveFromRoleAsync(user, oldRole);
+                    await _userManager.AddToRoleAsync(user, role);
                 }
                     
                 TempData["Message"] = "L'employé a bien été modifié.";
@@ -267,7 +267,7 @@ namespace GarageVParrot.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 TempData["Message"] = "Échec de la modification du compte, veuillez réessayer.";
-                return View(editaccountVM);
+                return View(edituserVM);
             }
         }
     }

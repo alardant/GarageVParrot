@@ -76,7 +76,7 @@
                                     @if (this.User.IsInRole("admin"))
                                     {
                                         <li>
-                                            <a class="dropdown-item" id="login" asp-area="" asp-controller="Account" asp-action="Index"><h4>Modifier les accès employés</h4></a>
+                                            <a class="dropdown-item" id="login" asp-area="" asp-controller="User" asp-action="Index"><h4>Modifier les accès employés</h4></a>
                                         </li>
                                         <li>
                                             <a class="dropdown-item" id="login" asp-area="" asp-controller="Services" asp-action="Index"><h4>Gestion des services</h4></a>
@@ -88,13 +88,13 @@
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="login" asp-area="" asp-controller="Account" asp-action="Logout"><h3>Se déconnecter</h3></a>
+                                <a class="nav-link" id="login" asp-area="" asp-controller="User" asp-action="Logout"><h3>Se déconnecter</h3></a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link" id="login" asp-area="" asp-controller="Account" asp-action="Login"><h4>Vous êtes employé ?<br />Connectez vous ici</h4></a>
+                                <a class="nav-link" id="login" asp-area="" asp-controller="User" asp-action="Login"><h4>Vous êtes employé ?<br />Connectez vous ici</h4></a>
                             </li>
                         }
                     </ul>
