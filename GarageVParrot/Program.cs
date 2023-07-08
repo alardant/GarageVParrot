@@ -19,11 +19,11 @@ builder.Services.AddSession();
 
 builder.Services.AddScoped<Seed>();
 
-// MySQL DB Connection
-string _GetConnStringName = builder.Configuration.GetConnectionString("DefaultConnection");
+// SQL Server DB Connection
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
-    options.UseMySql(_GetConnStringName, ServerVersion.AutoDetect(_GetConnStringName)));
+    options.UseSqlServer(connectionString));
 
 // IdentityService
 builder.Services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
