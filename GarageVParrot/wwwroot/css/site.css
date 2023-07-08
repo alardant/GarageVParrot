@@ -502,6 +502,13 @@ footer h3 {
     text-decoration: underline
 }
 
+.owl-stage {
+    display:flex;
+}
+
+.card-items, .card-owl-carousel {
+    height: 100% !important;
+}
 
 /*CONTACT-FORM SECTION CSS STYLE */
 .tempdata-form {
