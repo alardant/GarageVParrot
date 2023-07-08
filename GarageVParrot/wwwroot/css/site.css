@@ -305,6 +305,7 @@ footer h3 {
 
 .image-service-container {
     grid-area: image;
+    max-height:350px;
 }
 
 .service-div {
@@ -937,10 +938,16 @@ footer h3 {
 
 /*SERVICE INDEX STYLE CSS */
 
-.service-grid .d-grid {
+.service-grid-header, .service-grid-body {
+    display: grid;
     grid-template-columns: 1fr 2fr 1fr 1fr;
-    text-align: start;
     align-items: center;
+    text-align: center!important;
+}
+
+.service-grid-header {
+    justify-items:center;
+    align-content:center;
 }
 
 .service-grid-title {
@@ -951,6 +958,18 @@ footer h3 {
     .service-grid {
         margin-top: 14px;
     }
+}
+
+@media (max-width:992px) {
+    .service-validate-buttons {
+        display: grid;
+        justify-items: center;
+        gap: 20px;
+    }
+
+        .service-validate-buttons button {
+            margin: unset !important;
+        }
 }
 
 .service-list-image {
@@ -970,8 +989,12 @@ footer h3 {
 }
 
 .service-grid-header {
-    text-align: center;
+    justify-content:center; 
     align-items: center
+}
+
+.service-grid-description{
+    text-align:start;
 }
 
 @media (max-width:767px) {

@@ -13,7 +13,7 @@
 }
 
 <div class="service-grid">
-    <div class="service-grid-header d-grid">
+    <div class="service-grid-header">
         <div><h4>Titre</h4></div>
         <div><h4>Description</h4></div>
         <div><h4>Image</h4></div>
@@ -24,7 +24,7 @@
     @foreach (Service service in Model)
     {
             <hr />
-        <div class="d-grid service-grid-body">
+        <div class="service-grid-body">
             <div class="service-grid-title">
                 @Html.DisplayFor(modelItem => service.Title)
             </div>

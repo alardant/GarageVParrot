@@ -24,7 +24,7 @@ namespace GarageVParrot.Models
         [Display(Name = "Samedi")]
         [Required(ErrorMessage = "les horaires doivent être renseignées pour le samedi.")]
         public string SaturdayOpenHours { get; set; }
-        [Display(Name = "Lundi")]
+        [Display(Name = "Dimanche")]
         [Required(ErrorMessage = "les horaires doivent être renseignées pour le dimanche.")]
         public string SundayOpenHours { get; set; }
     }
