@@ -23,7 +23,7 @@
     <div class="carousel-wrap">
         <div class="owl-carousel owl-theme carousel">
             @{
-                List<Review> selectedReviews = Model.Reviews.Where(review => review.Accepted && review.Rating == 5).OrderByDescending(review => review.datePublished).Take(10).ToList();
+                List<Review> selectedReviews = Model.Reviews.Where(review => review.Accepted && review.Rating >= 4).OrderByDescending(review => review.datePublished).Take(10).ToList();
             }
             @foreach (Review review in selectedReviews)
             {

@@ -502,8 +502,8 @@ footer h3 {
     text-decoration: underline
 }
 
-/*CONTACT-FORM SECTION CSS STYLE */
 
+/*CONTACT-FORM SECTION CSS STYLE */
 .tempdata-form {
     font-size: inherit;
     text-decoration: underline;
@@ -665,8 +665,13 @@ footer h3 {
     cursor: pointer;
 }
 
-/*DELETE MODAL STYLE CSS*/
+.rating-validation {
+    display: none;
+    color: #BE0C0C;
+    margin: unset;
+}
 
+/*DELETE MODAL STYLE CSS*/
 .modal-footer button {
     text-decoration: none;
     background-color: #0D5B82;

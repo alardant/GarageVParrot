@@ -42,6 +42,8 @@ function CRateClick(rating) {
 function VerifyRating() {
     var rating = $("#lblRating").val();
     if (rating == 0) {
-        return false
+        var ratingValidation = document.querySelector(".rating-validation");
+        ratingValidation.style.display = "block";
+        return false;
     }
 }

@@ -85,7 +85,6 @@ namespace GarageVParrot.Controllers
             }
         }
 
-
         [HttpGet]
         public IActionResult Create()
 
@@ -125,14 +124,13 @@ namespace GarageVParrot.Controllers
                 await _context.AddAsync(review);
                 await _context.SaveChangesAsync();
                 TempData["Message"] = "Votre témoignage a été soumis avec succès.";
-                ModelState.Clear();
+                return RedirectToAction("Create");
             }
             catch (Exception ex)
             {
                 TempData["Message"] = "Échec de la création de votre témoignage, veuillez réessayer.";
+                return View(reviewVM);
             }
-
-            return View(reviewVM);
         }
 
         [Authorize]
