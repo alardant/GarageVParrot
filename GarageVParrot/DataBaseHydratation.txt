@@ -1,0 +1,403 @@
+﻿USE [garagevparrot]
+GO
+/****** Object:  Table [dbo].[__EFMigrationsHistory]    Script Date: 08/07/2023 18:53:40 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[__EFMigrationsHistory](
+	[MigrationId] [nvarchar](150) NOT NULL,
+	[ProductVersion] [nvarchar](32) NOT NULL,
+ CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY CLUSTERED 
+(
+	[MigrationId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetRoleClaims]    Script Date: 08/07/2023 18:53:40 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AspNetRoleClaims](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[RoleId] [nvarchar](450) NOT NULL,
+	[ClaimType] [nvarchar](max) NULL,
+	[ClaimValue] [nvarchar](max) NULL,
+ CONSTRAINT [PK_AspNetRoleClaims] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetRoles]    Script Date: 08/07/2023 18:53:40 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AspNetRoles](
+	[Id] [nvarchar](450) NOT NULL,
+	[Name] [nvarchar](256) NULL,
+	[NormalizedName] [nvarchar](256) NULL,
+	[ConcurrencyStamp] [nvarchar](max) NULL,
+ CONSTRAINT [PK_AspNetRoles] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetUserClaims]    Script Date: 08/07/2023 18:53:40 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AspNetUserClaims](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[UserId] [nvarchar](450) NOT NULL,
+	[ClaimType] [nvarchar](max) NULL,
+	[ClaimValue] [nvarchar](max) NULL,
+ CONSTRAINT [PK_AspNetUserClaims] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetUserLogins]    Script Date: 08/07/2023 18:53:40 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AspNetUserLogins](
+	[LoginProvider] [nvarchar](450) NOT NULL,
+	[ProviderKey] [nvarchar](450) NOT NULL,
+	[ProviderDisplayName] [nvarchar](max) NULL,
+	[UserId] [nvarchar](450) NOT NULL,
+ CONSTRAINT [PK_AspNetUserLogins] PRIMARY KEY CLUSTERED 
+(
+	[LoginProvider] ASC,
+	[ProviderKey] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetUserRoles]    Script Date: 08/07/2023 18:53:40 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AspNetUserRoles](
+	[UserId] [nvarchar](450) NOT NULL,
+	[RoleId] [nvarchar](450) NOT NULL,
+ CONSTRAINT [PK_AspNetUserRoles] PRIMARY KEY CLUSTERED 
+(
+	[UserId] ASC,
+	[RoleId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetUsers]    Script Date: 08/07/2023 18:53:40 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AspNetUsers](
+	[Id] [nvarchar](450) NOT NULL,
+	[Discriminator] [nvarchar](max) NOT NULL,
+	[Role] [nvarchar](max) NULL,
+	[UserName] [nvarchar](256) NULL,
+	[NormalizedUserName] [nvarchar](256) NULL,
+	[Email] [nvarchar](256) NULL,
+	[NormalizedEmail] [nvarchar](256) NULL,
+	[EmailConfirmed] [bit] NOT NULL,
+	[PasswordHash] [nvarchar](max) NULL,
+	[SecurityStamp] [nvarchar](max) NULL,
+	[ConcurrencyStamp] [nvarchar](max) NULL,
+	[PhoneNumber] [nvarchar](max) NULL,
+	[PhoneNumberConfirmed] [bit] NOT NULL,
+	[TwoFactorEnabled] [bit] NOT NULL,
+	[LockoutEnd] [datetimeoffset](7) NULL,
+	[LockoutEnabled] [bit] NOT NULL,
+	[AccessFailedCount] [int] NOT NULL,
+ CONSTRAINT [PK_AspNetUsers] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetUserTokens]    Script Date: 08/07/2023 18:53:40 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AspNetUserTokens](
+	[UserId] [nvarchar](450) NOT NULL,
+	[LoginProvider] [nvarchar](450) NOT NULL,
+	[Name] [nvarchar](450) NOT NULL,
+	[Value] [nvarchar](max) NULL,
+ CONSTRAINT [PK_AspNetUserTokens] PRIMARY KEY CLUSTERED 
+(
+	[UserId] ASC,
+	[LoginProvider] ASC,
+	[Name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Cars]    Script Date: 08/07/2023 18:53:40 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Cars](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Price] [int] NOT NULL,
+	[CoverImage] [nvarchar](max) NOT NULL,
+	[Year] [int] NOT NULL,
+	[Kilometers] [int] NOT NULL,
+	[Brand] [nvarchar](max) NOT NULL,
+	[Model] [nvarchar](max) NOT NULL,
+	[NumberOfDoors] [int] NOT NULL,
+	[NumberOfSeats] [int] NOT NULL,
+	[AirConditionner] [bit] NOT NULL,
+	[Power] [nvarchar](max) NOT NULL,
+	[Motor] [nvarchar](max) NOT NULL,
+	[Bluetooth] [bit] NOT NULL,
+	[Gps] [bit] NOT NULL,
+	[SpeedRegulator] [bit] NOT NULL,
+	[Airbags] [bit] NOT NULL,
+	[ReversingRadar] [bit] NOT NULL,
+	[CritAir] [int] NOT NULL,
+	[Warranty] [int] NULL,
+	[Abs] [bit] NOT NULL,
+	[Energy] [int] NOT NULL,
+	[Category] [int] NOT NULL,
+	[GearType] [int] NOT NULL,
+	[UserId] [nvarchar](450) NULL,
+ CONSTRAINT [PK_Cars] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ImagesListCar]    Script Date: 08/07/2023 18:53:40 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ImagesListCar](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[ImageName] [nvarchar](max) NOT NULL,
+	[ImagePath] [nvarchar](max) NOT NULL,
+	[CarId] [int] NOT NULL,
+ CONSTRAINT [PK_ImagesListCar] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[OpenHours]    Script Date: 08/07/2023 18:53:40 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[OpenHours](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[MondayOpenHours] [nvarchar](max) NOT NULL,
+	[TuesdayOpenHours] [nvarchar](max) NOT NULL,
+	[WednesdayOpenHours] [nvarchar](max) NOT NULL,
+	[ThursdayOpenHours] [nvarchar](max) NOT NULL,
+	[FridayOpenHours] [nvarchar](max) NOT NULL,
+	[SaturdayOpenHours] [nvarchar](max) NOT NULL,
+	[SundayOpenHours] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_OpenHours] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Reviews]    Script Date: 08/07/2023 18:53:40 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Reviews](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](max) NOT NULL,
+	[Description] [nvarchar](max) NOT NULL,
+	[Rating] [int] NOT NULL,
+	[Accepted] [bit] NOT NULL,
+	[datePublished] [datetime2](7) NOT NULL,
+	[UserId] [nvarchar](450) NULL,
+ CONSTRAINT [PK_Reviews] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Services]    Script Date: 08/07/2023 18:53:40 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Services](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Title] [nvarchar](max) NOT NULL,
+	[Description] [nvarchar](max) NOT NULL,
+	[Image] [nvarchar](max) NOT NULL,
+	[UserId] [nvarchar](450) NULL,
+ CONSTRAINT [PK_Services] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20230707171020_InitialCreate', N'6.0.16')
+GO
+INSERT [dbo].[AspNetRoles] ([Id], [Name], [NormalizedName], [ConcurrencyStamp]) VALUES (N'b6714ac6-af36-4539-8dbd-459427575086', N'user', N'USER', N'fcd86a22-22c8-447c-80ed-632ecd094e16')
+GO
+INSERT [dbo].[AspNetRoles] ([Id], [Name], [NormalizedName], [ConcurrencyStamp]) VALUES (N'd2819eb4-fbf0-497e-b510-63c93e674755', N'admin', N'ADMIN', N'7fe1cd51-299f-47a3-8533-53918609aa1a')
+GO
+INSERT [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (N'84e1f00f-779d-40bd-a97a-971000f66e68', N'd2819eb4-fbf0-497e-b510-63c93e674755')
+GO
+INSERT [dbo].[AspNetUsers] ([Id], [Discriminator], [Role], [UserName], [NormalizedUserName], [Email], [NormalizedEmail], [EmailConfirmed], [PasswordHash], [SecurityStamp], [ConcurrencyStamp], [PhoneNumber], [PhoneNumberConfirmed], [TwoFactorEnabled], [LockoutEnd], [LockoutEnabled], [AccessFailedCount]) VALUES (N'84e1f00f-779d-40bd-a97a-971000f66e68', N'User', N'admin', N'garagevparrot@outlook.com', N'GARAGEVPARROT@OUTLOOK.COM', N'garagevparrot@outlook.com', N'GARAGEVPARROT@OUTLOOK.COM', 0, N'AQAAAAEAACcQAAAAEF0MFTrGLjshi0MKgrONrGwEY0WaHcnSgNe9G1zn9HkWuUP8S18b2HJACQj4N0eshQ==', N'RB2RWEMU2QCCPV45K2HBFORL4H3ADKIO', N'c9a09554-8e27-4955-be9e-809cd4d99b8a', NULL, 0, 0, NULL, 1, 0)
+GO
+SET IDENTITY_INSERT [dbo].[Cars] ON 
+GO
+INSERT [dbo].[Cars] ([Id], [Price], [CoverImage], [Year], [Kilometers], [Brand], [Model], [NumberOfDoors], [NumberOfSeats], [AirConditionner], [Power], [Motor], [Bluetooth], [Gps], [SpeedRegulator], [Airbags], [ReversingRadar], [CritAir], [Warranty], [Abs], [Energy], [Category], [GearType], [UserId]) VALUES (1, 22000, N'28ef0e2a-efc5-4d26-a412-1e13215f5f3b-citroen C4 noire cover.jpeg', 2023, 15000, N'Citroen', N'C4', 5, 5, 1, N'7 CV', N'130', 1, 1, 0, 1, 0, 1, 12, 1, 1, 4, 0, N'84e1f00f-779d-40bd-a97a-971000f66e68')
+GO
+INSERT [dbo].[Cars] ([Id], [Price], [CoverImage], [Year], [Kilometers], [Brand], [Model], [NumberOfDoors], [NumberOfSeats], [AirConditionner], [Power], [Motor], [Bluetooth], [Gps], [SpeedRegulator], [Airbags], [ReversingRadar], [CritAir], [Warranty], [Abs], [Energy], [Category], [GearType], [UserId]) VALUES (2, 29500, N'6aabda08-02b0-4606-b271-82d94ce5540c-citroen C4 cover.jpeg', 2022, 26320, N'Citroen', N'C4', 5, 5, 1, N'7 CV', N'130', 1, 1, 1, 1, 1, 1, 12, 1, 3, 4, 1, N'84e1f00f-779d-40bd-a97a-971000f66e68')
+GO
+INSERT [dbo].[Cars] ([Id], [Price], [CoverImage], [Year], [Kilometers], [Brand], [Model], [NumberOfDoors], [NumberOfSeats], [AirConditionner], [Power], [Motor], [Bluetooth], [Gps], [SpeedRegulator], [Airbags], [ReversingRadar], [CritAir], [Warranty], [Abs], [Energy], [Category], [GearType], [UserId]) VALUES (3, 17500, N'9837e2dc-a02e-46db-8139-a03237b1568e-peugeot 3008 cover.jpeg', 2018, 46203, N'Peugeot', N'3008', 5, 5, 1, N'9CV', N'1.6', 1, 0, 1, 1, 0, 1, 12, 1, 1, 4, 0, N'84e1f00f-779d-40bd-a97a-971000f66e68')
+GO
+INSERT [dbo].[Cars] ([Id], [Price], [CoverImage], [Year], [Kilometers], [Brand], [Model], [NumberOfDoors], [NumberOfSeats], [AirConditionner], [Power], [Motor], [Bluetooth], [Gps], [SpeedRegulator], [Airbags], [ReversingRadar], [CritAir], [Warranty], [Abs], [Energy], [Category], [GearType], [UserId]) VALUES (4, 9800, N'48ce0ec1-d8cc-4fe2-b26b-c3ccb927756e-renault captur cover.jpeg', 2015, 132540, N'Renault', N'Captur', 5, 5, 1, N'6CV', N'1.2', 1, 1, 0, 1, 0, 2, 12, 1, 1, 1, 0, N'84e1f00f-779d-40bd-a97a-971000f66e68')
+GO
+INSERT [dbo].[Cars] ([Id], [Price], [CoverImage], [Year], [Kilometers], [Brand], [Model], [NumberOfDoors], [NumberOfSeats], [AirConditionner], [Power], [Motor], [Bluetooth], [Gps], [SpeedRegulator], [Airbags], [ReversingRadar], [CritAir], [Warranty], [Abs], [Energy], [Category], [GearType], [UserId]) VALUES (5, 7800, N'16de19f7-2310-4f04-9532-d0d4ad0e952d-renault clio cover.jpeg', 2009, 160230, N'Renault', N'Clio', 3, 5, 1, N'5CV', N'1.5', 1, 0, 0, 1, 1, 0, 12, 1, 4, 0, 0, N'84e1f00f-779d-40bd-a97a-971000f66e68')
+GO
+SET IDENTITY_INSERT [dbo].[Cars] OFF
+GO
+SET IDENTITY_INSERT [dbo].[ImagesListCar] ON 
+GO
+INSERT [dbo].[ImagesListCar] ([Id], [ImageName], [ImagePath], [CarId]) VALUES (1, N'citroen C4 noire 1.jpeg', N'f631e721-f213-4552-a6b0-92d2c9666f5f-citroen C4 noire 1.jpeg', 1)
+GO
+INSERT [dbo].[ImagesListCar] ([Id], [ImageName], [ImagePath], [CarId]) VALUES (2, N'citroen C4 noire 2.jpeg', N'0c2f178f-3c2c-4091-b580-82e00a8c8e9d-citroen C4 noire 2.jpeg', 1)
+GO
+INSERT [dbo].[ImagesListCar] ([Id], [ImageName], [ImagePath], [CarId]) VALUES (3, N'citroen C4 noire 3.jpeg', N'5c89c0f5-b3ea-4b69-b0df-cc8d750be456-citroen C4 noire 3.jpeg', 1)
+GO
+INSERT [dbo].[ImagesListCar] ([Id], [ImageName], [ImagePath], [CarId]) VALUES (4, N'citroen C4 1.jpeg', N'e8f6d8ad-1c75-4f7f-852a-9e12041c2b8e-citroen C4 1.jpeg', 2)
+GO
+INSERT [dbo].[ImagesListCar] ([Id], [ImageName], [ImagePath], [CarId]) VALUES (5, N'citroen C4 2.jpeg', N'8d24c1aa-e43c-4e1c-b638-4907fb771ad6-citroen C4 2.jpeg', 2)
+GO
+INSERT [dbo].[ImagesListCar] ([Id], [ImageName], [ImagePath], [CarId]) VALUES (6, N'citroen C4 3.jpeg', N'b54fb5a7-4543-43ee-9d83-62f8a0453d71-citroen C4 3.jpeg', 2)
+GO
+INSERT [dbo].[ImagesListCar] ([Id], [ImageName], [ImagePath], [CarId]) VALUES (7, N'peugeot 3008 1.jpeg', N'faf2d067-52f1-418e-b92f-ac3547b6ed50-peugeot 3008 1.jpeg', 3)
+GO
+INSERT [dbo].[ImagesListCar] ([Id], [ImageName], [ImagePath], [CarId]) VALUES (8, N'peugeot 3008 2.jpeg', N'3bb6fb65-4560-464e-a715-516eb708c061-peugeot 3008 2.jpeg', 3)
+GO
+INSERT [dbo].[ImagesListCar] ([Id], [ImageName], [ImagePath], [CarId]) VALUES (9, N'renault captur 1.jpeg', N'ba628cfd-06f6-4ae7-97e5-adc46579a394-renault captur 1.jpeg', 4)
+GO
+INSERT [dbo].[ImagesListCar] ([Id], [ImageName], [ImagePath], [CarId]) VALUES (10, N'renault captur 2.jpeg', N'c164e070-4879-401c-9dfe-91defbe75b15-renault captur 2.jpeg', 4)
+GO
+INSERT [dbo].[ImagesListCar] ([Id], [ImageName], [ImagePath], [CarId]) VALUES (11, N'renault clio 1.jpeg', N'fcec3915-e4b5-493e-a023-0cf95197a205-renault clio 1.jpeg', 5)
+GO
+INSERT [dbo].[ImagesListCar] ([Id], [ImageName], [ImagePath], [CarId]) VALUES (12, N'renault clio 2.jpeg', N'd0facfb7-b9d3-4d79-ab85-8896d6556a6b-renault clio 2.jpeg', 5)
+GO
+INSERT [dbo].[ImagesListCar] ([Id], [ImageName], [ImagePath], [CarId]) VALUES (13, N'renault clio 3.jpeg', N'3e289658-67ae-4104-8683-0801e6a90642-renault clio 3.jpeg', 5)
+GO
+SET IDENTITY_INSERT [dbo].[ImagesListCar] OFF
+GO
+SET IDENTITY_INSERT [dbo].[OpenHours] ON 
+GO
+INSERT [dbo].[OpenHours] ([Id], [MondayOpenHours], [TuesdayOpenHours], [WednesdayOpenHours], [ThursdayOpenHours], [FridayOpenHours], [SaturdayOpenHours], [SundayOpenHours]) VALUES (1, N'08:45-12:00, 14:00-18:00', N'08:45-12:00, 14:00-18:00', N'08:45-12:00, 14:00-18:00', N'08:45-12:00, 14:00-18:00', N'08:45-12:00, 14:00-18:00', N'08:45-12:00', N'Fermé')
+GO
+SET IDENTITY_INSERT [dbo].[OpenHours] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Reviews] ON 
+GO
+INSERT [dbo].[Reviews] ([Id], [Name], [Description], [Rating], [Accepted], [datePublished], [UserId]) VALUES (1, N'Antoine L.', N'Très bon service, surtout pour les vidanges ! Merci notamment à Remy qui s''est très bien occupé de nous !', 4, 1, CAST(N'2023-07-08T16:19:31.3071542' AS DateTime2), N'84e1f00f-779d-40bd-a97a-971000f66e68')
+GO
+INSERT [dbo].[Reviews] ([Id], [Name], [Description], [Rating], [Accepted], [datePublished], [UserId]) VALUES (2, N'Jean', N'Merci pour votre très bon travail !', 5, 1, CAST(N'2023-07-08T16:24:42.2394165' AS DateTime2), NULL)
+GO
+INSERT [dbo].[Reviews] ([Id], [Name], [Description], [Rating], [Accepted], [datePublished], [UserId]) VALUES (3, N'Isa C.', N'Malgré une attente un peu longue, mes pneus ont été remplacés à moindre coût. Je recommande.', 3, 1, CAST(N'2023-07-08T16:25:32.4016604' AS DateTime2), NULL)
+GO
+INSERT [dbo].[Reviews] ([Id], [Name], [Description], [Rating], [Accepted], [datePublished], [UserId]) VALUES (4, N'Sylvie N.', N'Beaucoup d''attente pour un service médiocre. A fuir !', 1, 0, CAST(N'2023-07-08T16:27:29.0616156' AS DateTime2), NULL)
+GO
+INSERT [dbo].[Reviews] ([Id], [Name], [Description], [Rating], [Accepted], [datePublished], [UserId]) VALUES (6, N'Charlie ', N'Personnel réactif et très aimable.', 4, 1, CAST(N'2023-07-08T16:31:31.7643313' AS DateTime2), NULL)
+GO
+INSERT [dbo].[Reviews] ([Id], [Name], [Description], [Rating], [Accepted], [datePublished], [UserId]) VALUES (7, N'Hector', N'J''y vais pour chaque problème et j''en ressors à chaque fois très satisfait. Le seul garagiste que je recommande !', 5, 1, CAST(N'2023-07-08T16:32:14.2066397' AS DateTime2), NULL)
+GO
+INSERT [dbo].[Reviews] ([Id], [Name], [Description], [Rating], [Accepted], [datePublished], [UserId]) VALUES (8, N'Paul', N'Super team, merci', 4, 1, CAST(N'2023-07-08T16:32:27.8069715' AS DateTime2), NULL)
+GO
+INSERT [dbo].[Reviews] ([Id], [Name], [Description], [Rating], [Accepted], [datePublished], [UserId]) VALUES (9, N'Mélanie', N'Ils se sont occupés da ma voiture après un accident et elle est comme neuve ! Je recommande.', 4, 1, CAST(N'2023-07-08T16:32:58.7629680' AS DateTime2), NULL)
+GO
+INSERT [dbo].[Reviews] ([Id], [Name], [Description], [Rating], [Accepted], [datePublished], [UserId]) VALUES (11, N'Jean T', N'Je suis ravi d''avoir acheté ma voiture chez vous, elle est en parfait état !', 5, 1, CAST(N'2023-07-08T17:41:54.0782482' AS DateTime2), N'84e1f00f-779d-40bd-a97a-971000f66e68')
+GO
+SET IDENTITY_INSERT [dbo].[Reviews] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Services] ON 
+GO
+INSERT [dbo].[Services] ([Id], [Title], [Description], [Image], [UserId]) VALUES (1, N'Réparation carrosserie et mécanique', N'<p>Nous sommes un établissement renommé dans le domaine de la réparation de carrosserie et de mécanique automobile. Situé au cœur de la ville, nous avons une réputation solide en matière de service client et de qualité de travail. Que vous ayez besoin de réparer une bosse sur votre carrosserie ou de résoudre un problème mécanique complexe, vous pouvez faire confiance à notre équipe hautement qualifiée pour prendre soin de votre véhicule.</p><p>Nos techniciens expérimentés sont formés aux dernières techniques et technologies de réparation, leur permettant de résoudre efficacement tout problème de carrosserie ou mécanique. Que ce soit pour une simple rayure ou une réparation plus importante après un accident, nous nous engageons à fournir un travail soigné et à restaurer votre voiture dans son état d''origine.</p><p>N''hésitez pas à nous contacter pour en savoir plus.</p>', N'carrepair.png', NULL)
+GO
+INSERT [dbo].[Services] ([Id], [Title], [Description], [Image], [UserId]) VALUES (2, N'Entretien et maintenance', N'<p>L''entretien régulier est essentiel pour préserver la longévité et la fiabilité de votre voiture, et nous en sommes conscients. Nos techniciens qualifiés effectuent des inspections approfondies pour identifier les problèmes potentiels avant qu''ils ne deviennent plus graves, vous évitant ainsi des réparations coûteuses à l''avenir. Que ce soit le remplacement des filtres à air et à carburant, le contrôle des niveaux de liquide ou la vérification des systèmes de freinage, vous pouvez faire confiance à notre expertise pour garder votre voiture en bon état de marche.</p><p>En nous choisissant pour l''entretien régulier de votre voiture, vous bénéficierez également d''un service personnalisé. Notre équipe attentionnée prend le temps de comprendre vos besoins spécifiques et adapte les services en fonction de l''âge, du modèle et des spécifications de votre véhicule. Que vous possédiez une petite citadine ou un véhicule haut de gamme, nous disposons des connaissances et de l''expérience nécessaires pour fournir les soins appropriés à votre voiture.</p><p>N''hésitez pas à nous contacter pour en savoir plus.</p>', N'car-maintenance.jpeg', NULL)
+GO
+INSERT [dbo].[Services] ([Id], [Title], [Description], [Image], [UserId]) VALUES (3, N'Vente de véhicules d''occasion', N'<p>En plus de vous offrir des services de réparation et d''entretien automobile, nous vous proposons également un service de vente de véhicules d''occasion de qualité. Que vous soyez à la recherche d''une voiture compacte, d''un SUV spacieux ou d''une berline élégante, vous pouvez compter sur nous pour vous proposer une sélection variée de véhicules d''occasion soigneusement inspectés et prêts à prendre la route.</p><p>Nous attachons une grande importance à la rigueur de notre processus de sélection. Notre équipe d''experts automobiles examine attentivement chaque voiture, effectuant des vérifications approfondies pour sssurer de leur qualité et de leur performance. Nous prenons en compte l''historique de maintenance, l''état général du véhicule et effectuons des tests rigoureux pour garantir que seules les voitures les plus fiables et en bon état sont proposées à la vente.</p><p>N''hésitez pas à nous contacter pour en savoir plus.</p>', N'car-transaction.jpg', NULL)
+GO
+SET IDENTITY_INSERT [dbo].[Services] OFF
+GO
+ALTER TABLE [dbo].[AspNetRoleClaims]  WITH CHECK ADD  CONSTRAINT [FK_AspNetRoleClaims_AspNetRoles_RoleId] FOREIGN KEY([RoleId])
+REFERENCES [dbo].[AspNetRoles] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetRoleClaims] CHECK CONSTRAINT [FK_AspNetRoleClaims_AspNetRoles_RoleId]
+GO
+ALTER TABLE [dbo].[AspNetUserClaims]  WITH CHECK ADD  CONSTRAINT [FK_AspNetUserClaims_AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetUserClaims] CHECK CONSTRAINT [FK_AspNetUserClaims_AspNetUsers_UserId]
+GO
+ALTER TABLE [dbo].[AspNetUserLogins]  WITH CHECK ADD  CONSTRAINT [FK_AspNetUserLogins_AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetUserLogins] CHECK CONSTRAINT [FK_AspNetUserLogins_AspNetUsers_UserId]
+GO
+ALTER TABLE [dbo].[AspNetUserRoles]  WITH CHECK ADD  CONSTRAINT [FK_AspNetUserRoles_AspNetRoles_RoleId] FOREIGN KEY([RoleId])
+REFERENCES [dbo].[AspNetRoles] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetUserRoles] CHECK CONSTRAINT [FK_AspNetUserRoles_AspNetRoles_RoleId]
+GO
+ALTER TABLE [dbo].[AspNetUserRoles]  WITH CHECK ADD  CONSTRAINT [FK_AspNetUserRoles_AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetUserRoles] CHECK CONSTRAINT [FK_AspNetUserRoles_AspNetUsers_UserId]
+GO
+ALTER TABLE [dbo].[AspNetUserTokens]  WITH CHECK ADD  CONSTRAINT [FK_AspNetUserTokens_AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetUserTokens] CHECK CONSTRAINT [FK_AspNetUserTokens_AspNetUsers_UserId]
+GO
+ALTER TABLE [dbo].[Cars]  WITH CHECK ADD  CONSTRAINT [FK_Cars_AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE SET NULL
+GO
+ALTER TABLE [dbo].[Cars] CHECK CONSTRAINT [FK_Cars_AspNetUsers_UserId]
+GO
+ALTER TABLE [dbo].[ImagesListCar]  WITH CHECK ADD  CONSTRAINT [FK_ImagesListCar_Cars_CarId] FOREIGN KEY([CarId])
+REFERENCES [dbo].[Cars] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ImagesListCar] CHECK CONSTRAINT [FK_ImagesListCar_Cars_CarId]
+GO
+ALTER TABLE [dbo].[Reviews]  WITH CHECK ADD  CONSTRAINT [FK_Reviews_AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE SET NULL
+GO
+ALTER TABLE [dbo].[Reviews] CHECK CONSTRAINT [FK_Reviews_AspNetUsers_UserId]
+GO
+ALTER TABLE [dbo].[Services]  WITH CHECK ADD  CONSTRAINT [FK_Services_AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE SET NULL
+GO
+ALTER TABLE [dbo].[Services] CHECK CONSTRAINT [FK_Services_AspNetUsers_UserId]
+GO
