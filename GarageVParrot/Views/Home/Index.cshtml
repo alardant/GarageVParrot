@@ -2,6 +2,12 @@
 
 <section class="services">
     <h2>Nos Services</h2>
+    @if (TempData["Message"] != null)
+    {
+        <div class="tempdata-form" style="color:#0D5B82" )">
+            @TempData["Message"]
+        </div>
+    }
     <div class="row">
 	    @foreach(Service service in @Model.Services)
 	    {

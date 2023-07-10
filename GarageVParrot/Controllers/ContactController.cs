@@ -35,7 +35,8 @@ public class ContactController : Controller
             mail.Body = message; 
 
             // Create SmtpClient object and send email
-            SmtpClient smtpClient = new SmtpClient("smtp-mail.outlook.com", 587); 
+            SmtpClient smtpClient = new SmtpClient("smtp-mail.outlook.com", 587);
+            smtpClient.EnableSsl = true;
             smtpClient.Credentials = new System.Net.NetworkCredential("garagevparrot@outlook.fr", "Garage123!"); // SMTP ID
             smtpClient.SendMailAsync(mail);
             TempData["Message"] = "Le formulaire a été envoyé avec succès.";
