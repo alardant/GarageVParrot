@@ -50,17 +50,17 @@ builder.Services.Configure<IdentityOptions>(options =>
 // Map Login page and redirect unauthorized
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/Account/Login";
-    options.AccessDeniedPath = "/Account/AccessDenied";
+    options.LoginPath = "/User/Login";
+    options.AccessDeniedPath = "/User/AccessDenied";
     options.Events = new CookieAuthenticationEvents
     {
         OnRedirectToLogin = context =>
         {
-            if (!context.Request.Path.StartsWithSegments("/Account"))
+            if (!context.Request.Path.StartsWithSegments("/User"))
             {
                 if (!context.HttpContext.User.IsInRole("admin"))
                 {
-                    context.Response.Redirect("/Account/AccessDenied");
+                    context.Response.Redirect("/User/AccessDenied");
                     return Task.CompletedTask;
                 }
             }
@@ -70,6 +70,7 @@ builder.Services.ConfigureApplicationCookie(options =>
         }
     };
 });
+
 
 var app = builder.Build();
 
@@ -86,6 +87,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
