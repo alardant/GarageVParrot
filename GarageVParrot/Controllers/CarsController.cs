@@ -274,7 +274,6 @@ namespace GarageVParrot.Controllers
             }
         }
 
-
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
@@ -467,7 +466,7 @@ namespace GarageVParrot.Controllers
                 }
             }
             TempData["Message"] = "Le véhicule a bien été modifié.";
-            return RedirectToAction(nameof(CarManagement));
+            return RedirectToAction("CarManagement");
         }
 
 

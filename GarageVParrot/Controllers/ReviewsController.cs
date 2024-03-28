@@ -52,11 +52,17 @@ namespace GarageVParrot.Controllers
         public async Task<IActionResult> Validate(int id, ReviewViewModel reviewVM)
         {
             // get all the reviews
-            var reviewList = await _context.Reviews.Where(i => i.Accepted == false).ToListAsync();
+            var reviewList = await _context.Reviews.ToListAsync();
 
             if (!ModelState.IsValid)
             {
                 TempData["Message"] = "Échec de la modification du témoignage, veuillez réessayer.";
+                return View(reviewList);
+            }
+
+            if (!reviewVM.Accepted)
+            {
+                TempData["Message"] = "Échec de la modification du témoignagne, veuillez cocher la case Valider le témoignage.";
                 return View(reviewList);
             }
 
@@ -72,7 +78,7 @@ namespace GarageVParrot.Controllers
 
                 _context.Update(reviewToUpdate);
                 await _context.SaveChangesAsync();
-                TempData["Message"] = "Le témoignage a bien été modifié.";
+                TempData["Message"] = "Le témoignage a bien été validé.";
 
                 //get a list updated of all the reviews
                 var reviews = await _context.Reviews.AsNoTracking().ToListAsync();
@@ -124,7 +130,7 @@ namespace GarageVParrot.Controllers
                 await _context.AddAsync(review);
                 await _context.SaveChangesAsync();
                 TempData["Message"] = "Votre témoignage a été soumis avec succès.";
-                return RedirectToAction("Create");
+                return RedirectToAction("Validate");
             }
             catch (Exception ex)
             {
