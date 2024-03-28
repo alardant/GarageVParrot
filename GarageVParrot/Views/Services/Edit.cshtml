@@ -5,6 +5,12 @@
 <div class="return-index-div">
     <a class="return-index" asp-action="Index">Retour à la liste</a>
 </div>
+@if (TempData["Message"] != null)
+{
+    <div class="tempdata-form" style="color: @(TempData["Message"].ToString().Contains("Échec") ? "#BE0C0C" : "#0D5B82")">
+        @TempData["Message"]
+    </div>
+}
 
 
 <div class="row">

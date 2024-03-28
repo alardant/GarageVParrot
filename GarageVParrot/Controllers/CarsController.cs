@@ -147,7 +147,8 @@ namespace GarageVParrot.Controllers
                 return View(carViewModel);
             }
 
-            try { 
+            try
+            {
                 string coverImageFileName = null;
                 List<ImageListCar> listImageFileName = new List<ImageListCar>();
 
@@ -173,7 +174,16 @@ namespace GarageVParrot.Controllers
                     //create a unique name
                     string fileName = Guid.NewGuid().ToString() + "-" + carViewModel.CoverImage.FileName;
                     string filePath = Path.Combine(uploadsFolder, fileName);
-                    await carViewModel.CoverImage.CopyToAsync(new FileStream(filePath, FileMode.Create));
+
+                    // Copy the uploaded file to a temporary file
+                    string tempFileName = Path.GetTempFileName();
+                    using (var stream = new FileStream(tempFileName, FileMode.Create))
+                    {
+                        await carViewModel.CoverImage.CopyToAsync(stream);
+                    }
+
+                    // Move the temporary file to the final destination
+                    System.IO.File.Move(tempFileName, filePath);
 
                     coverImageFileName = fileName;
                 }
@@ -201,7 +211,17 @@ namespace GarageVParrot.Controllers
                         }
                         string fileName = Guid.NewGuid().ToString() + "-" + imageFile.FileName;
                         string filePath = Path.Combine(uploadsFolder, fileName);
-                        await imageFile.CopyToAsync(new FileStream(filePath, FileMode.Create));
+
+                        // Copy the uploaded file to a temporary file
+                        string tempFileName = Path.GetTempFileName();
+                        using (var stream = new FileStream(tempFileName, FileMode.Create))
+                        {
+                            await imageFile.CopyToAsync(stream);
+                        }
+
+                        // Move the temporary file to the final destination
+                        System.IO.File.Move(tempFileName, filePath);
+
                         ImageListCar image = new ImageListCar
                         {
                             ImageName = imageFile.FileName,
@@ -246,7 +266,9 @@ namespace GarageVParrot.Controllers
                 await _context.SaveChangesAsync();
                 TempData["Message"] = "Le véhicule a bien été crée.";
                 return RedirectToAction("CarManagement");
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 TempData["Message"] = "Échec de la création du véhicule, veuillez réessayer.";
                 return View(carViewModel);
             }
@@ -319,7 +341,7 @@ namespace GarageVParrot.Controllers
             var car = await _context.Cars.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
             string coverImageFileName = null;
             List<ImageListCar> listImageFileName = new List<ImageListCar>();
-            
+
             //cover image management if a new is set
             if (file != null)
             {
@@ -327,7 +349,16 @@ namespace GarageVParrot.Controllers
                 string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/CarImageCover");
                 string fileName = Guid.NewGuid().ToString() + "-" + file.FileName;
                 string filePath = Path.Combine(uploadDir, fileName);
-                await file.CopyToAsync(new FileStream(filePath, FileMode.Create));
+
+                // Copy the uploaded file to a temporary file
+                string tempFileName = Path.GetTempFileName();
+                using (var stream = new FileStream(tempFileName, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                // Move the temporary file to the final destination
+                System.IO.File.Move(tempFileName, filePath);
 
                 coverImageFileName = fileName;
 
@@ -356,7 +387,16 @@ namespace GarageVParrot.Controllers
                     //upload new images
                     string fileName = Guid.NewGuid().ToString() + "-" + imageFile.FileName;
                     string filePath = Path.Combine(uploadsFolder, fileName);
-                    await imageFile.CopyToAsync(new FileStream(filePath, FileMode.Create));
+
+                    // Copy the uploaded file to a temporary file
+                    string tempFileName = Path.GetTempFileName();
+                    using (var stream = new FileStream(tempFileName, FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(stream);
+                    }
+
+                    // Move the temporary file to the final destination
+                    System.IO.File.Move(tempFileName, filePath);
 
                     ImageListCar image = new ImageListCar
                     {

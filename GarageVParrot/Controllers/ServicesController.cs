@@ -48,7 +48,6 @@ namespace GarageVParrot.Controllers
             var serviceViewModel = new ServiceViewModel { UserId = curUserId };
             return View(serviceViewModel);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ServiceViewModel serviceVM)
@@ -59,8 +58,8 @@ namespace GarageVParrot.Controllers
                 return View(serviceVM);
             }
 
-            try 
-            { 
+            try
+            {
                 string imageFileName = null;
 
                 // upload image if exists
@@ -84,7 +83,16 @@ namespace GarageVParrot.Controllers
                     // create unique name
                     string fileName = Guid.NewGuid().ToString() + "-" + serviceVM.Image.FileName;
                     string filePath = Path.Combine(uploadsFolder, fileName);
-                    await serviceVM.Image.CopyToAsync(new FileStream(filePath, FileMode.Create));
+
+                    // Copy the uploaded file to a temporary file
+                    string tempFileName = Path.GetTempFileName();
+                    using (var stream = new FileStream(tempFileName, FileMode.Create))
+                    {
+                        await serviceVM.Image.CopyToAsync(stream);
+                    }
+
+                    // Move the temporary file to the final destination
+                    System.IO.File.Move(tempFileName, filePath);
 
                     imageFileName = fileName;
                 }
@@ -100,16 +108,16 @@ namespace GarageVParrot.Controllers
 
                 await _context.AddAsync(service);
                 await _context.SaveChangesAsync();
-                TempData["Message"] = "Le service a bien été crée.";
+                TempData["Message"] = "Le service a bien été créé.";
                 return RedirectToAction("Index");
 
-            } catch(Exception ex) 
+            }
+            catch (Exception ex)
             {
                 TempData["Message"] = "Échec de la création du service, veuillez réessayer.";
                 return View(serviceVM);
             }
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
@@ -153,7 +161,7 @@ namespace GarageVParrot.Controllers
 
             try
             {
-                var service = await _context.Services.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+                var service = await _context.Services.FirstOrDefaultAsync(i => i.Id == id);
                 string imageFileName = null;
 
                 // service's image management if new image exists
@@ -163,47 +171,53 @@ namespace GarageVParrot.Controllers
                     string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
                     string fileName = Guid.NewGuid().ToString() + "-" + file.FileName;
                     string filePath = Path.Combine(uploadDir, fileName);
-                    await file.CopyToAsync(new FileStream(filePath, FileMode.Create));
+
+                    // Copy the uploaded file to a temporary file
+                    string tempFileName = Path.GetTempFileName();
+                    using (var stream = new FileStream(tempFileName, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    // Move the temporary file to the final destination
+                    System.IO.File.Move(tempFileName, filePath);
 
                     imageFileName = fileName;
 
-                    //remove old image
-                    if (service.Image != null)
+                    // remove old image
+                    if (!string.IsNullOrEmpty(service.Image))
                     {
-                        string dir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
-                        string oldFilePath = Path.Combine(dir, service.Image);
+                        string oldFilePath = Path.Combine(uploadDir, service.Image);
                         if (System.IO.File.Exists(oldFilePath))
                         {
                             System.IO.File.Delete(oldFilePath);
                         }
                     }
                 }
-                // keep old image if no new image
                 else
                 {
                     imageFileName = service.Image;
                 }
 
-                //update service
-                var serviceToUpdate = new Service
-                {
-                    Id = id,
-                    UserId = serviceVM.UserId,
-                    Title = serviceVM.Title,
-                    Description = serviceVM.Description,
-                    Image = imageFileName
-                };
-                _context.Update(serviceToUpdate);
+                // update service
+                service.UserId = serviceVM.UserId;
+                service.Title = serviceVM.Title;
+                service.Description = serviceVM.Description;
+                service.Image = imageFileName;
+
+                _context.Update(service);
                 await _context.SaveChangesAsync();
+
+                TempData["Message"] = "Le service a bien été modifié.";
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
                 TempData["Message"] = "Échec de la modification du service, veuillez réessayer.";
                 return RedirectToAction(nameof(Index));
             }
-            TempData["Message"] = "Le service a bien été modifié.";
-            return View(serviceVM);
         }
+
 
 
         [HttpPost]
@@ -219,29 +233,30 @@ namespace GarageVParrot.Controllers
             try
             {
 
-            var service = await _context.Services.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+                var service = await _context.Services.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
 
-            // delete image if exists
-            if (service.Image != null)
-            {
-                string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
-                string oldFilePath = Path.Combine(uploadDir, service.Image);
-                if (System.IO.File.Exists(oldFilePath))
+                // delete image if exists
+                if (service.Image != null)
                 {
-                    System.IO.File.Delete(oldFilePath);
+                    string uploadDir = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/ServicesImage");
+                    string oldFilePath = Path.Combine(uploadDir, service.Image);
+                    if (System.IO.File.Exists(oldFilePath))
+                    {
+                        System.IO.File.Delete(oldFilePath);
+                    }
                 }
-            }
-            //delete service
-            if (service != null)
-            {
-                _context.Services.Remove(service);
-            }
-            await _context.SaveChangesAsync();
-            TempData["Message"] = "Le service a bien été supprimé.";
-            }
+                //delete service
+                if (service != null)
+                {
+                    _context.Services.Remove(service);
+                }
+                await _context.SaveChangesAsync();
+                TempData["Message"] = "Le service a bien été supprimé.";
+                }
+
             catch (Exception ex)
             {
-                TempData["Message"] = "Échec de la service du véhicule, veuillez réessayer.";
+                TempData["Message"] = "Échec de la suppression du service, veuillez réessayer.";
             }
             return RedirectToAction(nameof(Index));
         }

@@ -1006,8 +1006,12 @@ q
     text-align:start;
 }
 
-@media (max-width:767px) {
-    .service-validate-buttons {
+    .service-grid-description p {
+        margin-bottom: unset;
+    }
+
+    @media (max-width:767px) {
+        .service-validate-buttons {
         display: flex;
         justify-content: space-around;
     }
